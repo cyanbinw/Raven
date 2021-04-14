@@ -1,9 +1,13 @@
 username: sa
 password: 123456
 <<<<<<< HEAD
+<<<<<<< HEAD
 ip: 172.17.0.2
 =======
 ip: 127.0.0.1
 >>>>>>> 816d66e52b0d2936a3364974c9e681e4820e8b38
+=======
+ip: 172.17.0.2
+>>>>>>> dev
 port: 3306
 dbname: test_db

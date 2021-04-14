@@ -1,7 +1,9 @@
 package main
 
-import "Raven/src/web/Router"
-import _ "github.com/go-sql-driver/mysql"
+import (
+	"Raven/src/Web/Router"
+	_ "github.com/go-sql-driver/mysql"
+)
 
 func main() {
 
