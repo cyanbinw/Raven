@@ -6,7 +6,6 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
-	"path/filepath"
 	"strings"
 	"xorm.io/core"
 )
@@ -56,12 +55,9 @@ func InitDB() *xorm.Engine {
 }
 
 func SetConnectString() ConnectString {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		fmt.Println(err)
-	}
+
 	item := ConnectString{}
-	data, err := ioutil.ReadFile(dir + "/config.yml")
+	data, err := ioutil.ReadFile("config.yml")
 	if err != nil {
 		fmt.Println(err)
 	}
