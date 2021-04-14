@@ -17,4 +17,4 @@ output/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
-/bin/go_build_main_go
+/bin/
