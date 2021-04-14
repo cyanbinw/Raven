@@ -6,16 +6,17 @@ import (
 	"github.com/go-xorm/xorm"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 	"xorm.io/core"
 )
 
 type ConnectString struct {
-	userName string
-	password string
-	ip       string
-	port     string
-	dbName   string
+	UserName string
+	Password string
+	Ip       string
+	Port     string
+	DbName   string
 }
 
 var engine *xorm.Engine
@@ -40,14 +41,13 @@ func InitDB() *xorm.Engine {
 	if engine != nil {
 		return engine
 	}
-	JsonParse := NewJsonStruct()
-	v := ConnectString{}
-	//下面使用的是相对路径，config.json文件和main.go文件处于同一目录下
-	JsonParse.Load("./config.json", &v)
+
+	v := SetConnectString()
+
 	//构建连接："用户名:密码@tcp(IP:端口)/数据库?charset=utf8"
-	path := strings.Join([]string{v.userName, ":", v.password, "@tcp(", v.ip, ":", v.port, ")/", v.dbName, "?charset=utf8"}, "")
-	var err error = nil
-	engine, err = xorm.NewEngine("mysql", path)
+	path := strings.Join([]string{v.UserName, ":", v.Password, "@tcp(", v.Ip, ":", v.Port, ")/", v.DbName, "?charset=utf8"}, "")
+
+	engine, err := xorm.NewEngine("mysql", path)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -55,20 +55,19 @@ func InitDB() *xorm.Engine {
 	return engine
 }
 
-type JsonStruct struct {
-}
-
-func NewJsonStruct() *JsonStruct {
-	return &JsonStruct{}
-}
-
-func (jst *JsonStruct) Load(filename string, v interface{}) {
-	data, err := ioutil.ReadFile(filename)
+func SetConnectString() ConnectString {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
-		return
+		fmt.Println(err)
 	}
-	err = json.Unmarshal(data, v)
+	item := ConnectString{}
+	data, err := ioutil.ReadFile(dir + "/config.json")
 	if err != nil {
-		return
+		fmt.Println(err)
 	}
+	err = json.Unmarshal(data, &item)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return item
 }
