@@ -1,16 +1,28 @@
 FROM golang:latest
 WORKDIR /Code
+<<<<<<< HEAD
 RUN go env -w GO111MODULE=on
 RUN go env -w GOPROXY=https://goproxy.cn,direct
+=======
+ENV GO111MODULE=on \
+    GOPROXY=https://goproxy.cn,direct
+>>>>>>> 816d66e52b0d2936a3364974c9e681e4820e8b38
 
 # cache deps before building and copying source so that we don't need to re-download as much
 # and so that source changes don't invalidate our downloaded layer
 
 # src code
 COPY . .
+<<<<<<< HEAD
 #RUN go env
 RUN go mod tidy
 RUN go build ./src/Web
 #RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build ./src/Web
 EXPOSE 8080
 ENTRYPOINT [ "./Web" ]
+=======
+RUN go mod tidy
+RUN go build ./src/Web
+#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build -o ./src/Web
+EXPOSE 8080
+>>>>>>> 816d66e52b0d2936a3364974c9e681e4820e8b38
