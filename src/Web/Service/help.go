@@ -1,9 +1,9 @@
 package Service
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/go-xorm/xorm"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,11 +12,11 @@ import (
 )
 
 type ConnectString struct {
-	UserName string
-	Password string
-	Ip       string
-	Port     string
-	DbName   string
+	UserName string `yaml:"username"`
+	Password string `yaml:"password"`
+	Ip       string `yaml:"ip"`
+	Port     string `yaml:"port"`
+	DbName   string `yaml:"dbname"`
 }
 
 var engine *xorm.Engine
@@ -61,11 +61,11 @@ func SetConnectString() ConnectString {
 		fmt.Println(err)
 	}
 	item := ConnectString{}
-	data, err := ioutil.ReadFile(dir + "/config.json")
+	data, err := ioutil.ReadFile(dir + "/config.yml")
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = json.Unmarshal(data, &item)
+	err = yaml.Unmarshal(data, &item)
 	if err != nil {
 		fmt.Println(err)
 	}
