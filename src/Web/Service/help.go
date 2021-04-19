@@ -3,20 +3,10 @@ package Service
 import (
 	"fmt"
 	"github.com/go-xorm/xorm"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"os"
 	"strings"
 	"xorm.io/core"
 )
-
-type ConnectString struct {
-	UserName string `yaml:"username"`
-	Password string `yaml:"password"`
-	Ip       string `yaml:"ip"`
-	Port     string `yaml:"port"`
-	DbName   string `yaml:"dbname"`
-}
 
 var engine *xorm.Engine
 
@@ -41,7 +31,7 @@ func InitDB() *xorm.Engine {
 		return engine
 	}
 
-	v := SetConnectString()
+	v := GetConnectString()
 
 	//构建连接："用户名:密码@tcp(IP:端口)/数据库?charset=utf8"
 	path := strings.Join([]string{v.UserName, ":", v.Password, "@tcp(", v.Ip, ":", v.Port, ")/", v.DbName, "?charset=utf8"}, "")
@@ -52,18 +42,4 @@ func InitDB() *xorm.Engine {
 	}
 	engine.SetMapper(core.SameMapper{})
 	return engine
-}
-
-func SetConnectString() ConnectString {
-
-	item := ConnectString{}
-	data, err := ioutil.ReadFile("config.yml")
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = yaml.Unmarshal(data, &item)
-	if err != nil {
-		fmt.Println(err)
-	}
-	return item
 }
