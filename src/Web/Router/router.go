@@ -16,6 +16,7 @@ func InitRouter() {
 
 	v1 := router.Group("v1")
 	billGroup(v1)
+	desireGroup(v1)
 	investmentGroup(v1)
 
 	router.Run()
@@ -37,4 +38,8 @@ func investmentGroup(c *gin.RouterGroup) {
 	c.POST("/UpdateInvestmentsTable", Controllers.UpdateInvestmentsTable)
 	c.POST("/GetInvestmentDiagram", Controllers.GetInvestmentDiagram)
 	c.POST("/GetInvestmentOption", Controllers.GetInvestmentOption)
+}
+
+func desireGroup(c *gin.RouterGroup) {
+	c.POST("/GetDesire", Controllers.GetDesire)
 }
