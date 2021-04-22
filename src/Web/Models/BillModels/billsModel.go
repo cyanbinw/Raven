@@ -15,7 +15,7 @@ type BillData struct {
 }
 
 func (data *BillData) BillsInitDB() {
-	BillsInitDB()
+	billsInitDB()
 }
 
 func (data *BillData) BillsWriteToJSON() {
@@ -39,9 +39,9 @@ func (data *BillData) BillsWriteToJSON() {
 }
 
 func (data *BillData) BillsGetYearData() {
-	BillsGetYearData(data)
+	billsGetYearData(data)
 }
 
 func (data *BillData) BillsGetFourMonthsData() {
-	BillsGetFourMonthsData(data)
+	billsGetFourMonthsData(data)
 }

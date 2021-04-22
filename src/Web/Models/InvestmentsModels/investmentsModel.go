@@ -21,39 +21,39 @@ type InvestmentsChartModel struct {
 }
 
 func (data *InvestmentData) InvestmentsInitDB() {
-	InvestmentsInitDB()
+	investmentsInitDB()
 }
 
 func (data *InvestmentData) InvestmentGetAll() {
-	InvestmentGetAll(data)
+	investmentGetAll(data)
 }
 
 func (data *InvestmentData) SetInvestmentChartForAccount() InvestmentsChartModel {
-	return InvestmentGetDataToChart()
+	return investmentGetDataToChart()
 }
 
 func (data *InvestmentData) GetInvestmentTable() []InvestmentTable {
-	return InvestmentGetTable()
+	return investmentGetTable()
 }
 
 func (data *InvestmentTable) InvestmentsInitDB() {
-	InvestmentsInitDB()
+	investmentsInitDB()
 }
 
 func (data *InvestmentTable) AddInvestmentTable() (bool, error) {
-	return InvestmentAddTable(*data)
+	return investmentAddTable(*data)
 }
 
 func (data *InvestmentTable) UpdateInvestmentTable() (bool, error) {
-	return InvestmentUpdateTable(*data)
+	return investmentUpdateTable(*data)
 }
 
 func GetInvestmentDiagram() (map[string][]Investment, error) {
-	InvestmentsInitDB()
-	return InvestmentGetDiagram()
+	investmentsInitDB()
+	return investmentGetDiagram()
 }
 
 func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, error) {
-	InvestmentsInitDB()
-	return InvestmentGetOption()
+	investmentsInitDB()
+	return investmentGetOption()
 }

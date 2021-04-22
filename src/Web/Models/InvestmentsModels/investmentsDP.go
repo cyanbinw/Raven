@@ -58,11 +58,11 @@ var db *sql.DB
 var timeLayoutStr = "2006-01-02 15:04:05" //go中的时间格式化必须是这个时间
 var engine *xorm.Engine
 
-func InvestmentsInitDB() {
+func investmentsInitDB() {
 	engine = Service.InitDB()
 }
 
-func InvestmentsInitDBV1() {
+func investmentsInitDBV1() {
 	//构建连接："用户名:密码@tcp(IP:端口)/数据库?charset=utf8"
 	path := strings.Join([]string{userName, ":", password, "@tcp(", ip, ":", port, ")/", dbName, "?charset=utf8"}, "")
 	db, _ = sql.Open("mysql", path)
@@ -77,7 +77,7 @@ func InvestmentsInitDBV1() {
 	}
 }
 
-func InvestmentGetAll(data *InvestmentData) {
+func investmentGetAll(data *InvestmentData) {
 	var investments []Investment
 
 	//pEveryOne := make([]Inengine = {*github.com/go-xorm/xorm.Engine | 0xc0003161c0} vestment, 0)
@@ -88,7 +88,7 @@ func InvestmentGetAll(data *InvestmentData) {
 	data.Data = investments
 }
 
-func InvestmentGetAllV1(data *InvestmentData) {
+func investmentGetAllV1(data *InvestmentData) {
 	var investments []Investment
 
 	var investment []Investment
@@ -146,11 +146,7 @@ func InvestmentGetAllV1(data *InvestmentData) {
 	data.Data = investments
 }
 
-func (InvestmentTable) TableName() string {
-	return "Investment"
-}
-
-func InvestmentGetDataToChart() InvestmentsChartModel {
+func investmentGetDataToChart() InvestmentsChartModel {
 	var investmentsChartModel InvestmentsChartModel
 	err := engine.SQL("select Name, sum(Account) Value from Investment group by Name").Find(&investmentsChartModel.Account)
 	if err != nil {
@@ -172,7 +168,7 @@ func InvestmentGetDataToChart() InvestmentsChartModel {
 	return investmentsChartModel
 }
 
-func InvestmentGetDataToChartV1() InvestmentsChartModel {
+func investmentGetDataToChartV1() InvestmentsChartModel {
 	investmentDetail := new(InvestmentChartModel)
 	var investmentsChartModel InvestmentsChartModel
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
@@ -253,7 +249,7 @@ func InvestmentGetDataToChartV1() InvestmentsChartModel {
 	return investmentsChartModel
 }
 
-func InvestmentGetTable() []InvestmentTable {
+func investmentGetTable() []InvestmentTable {
 	var investments []InvestmentTable
 	err := engine.Join("INNER", "InvestmentActivity",
 		"InvestmentActivity.ActivityID = Investment.ActivityStatus").
@@ -265,7 +261,11 @@ func InvestmentGetTable() []InvestmentTable {
 	return investments
 }
 
-func InvestmentGetTableV1() []InvestmentTable {
+func (InvestmentTable) TableName() string {
+	return "Investment"
+}
+
+func investmentGetTableV1() []InvestmentTable {
 	var investments []InvestmentTable
 	investmentDetail := new(InvestmentTable)
 
@@ -313,7 +313,7 @@ func InvestmentGetTableV1() []InvestmentTable {
 	return investments
 }
 
-func InvestmentAddTable(data InvestmentTable) (bool, error) {
+func investmentAddTable(data InvestmentTable) (bool, error) {
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -332,7 +332,7 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 	return true, nil
 }
 
-func InvestmentAddTableV1(data InvestmentTable) (bool, error) {
+func investmentAddTableV1(data InvestmentTable) (bool, error) {
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
 
 	// 查询单行数据
@@ -357,7 +357,7 @@ func InvestmentAddTableV1(data InvestmentTable) (bool, error) {
 	return false, err
 }
 
-func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
+func investmentUpdateTable(data InvestmentTable) (bool, error) {
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -375,7 +375,7 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 	return true, nil
 }
 
-func InvestmentUpdateTableV1(data InvestmentTable) (bool, error) {
+func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
 
 	// 查询单行数据
@@ -401,18 +401,18 @@ func InvestmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	return false, err
 }
 
-func InvestmentGetDiagram() (map[string][]Investment, error) {
+func investmentGetDiagram() (map[string][]Investment, error) {
 	var table = new(InvestmentData)
 	data := make(map[string][]Investment)
 
-	InvestmentGetAll(table)
+	investmentGetAll(table)
 	for _, index := range table.Data {
 		data[index.Name] = append(data[index.Name], index)
 	}
 	return data, nil
 }
 
-func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, error) {
+func investmentGetOption() ([]InvestmentType, []InvestmentActivity, error) {
 	var itype []InvestmentType
 	var iactivity []InvestmentActivity
 
