@@ -63,15 +63,19 @@ func investmentsInitDB() {
 }
 
 func investmentsInitDBV1() {
+	var err error
 	//构建连接："用户名:密码@tcp(IP:端口)/数据库?charset=utf8"
 	path := strings.Join([]string{userName, ":", password, "@tcp(", ip, ":", port, ")/", dbName, "?charset=utf8"}, "")
-	db, _ = sql.Open("mysql", path)
+	db, err = sql.Open("mysql", path)
+	if err != nil {
+		fmt.Println(err)
+	}
 	//设置数据库最大连接数
 	db.SetConnMaxLifetime(100)
 	//设置上数据库最大闲置连接数
 	db.SetMaxIdleConns(10)
 	//验证连接
-	if err := db.Ping(); err != nil {
+	if err = db.Ping(); err != nil {
 		fmt.Println("open database fail")
 		return
 	}
@@ -80,7 +84,6 @@ func investmentsInitDBV1() {
 func investmentGetAll(data *InvestmentData) {
 	var investments []Investment
 
-	//pEveryOne := make([]Inengine = {*github.com/go-xorm/xorm.Engine | 0xc0003161c0} vestment, 0)
 	err := engine.Find(&investments)
 	if err != nil {
 		fmt.Println(err)
@@ -112,9 +115,14 @@ func investmentGetAllV1(data *InvestmentData) {
 			fmt.Println(err)
 		}*/
 	row, err := db.Query("select * from Investment")
+	if err != nil {
+		fmt.Println(err)
+	}
 	defer func() {
 		if row != nil {
-			row.Close()
+			if err = row.Close(); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}()
 
@@ -178,9 +186,14 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 	// endDate,_ := time.Parse(timeLayoutStr, end)
 
 	row1, err := db.Query("select Name, sum(Account) from Investment group by Name")
+	if err != nil {
+		fmt.Println(err)
+	}
 	defer func() {
 		if row1 != nil {
-			row1.Close()
+			if err = row1.Close(); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}()
 
@@ -201,9 +214,14 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 	}
 
 	row2, err := db.Query("select Name, sum(Share) from Investment group by Name")
+	if err != nil {
+		fmt.Println(err)
+	}
 	defer func() {
 		if row2 != nil {
-			row2.Close()
+			if err = row2.Close(); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}()
 
@@ -224,9 +242,14 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 	}
 
 	row3, err := db.Query("select Name, avg(NetWorth) from Investment where ID != 23 group by Name")
+	if err != nil {
+		fmt.Println(err)
+	}
 	defer func() {
 		if row3 != nil {
-			row3.Close()
+			if err = row3.Close(); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}()
 
@@ -278,7 +301,9 @@ func investmentGetTableV1() []InvestmentTable {
 	row, err := db.Query("select ID,Name,i.TypeID,Account,Share,NetWorth,Date,ActivityStatus,TypeName,ActivityName from Investment i join InvestmentActivity iA on i.ActivityStatus = iA.ActivityID join InvestmentType iT on i.TypeID = iT.TypeID")
 	defer func() {
 		if row != nil {
-			row.Close()
+			if err = row.Close(); err != nil {
+				fmt.Println(err)
+			}
 		}
 	}()
 
@@ -321,7 +346,9 @@ func investmentAddTable(data InvestmentTable) (bool, error) {
 
 	_, err = engine.Insert(&data.Investment)
 	if err != nil {
-		session.Rollback()
+		if err = session.Rollback(); err != nil {
+			fmt.Println(err)
+		}
 		return false, err
 	}
 

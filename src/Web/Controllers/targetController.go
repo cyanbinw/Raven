@@ -9,5 +9,6 @@ import (
 func GetTarget(c *gin.Context) {
 	TargetModels.TargetInitDB()
 	TargetModels.GetTargetData()
+
 	c.JSON(http.StatusOK, nil)
 }
