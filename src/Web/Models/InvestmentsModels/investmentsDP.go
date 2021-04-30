@@ -429,11 +429,15 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 }
 
 func investmentGetDiagram() (map[string][]Investment, error) {
-	var table = new(InvestmentData)
 	data := make(map[string][]Investment)
 
-	investmentGetAll(table)
-	for _, index := range table.Data {
+	var investments []Investment
+
+	err := engine.OrderBy("Date").Find(&investments)
+	if err != nil {
+		fmt.Println(err)
+	}
+	for _, index := range investments {
 		data[index.Name] = append(data[index.Name], index)
 	}
 	return data, nil
