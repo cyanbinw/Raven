@@ -57,3 +57,17 @@ func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, error) {
 	investmentsInitDB()
 	return investmentGetOption()
 }
+
+func shareOutBonus(data *[]Investment) {
+	var shareOutBonusList []Investment
+	//var dataList []Investment
+	for _, i := range *data {
+		if i.ActivityStatus == 3 {
+			shareOutBonusList = append(shareOutBonusList, i)
+		}
+	}
+
+	/*	for _, i := range *data {
+		if i.Name ==
+	}*/
+}
