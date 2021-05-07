@@ -3,6 +3,7 @@ package Controllers
 import (
 	"Raven/src/Log"
 	"Raven/src/Web/Models/InvestmentsModels"
+	"Raven/src/Web/Service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -26,8 +27,8 @@ func GetInvestmentsTable(c *gin.Context) {
 func AddInvestmentsTable(c *gin.Context) {
 	var investmentData = InvestmentsModels.InvestmentTable{}
 
-	Log.Writer(Log.Info, investmentData)
 	err := c.ShouldBindJSON(&investmentData)
+	Log.Writer(Log.Info, Service.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "参数错误", "error": err})
@@ -49,9 +50,8 @@ func AddInvestmentsTable(c *gin.Context) {
 func UpdateInvestmentsTable(c *gin.Context) {
 	var investmentData = InvestmentsModels.InvestmentTable{}
 
-	Log.Writer(Log.Info, investmentData)
-
 	err := c.ShouldBindJSON(&investmentData)
+	Log.Writer(Log.Info, Service.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		Log.Writer(Log.Error, err)

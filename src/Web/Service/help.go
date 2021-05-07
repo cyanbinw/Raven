@@ -1,6 +1,8 @@
 package Service
 
 import (
+	"Raven/src/Log"
+	"encoding/json"
 	"fmt"
 	"github.com/go-xorm/xorm"
 	"os"
@@ -42,4 +44,13 @@ func InitDB() *xorm.Engine {
 	}
 	engine.SetMapper(core.SameMapper{})
 	return engine
+}
+
+func ToJSON(data interface{}) string {
+	jsons, err := json.Marshal(data) //转换成JSON返回的是byte[]
+	if err != nil {
+		Log.Writer(Log.Error, err)
+		return ""
+	}
+	return string(jsons)
 }

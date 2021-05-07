@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"runtime"
 	"time"
 )
 
@@ -28,19 +29,19 @@ func Init() {
 
 	Trace = log.New(ioutil.Discard,
 		"TRACE: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+		log.Ldate|log.Ltime)
 
 	Info = log.New(os.Stdout,
 		"INFO: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+		log.Ldate|log.Ltime)
 
 	Warning = log.New(os.Stdout,
 		"WARNING: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+		log.Ldate|log.Ltime)
 
 	Error = log.New(os.Stdout,
 		"ERROR: ",
-		log.Ldate|log.Ltime|log.Lshortfile)
+		log.Ldate|log.Ltime)
 }
 
 func Writer(l *log.Logger, mess interface{}) error {
@@ -55,8 +56,11 @@ func Writer(l *log.Logger, mess interface{}) error {
 	}
 
 	defer file.Close()
+
+	_, fileName, line, _ := runtime.Caller(1)
+
 	l.SetOutput(file)
-	l.Println(mess)
+	l.Println(fileName, line, mess)
 	return nil
 }
 
