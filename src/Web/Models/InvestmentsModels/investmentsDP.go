@@ -385,12 +385,15 @@ func investmentAddTableV1(data InvestmentTable) (bool, error) {
 }
 
 func investmentUpdateTable(data InvestmentTable) (bool, error) {
+
+	item := data.Investment
+
 	session := engine.NewSession()
 	defer session.Close()
 
 	err := session.Begin()
 
-	_, err = engine.ID(data.ID).Update(&data.Investment)
+	_, err = engine.ID(item.ID).Cols("Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&item)
 	if err != nil {
 		return false, err
 	}
