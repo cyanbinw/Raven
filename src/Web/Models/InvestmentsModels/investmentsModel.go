@@ -1,5 +1,10 @@
 package InvestmentsModels
 
+import (
+	"fmt"
+	. "github.com/ahmetb/go-linq/v3"
+)
+
 type InvestmentData struct {
 	Data []Investment
 }
@@ -61,11 +66,10 @@ func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, error) {
 func shareOutBonus(data *[]Investment) {
 	var shareOutBonusList []Investment
 	//var dataList []Investment
-	for _, i := range *data {
-		if i.ActivityStatus == 3 {
-			shareOutBonusList = append(shareOutBonusList, i)
-		}
-	}
+	From(data).WhereT(func(c Investment) bool {
+		return c.TypeID == 3
+	}).ToSlice(&shareOutBonusList)
+	fmt.Println(shareOutBonusList)
 
 	/*	for _, i := range *data {
 		if i.Name ==
