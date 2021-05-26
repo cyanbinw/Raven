@@ -1,6 +1,7 @@
 package InvestmentsModels
 
 import (
+	"Raven/src/Log"
 	"Raven/src/Web/Service"
 	"database/sql"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 
 type Investment struct {
 	ID             int64     `db:"ID" json:"id"`
+	ItemID         int       `db:"ItemID" json:"itemID"`
 	Name           string    `db:"Name" json:"name"`
 	TypeID         int       `db:"TypeID" json:"type"`
 	Account        float32   `db:"Account" json:"account"`
@@ -18,6 +20,7 @@ type Investment struct {
 	NetWorth       float32   `db:"NetWorth" json:"netWorth"`
 	Date           time.Time `db:"Date" json:"date"`
 	ActivityStatus int       `db:"ActivityStatus" json:"activity"`
+	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
 }
 
 type InvestmentTable struct {
@@ -68,7 +71,7 @@ func investmentsInitDBV1() {
 	path := strings.Join([]string{userName, ":", password, "@tcp(", ip, ":", port, ")/", dbName, "?charset=utf8"}, "")
 	db, err = sql.Open("mysql", path)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	//设置数据库最大连接数
 	db.SetConnMaxLifetime(100)
@@ -76,7 +79,7 @@ func investmentsInitDBV1() {
 	db.SetMaxIdleConns(10)
 	//验证连接
 	if err = db.Ping(); err != nil {
-		fmt.Println("open database fail")
+		Log.Writer(Log.Error, err)
 		return
 	}
 }
@@ -86,7 +89,7 @@ func investmentGetAll(data *InvestmentData) {
 
 	err := engine.Find(&investments)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	data.Data = investments
 }
@@ -99,9 +102,8 @@ func investmentGetAllV1(data *InvestmentData) {
 	//pEveryOne := make([]Investment, 0)
 	err := engine.Find(&investment)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
-	fmt.Println(investment)
 
 	investmentDetail := new(Investment)
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
@@ -112,16 +114,16 @@ func investmentGetAllV1(data *InvestmentData) {
 
 	/*	_, err := engine.Get(&investments)
 		if err != nil {
-			fmt.Println(err)
+			Log.Writer(Log.Error, err)
 		}*/
 	row, err := db.Query("select * from Investment")
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	defer func() {
 		if row != nil {
 			if err = row.Close(); err != nil {
-				fmt.Println(err)
+				Log.Writer(Log.Error, err)
 			}
 		}
 	}()
@@ -156,22 +158,26 @@ func investmentGetAllV1(data *InvestmentData) {
 
 func investmentGetDataToChart() InvestmentsChartModel {
 	var investmentsChartModel InvestmentsChartModel
-	err := engine.SQL("select Name, sum(Account) Value from Investment group by Name").Find(&investmentsChartModel.Account)
+	err := engine.SQL("select Name, sum(Account) Value from Investment where IsEmpty <> 1 group by Name").Find(&investmentsChartModel.Account)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 
 	/*	err := engine.Table("Investment").GroupBy("Name").Select("select Name, sum(Account) Value").Find(&investmentsChartModel.Account)
 		if err != nil {
-			fmt.Println(err)
+			Log.Writer(Log.Error, err)
 		}*/
 
-	err = engine.SQL("select Name, sum(Share) Value from Investment group by Name").Find(&investmentsChartModel.Share)
+	err = engine.SQL("select Name, sum(Share) Value from Investment where IsEmpty <> 1 group by Name").Find(&investmentsChartModel.Share)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 
-	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where TypeID != 3 group by Name").Find(&investmentsChartModel.NetWorth)
+	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where where IsEmpty <> 1 and TypeID <> 3 group by Name").Find(&investmentsChartModel.NetWorth)
+
+	if err != nil {
+		Log.Writer(Log.Error, err)
+	}
 
 	return investmentsChartModel
 }
@@ -187,18 +193,18 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 
 	row1, err := db.Query("select Name, sum(Account) from Investment group by Name")
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	defer func() {
 		if row1 != nil {
 			if err = row1.Close(); err != nil {
-				fmt.Println(err)
+				Log.Writer(Log.Error, err)
 			}
 		}
 	}()
 
 	if err != nil {
-		fmt.Printf("Query failed,err:%v", err)
+		Log.Writer(Log.Error, err)
 	}
 
 	for row1.Next() {
@@ -206,7 +212,7 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 			&investmentDetail.Name,
 			&investmentDetail.Value,
 		); err != nil {
-			fmt.Printf("scan failed, err:%v", err)
+			Log.Writer(Log.Error, err)
 		}
 
 		Service.CheckErr(err)
@@ -215,12 +221,12 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 
 	row2, err := db.Query("select Name, sum(Share) from Investment group by Name")
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	defer func() {
 		if row2 != nil {
 			if err = row2.Close(); err != nil {
-				fmt.Println(err)
+				Log.Writer(Log.Error, err)
 			}
 		}
 	}()
@@ -243,12 +249,12 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 
 	row3, err := db.Query("select Name, avg(NetWorth) from Investment where ID != 23 group by Name")
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	defer func() {
 		if row3 != nil {
 			if err = row3.Close(); err != nil {
-				fmt.Println(err)
+				Log.Writer(Log.Error, err)
 			}
 		}
 	}()
@@ -279,7 +285,7 @@ func investmentGetTable() []InvestmentTable {
 		Join("INNER", "InvestmentType",
 			"InvestmentType.TypeID = Investment.TypeID").Find(&investments)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	return investments
 }
@@ -302,13 +308,13 @@ func investmentGetTableV1() []InvestmentTable {
 	defer func() {
 		if row != nil {
 			if err = row.Close(); err != nil {
-				fmt.Println(err)
+				Log.Writer(Log.Error, err)
 			}
 		}
 	}()
 
 	if err != nil {
-		fmt.Printf("Query failed,err:%v", err)
+		Log.Writer(Log.Error, err)
 	}
 
 	for row.Next() {
@@ -325,7 +331,7 @@ func investmentGetTableV1() []InvestmentTable {
 			&investmentDetail.TypeName,
 			&investmentDetail.ActivityName,
 		); err != nil {
-			fmt.Printf("scan failed, err:%v", err)
+			Log.Writer(Log.Error, err)
 		}
 		DefaultTimeLoc := time.Local
 		if lastLoginTime != "" {
@@ -347,7 +353,7 @@ func investmentAddTable(data InvestmentTable) (bool, error) {
 	_, err = engine.Insert(&data.Investment)
 	if err != nil {
 		if err = session.Rollback(); err != nil {
-			fmt.Println(err)
+			Log.Writer(Log.Error, err)
 		}
 		return false, err
 	}
@@ -370,12 +376,12 @@ func investmentAddTableV1(data InvestmentTable) (bool, error) {
 
 	result, err := db.Exec("INSERT INTO Investment (`Name`,Account,Share,NetWorth,`Date`,TypeID, ActivityStatus)VALUES(?,?,?,?,?,?,?)", data.Name, data.Account, data.Share, data.NetWorth, date, data.TypeID, data.ActivityStatus)
 	if err != nil {
-		fmt.Println("insert data failed:", err.Error())
+		Log.Writer(Log.Error, err)
 		return false, err
 	}
 	id, err := result.LastInsertId()
 	if err != nil {
-		fmt.Println("fetch last insert id failed:", err.Error())
+		Log.Writer(Log.Error, err)
 		return false, err
 	}
 	if id > 0 {
@@ -417,12 +423,12 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	result, err := db.Exec("Update Investment Set `Name` = ?, Account = ?, Share = ?, NetWorth = ?, `Date` = ?, TypeID = ?, ActivityStatus = ? Where ID = ?",
 		data.Name, data.Account, data.Share, data.NetWorth, insterDate, data.TypeID, data.ActivityStatus, data.ID)
 	if err != nil {
-		fmt.Println("update data failed:", err.Error())
+		Log.Writer(Log.Error, err)
 		return false, err
 	}
 	id, err := result.RowsAffected()
 	if err != nil {
-		fmt.Println("fetch last insert id failed:", err.Error())
+		Log.Writer(Log.Error, err)
 		return false, err
 	}
 	if id > 0 {
@@ -438,7 +444,7 @@ func investmentGetDiagram() (map[string][]Investment, error) {
 
 	err := engine.OrderBy("Date").Find(&investments)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 	for _, index := range investments {
 		data[index.Name] = append(data[index.Name], index)
@@ -452,7 +458,7 @@ func investmentGetOption() ([]InvestmentType, []InvestmentActivity, error) {
 
 	err := engine.Find(&itype)
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 
 	err = engine.Find(&iactivity)

@@ -1,9 +1,9 @@
 package BillModels
 
 import (
+	"Raven/src/Log"
 	"Raven/src/Web/Service"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -23,7 +23,7 @@ func (data *BillData) BillsWriteToJSON() {
 	src := strconv.Itoa(data.Year) + ".json"
 	val, err := json.MarshalIndent(data.Data, "", "	") // 第二个表示每行的前缀，这里不用，第三个是缩进符号，这里用tab
 	if err != nil {
-		fmt.Println(err)
+		Log.Writer(Log.Error, err)
 	}
 
 	if Service.CheckFileIsExist(src) { //如果文件存在

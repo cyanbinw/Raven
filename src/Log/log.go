@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"sync"
 	"time"
 )
 
@@ -23,6 +24,7 @@ var (
 	Info    *log.Logger // 重要的信息
 	Warning *log.Logger // 需要注意的信息
 	Error   *log.Logger // 非常严重的问题
+	mutex   sync.Mutex  // 写入锁
 )
 
 func Init() {
@@ -45,6 +47,7 @@ func Init() {
 }
 
 func Writer(l *log.Logger, mess interface{}) error {
+	mutex.Lock()
 	var path = LOGPATH + time.Now().Format(FORMAT)
 	if !isExist(LOGPATH) {
 		return createDir(LOGPATH)
@@ -61,6 +64,7 @@ func Writer(l *log.Logger, mess interface{}) error {
 
 	l.SetOutput(file)
 	l.Println(fileName, line, mess)
+	mutex.Unlock()
 	return nil
 }
 

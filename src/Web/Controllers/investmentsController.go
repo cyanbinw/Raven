@@ -31,6 +31,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	Log.Writer(Log.Info, Service.ToJSON(investmentData.Investment))
 
 	if err != nil {
+		Log.Writer(Log.Error, err)
 		c.JSON(http.StatusBadRequest, gin.H{"data": "参数错误", "error": err})
 		return
 	}
@@ -63,6 +64,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	flag, err := investmentData.UpdateInvestmentTable()
 
 	if err != nil {
+		Log.Writer(Log.Error, err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
@@ -75,6 +77,7 @@ func GetInvestmentDiagram(c *gin.Context) {
 	data, err := InvestmentsModels.GetInvestmentDiagram()
 
 	if err != nil {
+		Log.Writer(Log.Error, err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
@@ -86,6 +89,7 @@ func GetInvestmentOption(c *gin.Context) {
 	Type, Activity, err := InvestmentsModels.GetInvestmentOption()
 
 	if err != nil {
+		Log.Writer(Log.Error, err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
