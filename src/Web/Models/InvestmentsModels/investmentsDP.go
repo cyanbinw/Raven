@@ -171,7 +171,7 @@ func investmentGetDataToChart() InvestmentsChartModel {
 		fmt.Println(err)
 	}
 
-	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where ID != 23 group by Name").Find(&investmentsChartModel.NetWorth)
+	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where TypeID != 3 group by Name").Find(&investmentsChartModel.NetWorth)
 
 	return investmentsChartModel
 }

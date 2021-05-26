@@ -29,7 +29,7 @@ func CheckFileIsExist(filename string) bool {
 }
 
 func InitDB() *xorm.Engine {
-	if engine != nil {
+	if engine != nil && engine.Ping() == nil {
 		return engine
 	}
 
