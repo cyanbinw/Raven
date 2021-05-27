@@ -13,7 +13,7 @@ func GetInvestments(c *gin.Context) {
 
 	investmentData.InvestmentsInitDB()
 
-	c.JSON(http.StatusOK, investmentData.SetInvestmentChartForAccount())
+	c.JSON(http.StatusOK, investmentData.InvestmentChartForAccount())
 }
 
 func GetInvestmentsTable(c *gin.Context) {

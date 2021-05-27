@@ -1,8 +1,9 @@
 package InvestmentsModels
 
 import (
-	"fmt"
+	"Raven/src/Log"
 	. "github.com/ahmetb/go-linq/v3"
+	"github.com/shopspring/decimal"
 )
 
 type InvestmentData struct {
@@ -11,12 +12,12 @@ type InvestmentData struct {
 
 type InvestmentAccountModel struct {
 	Name  string  `json:"name"`
-	Value float32 `json:"value"`
+	Value float64 `json:"value"`
 }
 
 type InvestmentChartModel struct {
 	Name  string  `json:"name"`
-	Value float32 `json:"value"`
+	Value float64 `json:"value"`
 }
 
 type InvestmentsChartModel struct {
@@ -33,8 +34,9 @@ func (data *InvestmentData) InvestmentGetAll() {
 	investmentGetAll(data)
 }
 
-func (data *InvestmentData) SetInvestmentChartForAccount() InvestmentsChartModel {
-	return investmentGetDataToChart()
+func (data *InvestmentData) InvestmentChartForAccount() InvestmentsChartModel {
+	item := investmentGetChart()
+	return createChart(item)
 }
 
 func (data *InvestmentData) GetInvestmentTable() []InvestmentTable {
@@ -63,15 +65,65 @@ func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, error) {
 	return investmentGetOption()
 }
 
-func shareOutBonus(data *[]Investment) {
-	var shareOutBonusList []Investment
-	//var dataList []Investment
-	From(data).WhereT(func(c Investment) bool {
-		return c.TypeID == 3
-	}).ToSlice(&shareOutBonusList)
-	fmt.Println(shareOutBonusList)
+func createChart(data []Investment) InvestmentsChartModel {
+	var item InvestmentsChartModel
 
-	/*	for _, i := range *data {
-		if i.Name ==
-	}*/
+	value := From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(Investment).Name
+	}, func(i interface{}) interface{} {
+		return i.(Investment)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	})
+
+	value.Select(func(grouy interface{}) interface{} {
+		i := grouy.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(Investment).Account
+		}
+
+		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
+		if !flag {
+			Log.Writer(Log.Info, "不准确？")
+		}
+
+		return InvestmentChartModel{i.Key.(string), m}
+	}).ToSlice(&item.Account)
+
+	value.Select(func(grouy interface{}) interface{} {
+		i := grouy.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(Investment).NetWorth
+		}
+
+		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
+		if !flag {
+			Log.Writer(Log.Info, "不准确？")
+		}
+
+		return InvestmentChartModel{i.Key.(string), m}
+	}).ToSlice(&item.NetWorth)
+
+	value.Select(func(grouy interface{}) interface{} {
+		i := grouy.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(Investment).Share
+		}
+
+		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
+		if !flag {
+			Log.Writer(Log.Info, "不准确？")
+		}
+
+		return InvestmentChartModel{i.Key.(string), m}
+	}).ToSlice(&item.Share)
+
+	return item
+}
+
+func shareOutBonus() {
+
 }

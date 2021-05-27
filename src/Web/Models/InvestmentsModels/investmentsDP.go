@@ -15,9 +15,9 @@ type Investment struct {
 	ItemID         int       `db:"ItemID" json:"itemID"`
 	Name           string    `db:"Name" json:"name"`
 	TypeID         int       `db:"TypeID" json:"type"`
-	Account        float32   `db:"Account" json:"account"`
-	Share          float32   `db:"Share" json:"share"`
-	NetWorth       float32   `db:"NetWorth" json:"netWorth"`
+	Account        float64   `db:"Account" json:"account"`
+	Share          float64   `db:"Share" json:"share"`
+	NetWorth       float64   `db:"NetWorth" json:"netWorth"`
 	Date           time.Time `db:"Date" json:"date"`
 	ActivityStatus int       `db:"ActivityStatus" json:"activity"`
 	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
@@ -50,11 +50,11 @@ type InvestmentGroup struct {
 type InvestmentGroupList []InvestmentGroup
 
 const (
-	userName = "sa"
-	password = "123456"
-	ip       = "127.0.0.1"
-	port     = "3306"
-	dbName   = "test_db"
+	userName = ""
+	password = ""
+	ip       = ""
+	port     = ""
+	dbName   = ""
 )
 
 var db *sql.DB
@@ -180,6 +180,16 @@ func investmentGetDataToChart() InvestmentsChartModel {
 	}
 
 	return investmentsChartModel
+}
+
+func investmentGetChart() []Investment {
+	var Item []Investment
+	err := engine.Where("IsEmpty <> ?", 1).And("TypeID <> ?", 4).Find(&Item)
+	if err != nil {
+		Log.Writer(Log.Error, err)
+	}
+
+	return Item
 }
 
 func investmentGetDataToChartV1() InvestmentsChartModel {

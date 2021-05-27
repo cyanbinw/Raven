@@ -23,11 +23,11 @@ type BillDetail struct {
 }
 
 const (
-	userName = "sa"
-	password = "123456"
-	ip       = "127.0.0.1"
-	port     = "3306"
-	dbName   = "test_db"
+	userName = ""
+	password = ""
+	ip       = ""
+	port     = ""
+	dbName   = ""
 )
 
 var db *sql.DB
