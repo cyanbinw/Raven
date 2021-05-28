@@ -41,6 +41,11 @@ type InvestmentType struct {
 	InsertDate time.Time
 }
 
+type InvestmentItem struct {
+	ItemID int
+	Name   string
+}
+
 type InvestmentGroup struct {
 	Data  []Investment
 	Count int
@@ -462,9 +467,10 @@ func investmentGetDiagram() (map[string][]Investment, error) {
 	return data, nil
 }
 
-func investmentGetOption() ([]InvestmentType, []InvestmentActivity, error) {
+func investmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
 	var itype []InvestmentType
 	var iactivity []InvestmentActivity
+	var item []InvestmentItem
 
 	err := engine.Find(&itype)
 	if err != nil {
@@ -473,7 +479,9 @@ func investmentGetOption() ([]InvestmentType, []InvestmentActivity, error) {
 
 	err = engine.Find(&iactivity)
 
-	return itype, iactivity, nil
+	err = engine.Table("Investment").GroupBy("ItemID,Name").Find(&item)
+
+	return itype, iactivity, item, nil
 }
 
 func (data InvestmentGroupList) Len() int {

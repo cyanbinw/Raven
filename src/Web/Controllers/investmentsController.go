@@ -86,7 +86,7 @@ func GetInvestmentDiagram(c *gin.Context) {
 }
 
 func GetInvestmentOption(c *gin.Context) {
-	Type, Activity, err := InvestmentsModels.GetInvestmentOption()
+	Type, Activity, Item, err := InvestmentsModels.GetInvestmentOption()
 
 	if err != nil {
 		Log.Writer(Log.Error, err)
@@ -94,5 +94,5 @@ func GetInvestmentOption(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"type": Type, "activity": Activity})
+	c.JSON(http.StatusOK, gin.H{"type": Type, "activity": Activity, "item": Item})
 }

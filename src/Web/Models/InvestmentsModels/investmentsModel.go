@@ -60,7 +60,7 @@ func GetInvestmentDiagram() (map[string][]Investment, error) {
 	return investmentGetDiagram()
 }
 
-func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, error) {
+func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
 	investmentsInitDB()
 	return investmentGetOption()
 }
