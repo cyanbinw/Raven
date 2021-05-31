@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	//LOGPATH  LOGPATH/time.Now().Format(FORMAT)/*.log
-	LOGPATH = "log/"
+	//PATH  LOGPATH/time.Now().Format(FORMAT)/*.log
+	PATH = "log/"
 	//FORMAT .
 	FORMAT = "20060102"
 	//LineFeed 换行
@@ -48,9 +48,9 @@ func Init() {
 
 func Writer(l *log.Logger, mess interface{}) error {
 	mutex.Lock()
-	var path = LOGPATH + time.Now().Format(FORMAT)
-	if !isExist(LOGPATH) {
-		return createDir(LOGPATH)
+	var path = PATH + time.Now().Format(FORMAT)
+	if !isExist(PATH) {
+		return createDir(PATH)
 	}
 
 	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
