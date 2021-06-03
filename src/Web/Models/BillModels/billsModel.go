@@ -9,9 +9,20 @@ import (
 	"strconv"
 )
 
+type IBillData interface {
+	NewBillData()
+	BillsInitDB()
+	BillsWriteToJSON()
+	BillsGetYearData()
+}
+
 type BillData struct {
 	Data []BillDetail
 	Year int `json:"Year" form:"Year"`
+}
+
+func (data *BillData) NewBillData() {
+
 }
 
 func (data *BillData) BillsInitDB() {
