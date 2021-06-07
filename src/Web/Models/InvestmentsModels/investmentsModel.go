@@ -1,17 +1,23 @@
 package InvestmentsModels
 
+import (
+	"Raven/src/Log"
+	. "github.com/ahmetb/go-linq/v3"
+	"github.com/shopspring/decimal"
+)
+
 type InvestmentData struct {
 	Data []Investment
 }
 
 type InvestmentAccountModel struct {
 	Name  string  `json:"name"`
-	Value float32 `json:"value"`
+	Value float64 `json:"value"`
 }
 
 type InvestmentChartModel struct {
 	Name  string  `json:"name"`
-	Value float32 `json:"value"`
+	Value float64 `json:"value"`
 }
 
 type InvestmentsChartModel struct {
@@ -21,39 +27,115 @@ type InvestmentsChartModel struct {
 }
 
 func (data *InvestmentData) InvestmentsInitDB() {
-	InvestmentsInitDB()
+	investmentsInitDB()
 }
 
 func (data *InvestmentData) InvestmentGetAll() {
-	InvestmentGetAll(data)
+	investmentGetAll(data)
 }
 
-func (data *InvestmentData) SetInvestmentChartForAccount() InvestmentsChartModel {
-	return InvestmentGetDataToChart()
+func (data *InvestmentData) InvestmentChartForAccount() InvestmentsChartModel {
+	item := investmentGetChart()
+	return createChart(item)
+
+	//return investmentGetDataToChart()
 }
 
 func (data *InvestmentData) GetInvestmentTable() []InvestmentTable {
-	return InvestmentGetTable()
+	return investmentGetTable()
 }
 
 func (data *InvestmentTable) InvestmentsInitDB() {
-	InvestmentsInitDB()
+	investmentsInitDB()
 }
 
 func (data *InvestmentTable) AddInvestmentTable() (bool, error) {
-	return InvestmentAddTable(*data)
+	return investmentAddTable(*data)
 }
 
 func (data *InvestmentTable) UpdateInvestmentTable() (bool, error) {
-	return InvestmentUpdateTable(*data)
+	return investmentUpdateTable(*data)
 }
 
 func GetInvestmentDiagram() (map[string][]Investment, error) {
-	InvestmentsInitDB()
-	return InvestmentGetDiagram()
+	investmentsInitDB()
+	return investmentGetDiagram()
 }
 
-func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, error) {
-	InvestmentsInitDB()
-	return InvestmentGetOption()
+func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
+	investmentsInitDB()
+	return investmentGetOption()
+}
+
+func createChart(data []Investment) InvestmentsChartModel {
+	var item InvestmentsChartModel
+
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(Investment).Name
+	}, func(i interface{}) interface{} {
+		return i.(Investment)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(Investment).Account
+		}
+
+		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
+		if !flag {
+			Log.Writer(Log.Info, "不准确？")
+		}
+
+		return InvestmentChartModel{i.Key.(string), m}
+	}).ToSlice(&item.Account)
+
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(Investment).Name
+	}, func(i interface{}) interface{} {
+		return i.(Investment)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(Investment).NetWorth
+		}
+
+		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
+		if !flag {
+			Log.Writer(Log.Info, "不准确？")
+		}
+
+		return InvestmentChartModel{i.Key.(string), m}
+	}).ToSlice(&item.NetWorth)
+
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(Investment).Name
+	}, func(i interface{}) interface{} {
+		return i.(Investment)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(Investment).Share
+		}
+
+		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
+		if !flag {
+			Log.Writer(Log.Info, "不准确？")
+		}
+
+		return InvestmentChartModel{i.Key.(string), m}
+	}).ToSlice(&item.Share)
+
+	return item
+}
+
+func shareOutBonus() {
+
 }

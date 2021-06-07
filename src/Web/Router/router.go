@@ -15,8 +15,10 @@ func InitRouter() {
 	testGroup(test)
 
 	v1 := router.Group("v1")
-	billGroup(v1)
-	investmentGroup(v1)
+	billGroupV1(v1)
+	desireGroupV1(v1)
+	investmentGroupV1(v1)
+	targetGroupV1(v1)
 
 	router.Run()
 }
@@ -25,16 +27,24 @@ func testGroup(c *gin.RouterGroup) {
 	c.GET("/testInsert", Controllers.TestHome)
 }
 
-func billGroup(c *gin.RouterGroup) {
-	c.POST("/GetYearAllData", Controllers.GetYearAllData)
-	c.POST("/GetFourMonthAllData", Controllers.GetFourMonthData)
+func billGroupV1(c *gin.RouterGroup) {
+	c.POST("/Bill/GetYearAllData", Controllers.GetYearAllData)
+	c.POST("/Bill/GetFourMonthAllData", Controllers.GetFourMonthData)
 }
 
-func investmentGroup(c *gin.RouterGroup) {
-	c.POST("/GetInvestments", Controllers.GetInvestments)
-	c.POST("/GetInvestmentsTable", Controllers.GetInvestmentsTable)
-	c.POST("/AddInvestmentsTable", Controllers.AddInvestmentsTable)
-	c.POST("/UpdateInvestmentsTable", Controllers.UpdateInvestmentsTable)
-	c.POST("/GetInvestmentDiagram", Controllers.GetInvestmentDiagram)
-	c.POST("/GetInvestmentOption", Controllers.GetInvestmentOption)
+func investmentGroupV1(c *gin.RouterGroup) {
+	c.POST("/Investment/GetInvestments", Controllers.GetInvestments)
+	c.POST("/Investment/GetInvestmentsTable", Controllers.GetInvestmentsTable)
+	c.POST("/Investment/AddInvestmentsTable", Controllers.AddInvestmentsTable)
+	c.POST("/Investment/UpdateInvestmentsTable", Controllers.UpdateInvestmentsTable)
+	c.POST("/Investment/GetInvestmentDiagram", Controllers.GetInvestmentDiagram)
+	c.POST("/Investment/GetInvestmentOption", Controllers.GetInvestmentOption)
+}
+
+func desireGroupV1(c *gin.RouterGroup) {
+	c.POST("/Desire/GetDesire", Controllers.GetDesire)
+}
+
+func targetGroupV1(c *gin.RouterGroup) {
+	c.POST("/Target/GetTarget", Controllers.GetTarget)
 }

@@ -1,6 +1,7 @@
 package BillModels
 
 import (
+	"Raven/src/Log"
 	"Raven/src/Web/Service"
 	"database/sql"
 	"fmt"
@@ -10,7 +11,7 @@ import (
 	"time"
 )
 
-//Bills is test
+//BillDetail is test
 type BillDetail struct {
 	ID         int64     `db:"ID"`
 	BillNumber string    `db:"BillNumber"`
@@ -22,11 +23,11 @@ type BillDetail struct {
 }
 
 const (
-	userName = "sa"
-	password = "123456"
-	ip       = "127.0.0.1"
-	port     = "3306"
-	dbName   = "test_db"
+	userName = ""
+	password = ""
+	ip       = ""
+	port     = ""
+	dbName   = ""
 )
 
 var db *sql.DB
@@ -34,11 +35,11 @@ var engine *xorm.Engine
 
 var timeLayoutStr = "2006-01-02 15:04:05" //go中的时间格式化必须是这个时间
 
-func BillsInitDB() {
+func billsInitDB() {
 	engine = Service.InitDB()
 }
 
-func BillsInitDBV1() {
+func billsInitDBV1() {
 	//构建连接："用户名:密码@tcp(IP:端口)/数据库?charset=utf8"
 	path := strings.Join([]string{userName, ":", password, "@tcp(", ip, ":", port, ")/", dbName, "?charset=utf8"}, "")
 	db, _ = sql.Open("mysql", path)
@@ -53,7 +54,7 @@ func BillsInitDBV1() {
 	}
 }
 
-func BillsGetYearData(data *BillData) {
+func billsGetYearData(data *BillData) {
 	var bills []BillDetail
 
 	var star, end string
@@ -64,14 +65,14 @@ func BillsGetYearData(data *BillData) {
 	// starDate, _ := time.Parse(timeLayoutStr, star)
 	// endDate,_ := time.Parse(timeLayoutStr, end)
 
-	err := engine.Where("Date > ? and Date < ?", star, end).Find(&bills)
+	err := engine.Where("Date > ? and Date < ?", star, end).Desc("Date").Find(&bills)
 	if err != nil {
 		fmt.Println(err)
 	}
 	data.Data = bills
 }
 
-func BillsGetYearDataV1(data *BillData) {
+func billsGetYearDataV1(data *BillData) {
 	var bills []BillDetail
 	billDetail := new(BillDetail)
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
@@ -93,7 +94,7 @@ func BillsGetYearDataV1(data *BillData) {
 	}()
 
 	if err != nil {
-		fmt.Printf("Query failed,err:%v", err)
+		Log.Writer(Log.Error, err)
 	}
 
 	for row.Next() {
@@ -107,7 +108,7 @@ func BillsGetYearDataV1(data *BillData) {
 			&lastLoginTime,
 			&billDetail.Remarks,
 		); err != nil {
-			fmt.Printf("scan failed, err:%v", err)
+			Log.Writer(Log.Error, err)
 		}
 		DefaultTimeLoc := time.Local
 
@@ -119,17 +120,17 @@ func BillsGetYearDataV1(data *BillData) {
 	data.Data = bills
 }
 
-func BillsGetFourMonthsData(data *BillData) {
+func billsGetFourMonthsData(data *BillData) {
 	var bills []BillDetail
 
-	err := engine.SQL("select * from BillDetail where Type = '支出' and Date > (select DATE_ADD(Max(date_format(Date,'%Y-%m-01') ),INTERVAL -3 Month) from BillDetail)").Find(&bills)
+	err := engine.SQL("select * from BillDetail where Type = '支出' and Date > (select DATE_ADD(Max(date_format(Date,'%Y-%m-01') ),INTERVAL -3 Month) from BillDetail) ORDER BY Date DESC").Find(&bills)
 	if err != nil {
-		fmt.Printf("Query failed,err:%v", err)
+		Log.Writer(Log.Error, err)
 	}
 	data.Data = bills
 }
 
-func BillsGetFourMonthsDataV1(data *BillData) {
+func billsGetFourMonthsDataV1(data *BillData) {
 	var bills []BillDetail
 	billDetail := new(BillDetail)
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
@@ -151,7 +152,7 @@ func BillsGetFourMonthsDataV1(data *BillData) {
 	}()
 
 	if err != nil {
-		fmt.Printf("Query failed,err:%v", err)
+		Log.Writer(Log.Error, err)
 	}
 
 	for row.Next() {
@@ -165,7 +166,7 @@ func BillsGetFourMonthsDataV1(data *BillData) {
 			&lastLoginTime,
 			&billDetail.Remarks,
 		); err != nil {
-			fmt.Printf("scan failed, err:%v", err)
+			Log.Writer(Log.Error, err)
 		}
 		DefaultTimeLoc := time.Local
 
