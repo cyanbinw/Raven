@@ -5,8 +5,8 @@ WORKDIR /Code
 # and so that source changes don't invalidate our downloaded layer
 
 # src code
-ADD ./bin/linux/Web_linux .
-ADD ./config.yml .
+COPY ./bin/linux/Web_linux .
+COPY ./config.yml .
 #RUN go env
 
 #RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build ./src/Web

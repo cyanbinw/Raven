@@ -37,6 +37,8 @@ func (data *InvestmentData) InvestmentGetAll() {
 func (data *InvestmentData) InvestmentChartForAccount() InvestmentsChartModel {
 	item := investmentGetChart()
 	return createChart(item)
+
+	//return investmentGetDataToChart()
 }
 
 func (data *InvestmentData) GetInvestmentTable() []InvestmentTable {
@@ -68,16 +70,14 @@ func GetInvestmentOption() ([]InvestmentType, []InvestmentActivity, []Investment
 func createChart(data []Investment) InvestmentsChartModel {
 	var item InvestmentsChartModel
 
-	value := From(data).GroupBy(func(i interface{}) interface{} {
+	From(data).GroupBy(func(i interface{}) interface{} {
 		return i.(Investment).Name
 	}, func(i interface{}) interface{} {
 		return i.(Investment)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
-	})
-
-	value.Select(func(grouy interface{}) interface{} {
-		i := grouy.(Group)
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
 			m += item.(Investment).Account
@@ -91,8 +91,14 @@ func createChart(data []Investment) InvestmentsChartModel {
 		return InvestmentChartModel{i.Key.(string), m}
 	}).ToSlice(&item.Account)
 
-	value.Select(func(grouy interface{}) interface{} {
-		i := grouy.(Group)
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(Investment).Name
+	}, func(i interface{}) interface{} {
+		return i.(Investment)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
 			m += item.(Investment).NetWorth
@@ -106,8 +112,14 @@ func createChart(data []Investment) InvestmentsChartModel {
 		return InvestmentChartModel{i.Key.(string), m}
 	}).ToSlice(&item.NetWorth)
 
-	value.Select(func(grouy interface{}) interface{} {
-		i := grouy.(Group)
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(Investment).Name
+	}, func(i interface{}) interface{} {
+		return i.(Investment)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
 			m += item.(Investment).Share
