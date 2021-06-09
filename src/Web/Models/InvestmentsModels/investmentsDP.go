@@ -365,11 +365,21 @@ func investmentAddTable(data InvestmentTable) (bool, error) {
 
 	err := session.Begin()
 
+	if data.Investment.ItemID == 0 {
+		var num int
+		_, err = engine.Table("Investment").Cols("MAX(ItemID)").Get(&num)
+		if err != nil {
+			Log.Writer(Log.Error, err)
+		}
+		data.Investment.ItemID = num + 1
+	}
+
 	_, err = engine.Insert(&data.Investment)
 	if err != nil {
 		if err = session.Rollback(); err != nil {
 			Log.Writer(Log.Error, err)
 		}
+		Log.Writer(Log.Error, err)
 		return false, err
 	}
 
