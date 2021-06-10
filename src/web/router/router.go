@@ -29,7 +29,8 @@ func testGroup(c *gin.RouterGroup) {
 
 func billGroupV1(c *gin.RouterGroup) {
 	c.POST("/Bill/GetYearAllData", controllers.GetYearAllData)
-	c.POST("/Bill/GetFourMonthAllData", controllers.GetFourMonthData)
+	c.POST("/Bill/GetDataByMonth", controllers.GetDataByMonth)
+	c.POST("/Bill/GetAllData", controllers.GetAllData)
 }
 
 func investmentGroupV1(c *gin.RouterGroup) {

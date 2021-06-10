@@ -16,20 +16,20 @@ type IBillData interface {
 	BillsGetYearData()
 }
 
-type BillData struct {
+type BillDataByDate struct {
 	Data []BillDetail
 	Year int `json:"Year" form:"Year"`
 }
 
-func (data *BillData) NewBillData() {
+func (data *BillDataByDate) NewBillData() {
 
 }
 
-func (data *BillData) BillsInitDB() {
+func (data *BillDataByDate) BillsInitDB() {
 	billsInitDB()
 }
 
-func (data *BillData) BillsWriteToJSON() {
+func (data *BillDataByDate) BillsWriteToJSON() {
 	var f *os.File
 	src := strconv.Itoa(data.Year) + ".json"
 	val, err := json.MarshalIndent(data.Data, "", "	") // 第二个表示每行的前缀，这里不用，第三个是缩进符号，这里用tab
@@ -49,10 +49,15 @@ func (data *BillData) BillsWriteToJSON() {
 	f.Close()
 }
 
-func (data *BillData) BillsGetYearData() {
+func (data *BillDataByDate) BillsGetYearData() {
 	billsGetYearData(data)
 }
 
-func (data *BillData) BillsGetFourMonthsData() {
-	billsGetFourMonthsData(data)
+func (data *BillDataByDate) BillsGetDataByMonth() {
+	billsGetDataByMonth(data)
+}
+
+func BillsGetAll() []BillDetail {
+	billsInitDB()
+	return billsGetAllData()
 }

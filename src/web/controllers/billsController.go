@@ -7,17 +7,21 @@ import (
 )
 
 func GetYearAllData(c *gin.Context) {
-	var billData = billModels.BillData{}
+	var billData = billModels.BillDataByDate{}
 
 	billData.BillsInitDB()
 	billData.BillsGetYearData()
 	c.JSON(http.StatusOK, billData.Data)
 }
 
-func GetFourMonthData(c *gin.Context) {
-	var billData = billModels.BillData{}
+func GetDataByMonth(c *gin.Context) {
+	var billData = billModels.BillDataByDate{}
 
 	billData.BillsInitDB()
-	billData.BillsGetFourMonthsData()
+	billData.BillsGetDataByMonth()
 	c.JSON(http.StatusOK, billData.Data)
+}
+
+func GetAllData(c *gin.Context) {
+	c.JSON(http.StatusOK, billModels.BillsGetAll())
 }

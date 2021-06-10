@@ -8,7 +8,7 @@ import (
 )
 
 func TestHome(c *gin.Context) {
-	var billData = billModels.BillData{}
+	var billData = billModels.BillDataByDate{}
 	year, err := strconv.Atoi(c.Query("year"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "参数错误"})

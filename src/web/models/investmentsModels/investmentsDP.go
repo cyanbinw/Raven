@@ -189,7 +189,7 @@ func investmentGetDataToChart() InvestmentsChartModel {
 
 func investmentGetChart() []Investment {
 	var Item []Investment
-	err := engine.Where("IsEmpty <> ?", 1).And("TypeID <> ?", 4).Find(&Item)
+	err := engine.Where("IsEmpty <> ?", 1).And("ActivityStatus <> ?", 4).Find(&Item)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
