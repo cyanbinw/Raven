@@ -1,7 +1,6 @@
 package investmentsModels
 
 import (
-	"Raven/src/log"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 )
@@ -83,10 +82,7 @@ func createChart(data []Investment) InvestmentsChartModel {
 			m += item.(Investment).Account
 		}
 
-		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
-		if !flag {
-			log.Writer(log.Info, "不准确？")
-		}
+		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
 		return InvestmentChartModel{i.Key.(string), m}
 	}).ToSlice(&item.Account)
@@ -104,10 +100,7 @@ func createChart(data []Investment) InvestmentsChartModel {
 			m += item.(Investment).NetWorth
 		}
 
-		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
-		if !flag {
-			log.Writer(log.Info, "不准确？")
-		}
+		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
 		return InvestmentChartModel{i.Key.(string), m}
 	}).ToSlice(&item.NetWorth)
@@ -125,10 +118,7 @@ func createChart(data []Investment) InvestmentsChartModel {
 			m += item.(Investment).Share
 		}
 
-		m, flag := decimal.NewFromFloat(m).Round(4).Float64()
-		if !flag {
-			log.Writer(log.Info, "不准确？")
-		}
+		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
 		return InvestmentChartModel{i.Key.(string), m}
 	}).ToSlice(&item.Share)
