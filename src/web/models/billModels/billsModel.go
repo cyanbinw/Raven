@@ -57,7 +57,12 @@ func (data *BillDataByDate) BillsGetDataByMonth() {
 	billsGetDataByMonth(data)
 }
 
-func BillsGetAll() []BillDetail {
+func BillsGetTable(bill *BillTable) *BillTable {
 	billsInitDB()
-	return billsGetAllData()
+	billsGetTable(bill)
+	return bill
+}
+
+func BillsGetDiagram() {
+	billsInitDB()
 }

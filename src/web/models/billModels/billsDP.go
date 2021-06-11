@@ -22,6 +22,13 @@ type BillDetail struct {
 	Remarks    string    `db:"Remarks"`
 }
 
+type BillTable struct {
+	BillDetail []BillDetail
+	PageSize   int
+	Total      int64
+	PageNumber int
+}
+
 const (
 	userName = ""
 	password = ""
@@ -177,12 +184,16 @@ func billsGetFourMonthsDataV1(data *BillDataByDate) {
 	data.Data = bills
 }
 
-func billsGetAllData() []BillDetail {
-	var bill []BillDetail
-	err := engine.Desc("Date").Find(&bill)
+func billsGetTable(bill *BillTable) {
+	data := new(BillDetail)
+	err := engine.Desc("Date").Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillDetail)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
 
-	return bill
+	bill.Total, _ = engine.Desc("Date").Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Count(data)
+}
+
+func billsGetDiagram() {
+
 }
