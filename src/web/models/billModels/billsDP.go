@@ -17,7 +17,7 @@ type BillDetail struct {
 	BillNumber string    `db:"BillNumber"`
 	Type       string    `db:"Type"`
 	BillName   string    `db:"BillName"`
-	Account    string    `db:"Account"`
+	Account    float64    `db:"Account"`
 	Date       time.Time `db:"Date"`
 	Remarks    string    `db:"Remarks"`
 }
@@ -27,6 +27,12 @@ type BillTable struct {
 	PageSize   int
 	Total      int64
 	PageNumber int
+	Type       string
+	BillName   string
+	AccountMax float64
+	AccountMin float64
+	DateMax    time.Time
+	DateMin    time.Time
 }
 
 const (
@@ -186,12 +192,60 @@ func billsGetFourMonthsDataV1(data *BillDataByDate) {
 
 func billsGetTable(bill *BillTable) {
 	data := new(BillDetail)
-	err := engine.Desc("Date").Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillDetail)
+
+	search := engine.Table("BillDetail")
+
+	setBillsGetTableOption(search,bill)
+
+
+	err := search.Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillDetail)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
 
 	bill.Total, _ = engine.Desc("Date").Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Count(data)
+}
+
+func setBillsGetTableOption(search *xorm.Session ,bill *BillTable) {
+	if bill.Type == "" || bill.BillName == "" ||
+		bill.AccountMax == 0.0 || bill.AccountMin == 0.0 ||
+		bill.DateMin.IsZero() || bill.DateMax.IsZero() {
+		return
+	}
+
+	search = search.Where("")
+	if bill.Type != "" {
+		search = search.And("Type = ?", bill.Type)
+	}
+
+	if bill.BillName != "" {
+		search = search.And("BillName = ?", bill.BillName)
+	}
+
+	if bill.AccountMax != 0.0 || bill.AccountMin != 0.0 {
+
+		if bill.AccountMin > bill.AccountMax {
+			num := bill.AccountMax
+			bill.AccountMax = bill.AccountMin
+			bill.AccountMin = num
+		}
+
+		if bill.AccountMax != 0.0 {
+			search = search.And("Account <= ?", bill.AccountMax)
+		}
+
+		if bill.AccountMin != 0.0 {
+			search = search.And("Account >= ?", bill.AccountMin)
+		}
+	}
+
+	if !bill.DateMin.IsZero() {
+		search = search.And("Date >= ?", bill.DateMin)
+	}
+
+	if !bill.DateMin.IsZero() {
+		search = search.And("Date <= ?", bill.DateMax)
+	}
 }
 
 func billsGetDiagram() {
