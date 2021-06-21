@@ -63,6 +63,11 @@ func BillsGetTable(bill *BillTable) *BillTable {
 	return bill
 }
 
+func BillsGetTableOption() *BillOption {
+	billsInitDB()
+	return billsGetTableOption()
+}
+
 func BillsGetDiagram() {
 	billsInitDB()
 }

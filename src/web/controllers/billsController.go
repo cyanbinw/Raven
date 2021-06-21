@@ -59,7 +59,27 @@ func GetBillsTable(c *gin.Context) {
 		return
 	}
 
+	if !bill.DateMin.IsZero() {
+		bill.DateMin = bill.DateMin.Local()
+	}
+	if !bill.DateMax.IsZero() {
+		bill.DateMax = bill.DateMax.Local()
+	}
+
 	c.JSON(http.StatusOK, billModels.BillsGetTable(&bill))
+}
+
+//GetBillsTableOption
+// @Tags Bill
+// @Summary 获取bills表查询条件
+// @Description 描述信息
+// @Param user body billModels.BillTable true "investmentData"
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} billModels.BillOption
+// @Router /v1/Bill/GetBillsTable [post]
+func GetBillsTableOption(c *gin.Context) {
+	c.JSON(http.StatusOK, billModels.BillsGetTableOption())
 }
 
 func GetBillsDiagram(c *gin.Context) {

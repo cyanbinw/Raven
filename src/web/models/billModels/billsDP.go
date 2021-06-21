@@ -17,7 +17,7 @@ type BillDetail struct {
 	BillNumber string    `db:"BillNumber"`
 	Type       string    `db:"Type"`
 	BillName   string    `db:"BillName"`
-	Account    float64    `db:"Account"`
+	Account    float64   `db:"Account"`
 	Date       time.Time `db:"Date"`
 	Remarks    string    `db:"Remarks"`
 }
@@ -27,12 +27,17 @@ type BillTable struct {
 	PageSize   int
 	Total      int64
 	PageNumber int
-	Type       string
-	BillName   string
+	BillType   []string
+	BillName   []string
 	AccountMax float64
 	AccountMin float64
 	DateMax    time.Time
 	DateMin    time.Time
+}
+
+type BillOption struct {
+	BillName []string
+	BillType []string
 }
 
 const (
@@ -193,33 +198,41 @@ func billsGetFourMonthsDataV1(data *BillDataByDate) {
 func billsGetTable(bill *BillTable) {
 	data := new(BillDetail)
 
-	search := engine.Table("BillDetail")
+	row := engine.Table("BillDetail")
 
-	setBillsGetTableOption(search,bill)
+	setBillsGetTableOption(row, bill)
 
-
-	err := search.Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillDetail)
+	err := row.Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillDetail)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
 
-	bill.Total, _ = engine.Desc("Date").Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Count(data)
+	count := engine.Table("BillDetail")
+
+	setBillsGetTableOption(count, bill)
+
+	bill.Total, _ = count.Count(data)
 }
 
-func setBillsGetTableOption(search *xorm.Session ,bill *BillTable) {
-	if bill.Type == "" || bill.BillName == "" ||
-		bill.AccountMax == 0.0 || bill.AccountMin == 0.0 ||
-		bill.DateMin.IsZero() || bill.DateMax.IsZero() {
+func setBillsGetTableOption(search *xorm.Session, bill *BillTable) {
+	if len(bill.BillType) == 0 && len(bill.BillName) == 0 &&
+		bill.AccountMax == 0.0 && bill.AccountMin == 0.0 &&
+		bill.DateMin.IsZero() && bill.DateMax.IsZero() {
 		return
 	}
 
 	search = search.Where("")
-	if bill.Type != "" {
-		search = search.And("Type = ?", bill.Type)
+	if len(bill.BillType) == 0 {
+		for i := range bill.BillType {
+			search = search.And("Type = ?", i)
+		}
 	}
 
-	if bill.BillName != "" {
-		search = search.And("BillName = ?", bill.BillName)
+	if len(bill.BillName) == 0 {
+		for i := range bill.BillName {
+			search = search.And("BillName = ?", i)
+		}
+
 	}
 
 	if bill.AccountMax != 0.0 || bill.AccountMin != 0.0 {
@@ -246,6 +259,21 @@ func setBillsGetTableOption(search *xorm.Session ,bill *BillTable) {
 	if !bill.DateMin.IsZero() {
 		search = search.And("Date <= ?", bill.DateMax)
 	}
+}
+
+func billsGetTableOption() *BillOption {
+
+	var option BillOption
+
+	err := engine.Table("BillDetail").GroupBy("BillName").Find(&option.BillName)
+	if err != nil {
+		log.Writer(log.Error, err)
+	}
+	err = engine.Table("BillDetail").GroupBy("Type").Find(&option.BillType)
+	if err != nil {
+		log.Writer(log.Error, err)
+	}
+	return &option
 }
 
 func billsGetDiagram() {
