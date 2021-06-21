@@ -66,29 +66,12 @@ var doc = `{
                 "tags": [
                     "Bill"
                 ],
-                "summary": "获取bills表信息",
-                "parameters": [
-                    {
-                        "description": "investmentData",
-                        "name": "user",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/billModels.BillTable"
-                        }
-                    }
-                ],
+                "summary": "获取bills表查询条件",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/billModels.BillTable"
-                        }
-                    },
-                    "400": {
-                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
-                        "schema": {
-                            "$ref": "#/definitions/controllers.ReturnData"
+                            "$ref": "#/definitions/billModels.BillOption"
                         }
                     }
                 }
@@ -330,6 +313,23 @@ var doc = `{
                 }
             }
         },
+        "billModels.BillOption": {
+            "type": "object",
+            "properties": {
+                "billName": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "billType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "billModels.BillTable": {
             "type": "object",
             "properties": {
@@ -346,7 +346,16 @@ var doc = `{
                     }
                 },
                 "billName": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "billType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "dateMax": {
                     "type": "string"
@@ -362,9 +371,6 @@ var doc = `{
                 },
                 "total": {
                     "type": "integer"
-                },
-                "type": {
-                    "type": "string"
                 }
             }
         },
@@ -377,7 +383,7 @@ var doc = `{
                         "$ref": "#/definitions/investmentsModels.InvestmentActivity"
                     }
                 },
-                "itme": {
+                "item": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/investmentsModels.InvestmentItem"

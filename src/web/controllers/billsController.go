@@ -73,7 +73,6 @@ func GetBillsTable(c *gin.Context) {
 // @Tags Bill
 // @Summary 获取bills表查询条件
 // @Description 描述信息
-// @Param user body billModels.BillTable true "investmentData"
 // @Security Bearer
 // @Produce  json
 // @Success 200 {object} billModels.BillOption

@@ -16,6 +16,17 @@ definitions:
       type:
         type: string
     type: object
+  billModels.BillOption:
+    properties:
+      billName:
+        items:
+          type: string
+        type: array
+      billType:
+        items:
+          type: string
+        type: array
+    type: object
   billModels.BillTable:
     properties:
       accountMax:
@@ -27,7 +38,13 @@ definitions:
           $ref: '#/definitions/billModels.BillDetail'
         type: array
       billName:
-        type: string
+        items:
+          type: string
+        type: array
+      billType:
+        items:
+          type: string
+        type: array
       dateMax:
         type: string
       dateMin:
@@ -38,8 +55,6 @@ definitions:
         type: integer
       total:
         type: integer
-      type:
-        type: string
     type: object
   controllers.InvestmentOption:
     properties:
@@ -47,7 +62,7 @@ definitions:
         items:
           $ref: '#/definitions/investmentsModels.InvestmentActivity'
         type: array
-      itme:
+      item:
         items:
           $ref: '#/definitions/investmentsModels.InvestmentItem'
         type: array
@@ -187,27 +202,16 @@ paths:
   /v1/Bill/GetBillsTable:
     post:
       description: 描述信息
-      parameters:
-      - description: investmentData
-        in: body
-        name: user
-        required: true
-        schema:
-          $ref: '#/definitions/billModels.BillTable'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/billModels.BillTable'
-        "400":
-          description: Successful":true,"data":null,"Error":"", Message:""}
-          schema:
-            $ref: '#/definitions/controllers.ReturnData'
+            $ref: '#/definitions/billModels.BillOption'
       security:
       - Bearer: []
-      summary: 获取bills表信息
+      summary: 获取bills表查询条件
       tags:
       - Bill
   /v1/Bill/GetBillsYearAllData:
