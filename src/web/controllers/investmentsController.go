@@ -163,5 +163,5 @@ func GetInvestmentOption(c *gin.Context) {
 type InvestmentOption struct {
 	Type     []investmentsModels.InvestmentType     `json:"type"`
 	Activity []investmentsModels.InvestmentActivity `json:"activity"`
-	Itme     []investmentsModels.InvestmentItem     `json:"itme"`
+	Itme     []investmentsModels.InvestmentItem     `json:"item"`
 }

@@ -360,6 +360,11 @@ func investmentGetTableV1() []InvestmentTable {
 }
 
 func investmentAddTable(data InvestmentTable) (bool, error) {
+
+	if data.ActivityStatus == 4 {
+		data.IsEmpty = true
+	}
+
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -375,12 +380,24 @@ func investmentAddTable(data InvestmentTable) (bool, error) {
 	}
 
 	_, err = engine.Insert(&data.Investment)
+
 	if err != nil {
 		if err = session.Rollback(); err != nil {
 			log.Writer(log.Error, err)
 		}
 		log.Writer(log.Error, err)
 		return false, err
+	}
+
+	if data.Investment.IsEmpty == true {
+		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
+		if err != nil {
+			if err = session.Rollback(); err != nil {
+				log.Writer(log.Error, err)
+			}
+			log.Writer(log.Error, err)
+			return false, err
+		}
 	}
 
 	err = session.Commit()
@@ -417,16 +434,29 @@ func investmentAddTableV1(data InvestmentTable) (bool, error) {
 
 func investmentUpdateTable(data InvestmentTable) (bool, error) {
 
-	item := data.Investment
+	if data.ActivityStatus == 4 {
+		data.IsEmpty = true
+	}
 
 	session := engine.NewSession()
 	defer session.Close()
 
 	err := session.Begin()
 
-	_, err = engine.ID(item.ID).Cols("Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&item)
+	_, err = engine.ID(data.ID).Cols("Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&data.Investment)
 	if err != nil {
 		return false, err
+	}
+
+	if data.Investment.IsEmpty == true {
+		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
+		if err != nil {
+			if err = session.Rollback(); err != nil {
+				log.Writer(log.Error, err)
+			}
+			log.Writer(log.Error, err)
+			return false, err
+		}
 	}
 
 	err = session.Commit()
