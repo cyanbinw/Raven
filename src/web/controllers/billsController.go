@@ -81,6 +81,32 @@ func GetBillsTableOption(c *gin.Context) {
 	c.JSON(http.StatusOK, billModels.BillsGetTableOption())
 }
 
+//GetBillsDiagram
+// @Tags Bill
+// @Summary 获取bills表信息
+// @Description 描述信息
+// @Param user body billModels.BillTable true "investmentData"
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} billModels.BillTable
+// @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Bill/GetBillsDiagram [post]
 func GetBillsDiagram(c *gin.Context) {
-	// c.JSON(http.StatusOK, billModels.BillsGetAll())
+	var bill = billModels.BillTable{}
+
+	err := c.ShouldBindJSON(&bill)
+	if err != nil {
+		log.Writer(log.Error, err)
+		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
+		return
+	}
+
+	data, err := billModels.BillsGetDiagram(&bill)
+	if err != nil {
+		log.Writer(log.Error, err)
+		c.JSON(http.StatusInternalServerError, ReturnData{Message: "查询错误", Error: err.Error(), Successful: false})
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
 }

@@ -1,6 +1,7 @@
 package investmentsModels
 
 import (
+	"Raven/src/log"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 )
@@ -124,6 +125,21 @@ func createChart(data []Investment) InvestmentsChartModel {
 	}).ToSlice(&item.Share)
 
 	return item
+}
+
+func investmentGetDiagram() (map[string][]Investment, error) {
+	data := make(map[string][]Investment)
+
+	var investments []Investment
+
+	err := engine.OrderBy("Date").Find(&investments)
+	if err != nil {
+		log.Writer(log.Error, err)
+	}
+	for _, index := range investments {
+		data[index.Name] = append(data[index.Name], index)
+	}
+	return data, nil
 }
 
 func shareOutBonus() {

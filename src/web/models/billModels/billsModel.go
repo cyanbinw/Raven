@@ -4,10 +4,17 @@ import (
 	"Raven/src/log"
 	"Raven/src/web/service"
 	"encoding/json"
+	. "github.com/ahmetb/go-linq/v3"
+	"github.com/shopspring/decimal"
 	"io/ioutil"
 	"os"
 	"strconv"
 )
+
+type BillChartModel struct {
+	Name  string  `json:"name"`
+	Value float64 `json:"value"`
+}
 
 type IBillData interface {
 	NewBillData()
@@ -68,6 +75,28 @@ func BillsGetTableOption() *BillOption {
 	return billsGetTableOption()
 }
 
-func BillsGetDiagram() {
+func BillsGetDiagram(bill *BillTable) ([]BillChartModel, error) {
+	var data []BillChartModel
+
 	billsInitDB()
+	billsGetDiagram(bill)
+
+	From(bill.BillDetail).GroupBy(func(i interface{}) interface{} {
+		return i.(BillDetail).BillName
+	}, func(i interface{}) interface{} {
+		return i.(BillDetail)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(BillDetail).Account
+		}
+
+		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
+
+		return BillChartModel{i.Key.(string), m}
+	}).ToSlice(&data)
+	return data, nil
 }

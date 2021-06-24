@@ -222,14 +222,14 @@ func setBillsGetTableOption(search *xorm.Session, bill *BillTable) {
 	}
 
 	search = search.Where("")
-	if len(bill.BillType) == 0 {
-		for i := range bill.BillType {
+	if len(bill.BillType) > 0 {
+		for _, i := range bill.BillType {
 			search = search.And("Type = ?", i)
 		}
 	}
 
-	if len(bill.BillName) == 0 {
-		for i := range bill.BillName {
+	if len(bill.BillName) > 0 {
+		for _, i := range bill.BillName {
 			search = search.And("BillName = ?", i)
 		}
 
@@ -276,6 +276,13 @@ func billsGetTableOption() *BillOption {
 	return &option
 }
 
-func billsGetDiagram() {
+func billsGetDiagram(bill *BillTable) {
+	row := engine.Table("BillDetail")
 
+	setBillsGetTableOption(row, bill)
+
+	err := row.Find(&bill.BillDetail)
+	if err != nil {
+		log.Writer(log.Error, err)
+	}
 }
