@@ -1,14 +1,14 @@
 package controllers
 
 import (
-	"Raven/src/web/models/billModels"
+	"Raven/src/application"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 func TestHome(c *gin.Context) {
-	var billData = billModels.BillDataByDate{}
+	var billData = application.BillDataByDate{}
 	year, err := strconv.Atoi(c.Query("year"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"data": "参数错误"})

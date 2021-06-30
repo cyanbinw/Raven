@@ -1,13 +1,13 @@
 package controllers
 
 import (
-	"Raven/src/web/models/desireModels"
+	desireModels2 "Raven/src/models/desireModels"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func GetDesire(c *gin.Context) {
-	desireModels.GetDesire()
+	desireModels2.GetDesire()
 
 	c.JSON(http.StatusOK, nil)
 }

@@ -1,4 +1,45 @@
 definitions:
+  application.BillOption:
+    properties:
+      billName:
+        items:
+          type: string
+        type: array
+      billType:
+        items:
+          type: string
+        type: array
+    type: object
+  application.InvestmentOption:
+    properties:
+      activity:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentActivity'
+        type: array
+      item:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentItem'
+        type: array
+      type:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentType'
+        type: array
+    type: object
+  application.InvestmentsChartModel:
+    properties:
+      account:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
+        type: array
+      netWorth:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
+        type: array
+      share:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
+        type: array
+    type: object
   billModels.BillDetail:
     properties:
       account:
@@ -15,17 +56,6 @@ definitions:
         type: string
       type:
         type: string
-    type: object
-  billModels.BillOption:
-    properties:
-      billName:
-        items:
-          type: string
-        type: array
-      billType:
-        items:
-          type: string
-        type: array
     type: object
   billModels.BillTable:
     properties:
@@ -55,21 +85,6 @@ definitions:
         type: integer
       total:
         type: integer
-    type: object
-  controllers.InvestmentOption:
-    properties:
-      activity:
-        items:
-          $ref: '#/definitions/investmentsModels.InvestmentActivity'
-        type: array
-      item:
-        items:
-          $ref: '#/definitions/investmentsModels.InvestmentItem'
-        type: array
-      type:
-        items:
-          $ref: '#/definitions/investmentsModels.InvestmentType'
-        type: array
     type: object
   controllers.ReturnData:
     properties:
@@ -164,21 +179,6 @@ definitions:
       typeName:
         type: string
     type: object
-  investmentsModels.InvestmentsChartModel:
-    properties:
-      account:
-        items:
-          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
-        type: array
-      netWorth:
-        items:
-          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
-        type: array
-      share:
-        items:
-          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
-        type: array
-    type: object
 info:
   contact: {}
 paths:
@@ -199,6 +199,32 @@ paths:
       summary: 获取最近四个月的bills
       tags:
       - Bill
+  /v1/Bill/GetBillsDiagram:
+    post:
+      description: 描述信息
+      parameters:
+      - description: investmentData
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/billModels.BillTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/billModels.BillTable'
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 获取bills表信息
+      tags:
+      - Bill
   /v1/Bill/GetBillsTable:
     post:
       description: 描述信息
@@ -208,7 +234,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/billModels.BillOption'
+            $ref: '#/definitions/application.BillOption'
       security:
       - Bearer: []
       summary: 获取bills表查询条件
@@ -270,7 +296,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/controllers.InvestmentOption'
+            $ref: '#/definitions/application.InvestmentOption'
         "500":
           description: Successful":true,"data":null,"Error":"", Message:""}
           schema:
@@ -289,7 +315,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/investmentsModels.InvestmentsChartModel'
+            $ref: '#/definitions/application.InvestmentsChartModel'
       security:
       - Bearer: []
       summary: 获取Investments的金额分类

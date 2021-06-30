@@ -1,73 +1,17 @@
-package investmentsModels
+package database
 
 import (
 	"Raven/src/log"
-	"Raven/src/web/service"
+	. "Raven/src/models/investmentsModels"
+	service2 "Raven/src/service"
 	"database/sql"
 	"fmt"
-	"github.com/go-xorm/xorm"
 	"strings"
 	"time"
 )
 
-type Investment struct {
-	ID             int64     `db:"ID" json:"id"`
-	ItemID         int       `db:"ItemID" json:"itemID"`
-	Name           string    `db:"Name" json:"name"`
-	TypeID         int       `db:"TypeID" json:"type"`
-	Account        float64   `db:"Account" json:"account"`
-	Share          float64   `db:"Share" json:"share"`
-	NetWorth       float64   `db:"NetWorth" json:"netWorth"`
-	Date           time.Time `db:"Date" json:"date"`
-	ActivityStatus int       `db:"ActivityStatus" json:"activity"`
-	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
-}
-
-type InvestmentTable struct {
-	Investment   `xorm:"extends"`
-	ActivityName string `json:"activityName"`
-	TypeName     string `json:"typeName"`
-}
-
-type InvestmentActivity struct {
-	ActivityID   int
-	ActivityName string
-	InsertDate   time.Time
-}
-
-type InvestmentType struct {
-	TypeID     int
-	TypeName   string
-	InsertDate time.Time
-}
-
-type InvestmentItem struct {
-	ItemID int
-	Name   string
-}
-
-type InvestmentGroup struct {
-	Data  []Investment
-	Count int
-	Name  string
-}
-
-type InvestmentGroupList []InvestmentGroup
-
-const (
-	userName = ""
-	password = ""
-	ip       = ""
-	port     = ""
-	dbName   = ""
-)
-
-var db *sql.DB
-var timeLayoutStr = "2006-01-02 15:04:05" //go中的时间格式化必须是这个时间
-var engine *xorm.Engine
-
-func investmentsInitDB() {
-	engine = service.InitDB()
+func InvestmentsInitDB() {
+	engine = service2.InitDB()
 }
 
 func investmentsInitDBV1() {
@@ -89,17 +33,17 @@ func investmentsInitDBV1() {
 	}
 }
 
-func investmentGetAll(data *InvestmentData) {
+func InvestmentGetAll() []Investment {
 	var investments []Investment
 
 	err := engine.Find(&investments)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
-	data.Data = investments
+	return investments
 }
 
-func investmentGetAllV1(data *InvestmentData) {
+func investmentGetAllV1() {
 	var investments []Investment
 
 	var investment []Investment
@@ -155,15 +99,14 @@ func investmentGetAllV1(data *InvestmentData) {
 
 		investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 
-		service.CheckErr(err)
+		service2.CheckErr(err)
 		investments = append(investments, *investmentDetail)
 	}
-	data.Data = investments
 }
 
-func investmentGetDataToChart() InvestmentsChartModel {
-	var investmentsChartModel InvestmentsChartModel
-	err := engine.SQL("select Name, sum(Account) Value from Investment where IsEmpty <> 1 group by Name").Find(&investmentsChartModel.Account)
+func InvestmentGetDataToChart() (*[]InvestmentChartModel, *[]InvestmentChartModel, *[]InvestmentChartModel) {
+	var account, share, netWorth []InvestmentChartModel
+	err := engine.SQL("select Name, sum(Account) Value from Investment where IsEmpty <> 1 group by Name").Find(&account)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
@@ -173,21 +116,21 @@ func investmentGetDataToChart() InvestmentsChartModel {
 			log.Writer(log.Error, err)
 		}*/
 
-	err = engine.SQL("select Name, sum(Share) Value from Investment where IsEmpty <> 1 group by Name").Find(&investmentsChartModel.Share)
+	err = engine.SQL("select Name, sum(Share) Value from Investment where IsEmpty <> 1 group by Name").Find(&share)
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
 
-	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where where IsEmpty <> 1 and TypeID <> 3 group by Name").Find(&investmentsChartModel.NetWorth)
+	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where where IsEmpty <> 1 and TypeID <> 3 group by Name").Find(&netWorth)
 
 	if err != nil {
 		log.Writer(log.Error, err)
 	}
 
-	return investmentsChartModel
+	return &account, &share, &netWorth
 }
 
-func investmentGetChart() []Investment {
+func InvestmentGetChart() []Investment {
 	var Item []Investment
 	err := engine.Where("IsEmpty <> ?", 1).And("ActivityStatus <> ?", 4).Find(&Item)
 	if err != nil {
@@ -197,9 +140,9 @@ func investmentGetChart() []Investment {
 	return Item
 }
 
-func investmentGetDataToChartV1() InvestmentsChartModel {
+func investmentGetDataToChartV1() {
 	investmentDetail := new(InvestmentChartModel)
-	var investmentsChartModel InvestmentsChartModel
+	var account, share, netWorth []InvestmentChartModel
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
 
 	// 查询单行数据
@@ -230,8 +173,8 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 			log.Writer(log.Error, err)
 		}
 
-		service.CheckErr(err)
-		investmentsChartModel.Account = append(investmentsChartModel.Account, *investmentDetail)
+		service2.CheckErr(err)
+		account = append(account, *investmentDetail)
 	}
 
 	row2, err := db.Query("select Name, sum(Share) from Investment group by Name")
@@ -258,8 +201,8 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 			fmt.Printf("scan failed, err:%v", err)
 		}
 
-		service.CheckErr(err)
-		investmentsChartModel.Share = append(investmentsChartModel.Share, *investmentDetail)
+		service2.CheckErr(err)
+		share = append(share, *investmentDetail)
 	}
 
 	row3, err := db.Query("select Name, avg(NetWorth) from Investment where ID != 23 group by Name")
@@ -286,14 +229,12 @@ func investmentGetDataToChartV1() InvestmentsChartModel {
 			fmt.Printf("scan failed, err:%v", err)
 		}
 
-		service.CheckErr(err)
-		investmentsChartModel.NetWorth = append(investmentsChartModel.NetWorth, *investmentDetail)
+		service2.CheckErr(err)
+		netWorth = append(netWorth, *investmentDetail)
 	}
-
-	return investmentsChartModel
 }
 
-func investmentGetTable() []InvestmentTable {
+func InvestmentGetTable() []InvestmentTable {
 	var investments []InvestmentTable
 	err := engine.Join("INNER", "InvestmentActivity",
 		"InvestmentActivity.ActivityID = Investment.ActivityStatus").
@@ -303,10 +244,6 @@ func investmentGetTable() []InvestmentTable {
 		log.Writer(log.Error, err)
 	}
 	return investments
-}
-
-func (InvestmentTable) TableName() string {
-	return "Investment"
 }
 
 func investmentGetTableV1() []InvestmentTable {
@@ -353,13 +290,13 @@ func investmentGetTableV1() []InvestmentTable {
 			investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 		}
 
-		service.CheckErr(err)
+		service2.CheckErr(err)
 		investments = append(investments, *investmentDetail)
 	}
 	return investments
 }
 
-func investmentAddTable(data InvestmentTable) (bool, error) {
+func InvestmentAddTable(data InvestmentTable) (bool, error) {
 
 	if data.ActivityStatus == 4 {
 		data.IsEmpty = true
@@ -432,7 +369,7 @@ func investmentAddTableV1(data InvestmentTable) (bool, error) {
 	return false, err
 }
 
-func investmentUpdateTable(data InvestmentTable) (bool, error) {
+func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 
 	if data.ActivityStatus == 4 {
 		data.IsEmpty = true
@@ -492,7 +429,7 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	return false, err
 }
 
-func investmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
+func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
 	var itype []InvestmentType
 	var iactivity []InvestmentActivity
 	var item []InvestmentItem
@@ -509,14 +446,11 @@ func investmentGetOption() ([]InvestmentType, []InvestmentActivity, []Investment
 	return itype, iactivity, item, nil
 }
 
-func (data InvestmentGroupList) Len() int {
-	return len(data)
-}
-
-func (data InvestmentGroupList) Swap(i, j int) {
-	data[i], data[j] = data[j], data[i]
-}
-
-func (data InvestmentGroupList) Less(i, j int) bool {
-	return data[i].Count > data[j].Count
+func InvestmentGetDateOrderbyDate() *[]Investment {
+	var investments []Investment
+	err := engine.OrderBy("Date").Find(&investments)
+	if err != nil {
+		log.Writer(log.Error, err)
+	}
+	return &investments
 }

@@ -52,6 +52,48 @@ var doc = `{
                 }
             }
         },
+        "/v1/Bill/GetBillsDiagram": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bill"
+                ],
+                "summary": "获取bills表信息",
+                "parameters": [
+                    {
+                        "description": "investmentData",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/billModels.BillTable"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/billModels.BillTable"
+                        }
+                    },
+                    "400": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/Bill/GetBillsTable": {
             "post": {
                 "security": [
@@ -71,7 +113,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/billModels.BillOption"
+                            "$ref": "#/definitions/application.BillOption"
                         }
                     }
                 }
@@ -172,7 +214,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/controllers.InvestmentOption"
+                            "$ref": "#/definitions/application.InvestmentOption"
                         }
                     },
                     "500": {
@@ -203,7 +245,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/investmentsModels.InvestmentsChartModel"
+                            "$ref": "#/definitions/application.InvestmentsChartModel"
                         }
                     }
                 }
@@ -287,6 +329,69 @@ var doc = `{
         }
     },
     "definitions": {
+        "application.BillOption": {
+            "type": "object",
+            "properties": {
+                "billName": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "billType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "application.InvestmentOption": {
+            "type": "object",
+            "properties": {
+                "activity": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentActivity"
+                    }
+                },
+                "item": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentItem"
+                    }
+                },
+                "type": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentType"
+                    }
+                }
+            }
+        },
+        "application.InvestmentsChartModel": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
+                    }
+                },
+                "netWorth": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
+                    }
+                },
+                "share": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
+                    }
+                }
+            }
+        },
         "billModels.BillDetail": {
             "type": "object",
             "properties": {
@@ -310,23 +415,6 @@ var doc = `{
                 },
                 "type": {
                     "type": "string"
-                }
-            }
-        },
-        "billModels.BillOption": {
-            "type": "object",
-            "properties": {
-                "billName": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "billType": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             }
         },
@@ -371,29 +459,6 @@ var doc = `{
                 },
                 "total": {
                     "type": "integer"
-                }
-            }
-        },
-        "controllers.InvestmentOption": {
-            "type": "object",
-            "properties": {
-                "activity": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/investmentsModels.InvestmentActivity"
-                    }
-                },
-                "item": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/investmentsModels.InvestmentItem"
-                    }
-                },
-                "type": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/investmentsModels.InvestmentType"
-                    }
                 }
             }
         },
@@ -537,29 +602,6 @@ var doc = `{
                 },
                 "typeName": {
                     "type": "string"
-                }
-            }
-        },
-        "investmentsModels.InvestmentsChartModel": {
-            "type": "object",
-            "properties": {
-                "account": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
-                    }
-                },
-                "netWorth": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
-                    }
-                },
-                "share": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
-                    }
                 }
             }
         }

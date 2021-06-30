@@ -1,9 +1,10 @@
 package controllers
 
 import (
+	"Raven/src/application"
 	"Raven/src/log"
-	"Raven/src/web/models/investmentsModels"
-	"Raven/src/web/service"
+	"Raven/src/models/investmentsModels"
+	service2 "Raven/src/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,10 +15,10 @@ import (
 // @Description 描述信息
 // @Security Bearer
 // @Produce  json
-// @Success 200 {object} investmentsModels.InvestmentsChartModel {}
+// @Success 200 {object} application.InvestmentsChartModel {}
 // @Router /v1/Investment/GetInvestments [post]
 func GetInvestments(c *gin.Context) {
-	var investmentData = investmentsModels.InvestmentData{}
+	var investmentData = application.InvestmentData{}
 
 	investmentData.InvestmentsInitDB()
 
@@ -33,7 +34,7 @@ func GetInvestments(c *gin.Context) {
 // @Success 200 {object} []investmentsModels.InvestmentTable {}
 // @Router /v1/Investment/GetInvestmentsTable [post]
 func GetInvestmentsTable(c *gin.Context) {
-	var investmentData = investmentsModels.InvestmentData{}
+	var investmentData = application.InvestmentData{}
 
 	investmentData.InvestmentsInitDB()
 
@@ -55,7 +56,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	log.Writer(log.Info, service.ToJSON(investmentData.Investment))
+	log.Writer(log.Info, service2.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -63,8 +64,8 @@ func AddInvestmentsTable(c *gin.Context) {
 		return
 	}
 
-	investmentData.InvestmentsInitDB()
-	flag, err := investmentData.AddInvestmentTable()
+	application.InvestmentsInitDB()
+	flag, err := application.AddInvestmentTable(&investmentData)
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -90,7 +91,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	log.Writer(log.Info, service.ToJSON(investmentData.Investment))
+	log.Writer(log.Info, service2.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -98,8 +99,8 @@ func UpdateInvestmentsTable(c *gin.Context) {
 		return
 	}
 
-	investmentData.InvestmentsInitDB()
-	flag, err := investmentData.UpdateInvestmentTable()
+	application.InvestmentsInitDB()
+	flag, err := application.UpdateInvestmentTable(&investmentData)
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -121,7 +122,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 // @Router /v1/Investment/GetInvestmentDiagram [post]
 func GetInvestmentDiagram(c *gin.Context) {
 
-	data, err := investmentsModels.GetInvestmentDiagram()
+	data, err := application.GetInvestmentDiagram()
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -141,11 +142,11 @@ func GetInvestmentDiagram(c *gin.Context) {
 // @Description 描述信息
 // @Security Bearer
 // @Produce  json
-// @Success 200 {object} InvestmentOption
+// @Success 200 {object} application.InvestmentOption
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
 func GetInvestmentOption(c *gin.Context) {
-	Type, Activity, Item, err := investmentsModels.GetInvestmentOption()
+	data, err := application.GetInvestmentOption()
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -153,15 +154,5 @@ func GetInvestmentOption(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, InvestmentOption{
-		Type:     Type,
-		Activity: Activity,
-		Itme:     Item,
-	})
-}
-
-type InvestmentOption struct {
-	Type     []investmentsModels.InvestmentType     `json:"type"`
-	Activity []investmentsModels.InvestmentActivity `json:"activity"`
-	Itme     []investmentsModels.InvestmentItem     `json:"item"`
+	c.JSON(http.StatusOK, data)
 }

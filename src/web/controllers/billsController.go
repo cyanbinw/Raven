@@ -1,8 +1,9 @@
 package controllers
 
 import (
+	"Raven/src/application"
 	"Raven/src/log"
-	"Raven/src/web/models/billModels"
+	"Raven/src/models/billModels"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,7 +17,7 @@ import (
 // @Success 200 {object} []billModels.BillDetail
 // @Router /v1/Bill/GetBillsYearAllData [post]
 func GetBillsYearAllData(c *gin.Context) {
-	var billData = billModels.BillDataByDate{}
+	var billData = application.BillDataByDate{}
 
 	billData.BillsInitDB()
 	billData.BillsGetYearData()
@@ -32,7 +33,7 @@ func GetBillsYearAllData(c *gin.Context) {
 // @Success 200 {object} []billModels.BillDetail
 // @Router /v1/Bill/GetBillsDataByMonth [post]
 func GetBillsDataByMonth(c *gin.Context) {
-	var billData = billModels.BillDataByDate{}
+	var billData = application.BillDataByDate{}
 
 	billData.BillsInitDB()
 	billData.BillsGetDataByMonth()
@@ -66,7 +67,7 @@ func GetBillsTable(c *gin.Context) {
 		bill.DateMax = bill.DateMax.Local()
 	}
 
-	c.JSON(http.StatusOK, billModels.BillsGetTable(&bill))
+	c.JSON(http.StatusOK, application.BillsGetTable(&bill))
 }
 
 //GetBillsTableOption
@@ -75,10 +76,10 @@ func GetBillsTable(c *gin.Context) {
 // @Description 描述信息
 // @Security Bearer
 // @Produce  json
-// @Success 200 {object} billModels.BillOption
+// @Success 200 {object} application.BillOption
 // @Router /v1/Bill/GetBillsTable [post]
 func GetBillsTableOption(c *gin.Context) {
-	c.JSON(http.StatusOK, billModels.BillsGetTableOption())
+	c.JSON(http.StatusOK, application.BillsGetTableOption())
 }
 
 //GetBillsDiagram
@@ -101,7 +102,7 @@ func GetBillsDiagram(c *gin.Context) {
 		return
 	}
 
-	data, err := billModels.BillsGetDiagram(&bill)
+	data, err := application.BillsGetDiagram(&bill)
 	if err != nil {
 		log.Writer(log.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Message: "查询错误", Error: err.Error(), Successful: false})
