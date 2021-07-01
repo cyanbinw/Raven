@@ -1,8 +1,8 @@
 package application
 
 import (
-	database "Raven/src/database"
-	investmentsModels "Raven/src/models/investmentsModels"
+	"Raven/src/database"
+	"Raven/src/models/investmentsModels"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 )
