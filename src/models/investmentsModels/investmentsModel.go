@@ -3,16 +3,16 @@ package investmentsModels
 import "time"
 
 type Investment struct {
-	ID             int64     `db:"ID" json:"id"`
-	ItemID         int       `db:"ItemID" json:"itemID"`
-	Name           string    `db:"Name" json:"name"`
-	TypeID         int       `db:"TypeID" json:"type"`
-	Account        float64   `db:"Account" json:"account"`
-	Share          float64   `db:"Share" json:"share"`
-	NetWorth       float64   `db:"NetWorth" json:"netWorth"`
-	Date           time.Time `db:"Date" json:"date"`
-	ActivityStatus int       `db:"ActivityStatus" json:"activity"`
-	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
+	ID             int64   `db:"ID" json:"id"`
+	ItemID         int     `db:"ItemID" json:"itemID"`
+	Name           string  `db:"Name" json:"name"`
+	TypeID         int     `db:"TypeID" json:"type"`
+	Account        float64 `db:"Account" json:"account"`
+	Share          float64 `db:"Share" json:"share"`
+	NetWorth       float64 `db:"NetWorth" json:"netWorth"`
+	Date           string  `db:"Date" json:"date"`
+	ActivityStatus int     `db:"ActivityStatus" json:"activity"`
+	IsEmpty        bool    `db:"IsEmpty" json:"isEmpty"`
 }
 
 type InvestmentTable struct {

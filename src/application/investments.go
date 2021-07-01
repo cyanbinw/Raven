@@ -1,14 +1,14 @@
 package application
 
 import (
-	database2 "Raven/src/database"
-	investmentsModels2 "Raven/src/models/investmentsModels"
+	database "Raven/src/database"
+	investmentsModels "Raven/src/models/investmentsModels"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 )
 
 type InvestmentData struct {
-	Data []investmentsModels2.Investment
+	Data []investmentsModels.Investment
 }
 
 type InvestmentAccountModel struct {
@@ -17,133 +17,133 @@ type InvestmentAccountModel struct {
 }
 
 type InvestmentGroup struct {
-	Data  []investmentsModels2.Investment
+	Data  []investmentsModels.Investment
 	Count int
 	Name  string
 }
 
 type InvestmentsChartModel struct {
-	Account  []investmentsModels2.InvestmentChartModel
-	Share    []investmentsModels2.InvestmentChartModel
-	NetWorth []investmentsModels2.InvestmentChartModel
+	Account  []investmentsModels.InvestmentChartModel
+	Share    []investmentsModels.InvestmentChartModel
+	NetWorth []investmentsModels.InvestmentChartModel
 }
 
 type InvestmentOption struct {
-	Type     []investmentsModels2.InvestmentType     `json:"type"`
-	Activity []investmentsModels2.InvestmentActivity `json:"activity"`
-	Itme     []investmentsModels2.InvestmentItem     `json:"item"`
+	Type     []investmentsModels.InvestmentType     `json:"type"`
+	Activity []investmentsModels.InvestmentActivity `json:"activity"`
+	Item     []investmentsModels.InvestmentItem     `json:"item"`
 }
 
 type InvestmentGroupList []InvestmentGroup
 
 func (data *InvestmentData) InvestmentsInitDB() {
-	database2.InvestmentsInitDB()
+	database.InvestmentsInitDB()
 }
 
 func (data *InvestmentData) InvestmentGetAll() {
-	data.Data = database2.InvestmentGetAll()
+	data.Data = database.InvestmentGetAll()
 }
 
 func (data *InvestmentData) InvestmentChartForAccount() InvestmentsChartModel {
-	item := database2.InvestmentGetChart()
+	item := database.InvestmentGetChart()
 	return createChart(item)
 
 	//return investmentGetDataToChart()
 }
 
-func (data *InvestmentData) GetInvestmentTable() []investmentsModels2.InvestmentTable {
-	return database2.InvestmentGetTable()
+func (data *InvestmentData) GetInvestmentTable() []investmentsModels.InvestmentTable {
+	return database.InvestmentGetTable()
 }
 
 func InvestmentsInitDB() {
-	database2.InvestmentsInitDB()
+	database.InvestmentsInitDB()
 }
 
-func AddInvestmentTable(data *investmentsModels2.InvestmentTable) (bool, error) {
-	return database2.InvestmentAddTable(*data)
+func AddInvestmentTable(data *investmentsModels.InvestmentTable) (bool, error) {
+	return database.InvestmentAddTable(*data)
 }
 
-func UpdateInvestmentTable(data *investmentsModels2.InvestmentTable) (bool, error) {
-	return database2.InvestmentUpdateTable(*data)
+func UpdateInvestmentTable(data *investmentsModels.InvestmentTable) (bool, error) {
+	return database.InvestmentUpdateTable(*data)
 }
 
-func GetInvestmentDiagram() (map[string][]investmentsModels2.Investment, error) {
-	database2.InvestmentsInitDB()
+func GetInvestmentDiagram() (map[string][]investmentsModels.Investment, error) {
+	database.InvestmentsInitDB()
 	return investmentGetDiagram()
 }
 
 func GetInvestmentOption() (*InvestmentOption, error) {
 	var option = new(InvestmentOption)
 	var err error
-	database2.InvestmentsInitDB()
-	option.Type, option.Activity, option.Itme, err = database2.InvestmentGetOption()
+	database.InvestmentsInitDB()
+	option.Type, option.Activity, option.Item, err = database.InvestmentGetOption()
 	return option, err
 }
 
-func createChart(data []investmentsModels2.Investment) InvestmentsChartModel {
+func createChart(data []investmentsModels.Investment) InvestmentsChartModel {
 	var item InvestmentsChartModel
 
 	From(data).GroupBy(func(i interface{}) interface{} {
-		return i.(investmentsModels2.Investment).Name
+		return i.(investmentsModels.Investment).Name
 	}, func(i interface{}) interface{} {
-		return i.(investmentsModels2.Investment)
+		return i.(investmentsModels.Investment)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels2.Investment).Account
+			m += item.(investmentsModels.Investment).Account
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
-		return investmentsModels2.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
 	}).ToSlice(&item.Account)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
-		return i.(investmentsModels2.Investment).Name
+		return i.(investmentsModels.Investment).Name
 	}, func(i interface{}) interface{} {
-		return i.(investmentsModels2.Investment)
+		return i.(investmentsModels.Investment)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels2.Investment).NetWorth
+			m += item.(investmentsModels.Investment).NetWorth
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
-		return investmentsModels2.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
 	}).ToSlice(&item.NetWorth)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
-		return i.(investmentsModels2.Investment).Name
+		return i.(investmentsModels.Investment).Name
 	}, func(i interface{}) interface{} {
-		return i.(investmentsModels2.Investment)
+		return i.(investmentsModels.Investment)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels2.Investment).Share
+			m += item.(investmentsModels.Investment).Share
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
-		return investmentsModels2.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
 	}).ToSlice(&item.Share)
 
 	return item
 }
 
-func investmentGetDiagram() (map[string][]investmentsModels2.Investment, error) {
-	data := make(map[string][]investmentsModels2.Investment)
+func investmentGetDiagram() (map[string][]investmentsModels.Investment, error) {
+	data := make(map[string][]investmentsModels.Investment)
 
-	investments := database2.InvestmentGetDateOrderbyDate()
+	investments := database.InvestmentGetDateOrderbyDate()
 	for _, index := range *investments {
 		data[index.Name] = append(data[index.Name], index)
 	}

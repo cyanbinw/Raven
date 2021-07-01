@@ -4,13 +4,13 @@ import "time"
 
 //BillDetail is test
 type BillDetail struct {
-	ID         int64     `db:"ID"`
-	BillNumber string    `db:"BillNumber"`
-	Type       string    `db:"Type"`
-	BillName   string    `db:"BillName"`
-	Account    float64   `db:"Account"`
-	Date       time.Time `db:"Date"`
-	Remarks    string    `db:"Remarks"`
+	ID         int64   `db:"ID"`
+	BillNumber string  `db:"BillNumber"`
+	Type       string  `db:"Type"`
+	BillName   string  `db:"BillName"`
+	Account    float64 `db:"Account"`
+	Date       string  `db:"Date"`
+	Remarks    string  `db:"Remarks"`
 }
 
 type BillTable struct {

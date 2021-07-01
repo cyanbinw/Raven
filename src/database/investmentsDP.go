@@ -3,15 +3,14 @@ package database
 import (
 	"Raven/src/log"
 	. "Raven/src/models/investmentsModels"
-	service2 "Raven/src/service"
+	"Raven/src/service"
 	"database/sql"
 	"fmt"
 	"strings"
-	"time"
 )
 
 func InvestmentsInitDB() {
-	engine = service2.InitDB()
+	engine = service.InitDB()
 }
 
 func investmentsInitDBV1() {
@@ -95,11 +94,11 @@ func investmentGetAllV1() {
 		); err != nil {
 			fmt.Printf("scan failed, err:%v", err)
 		}
-		DefaultTimeLoc := time.Local
+		//DefaultTimeLoc := time.Local
 
-		investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
+		//investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 
-		service2.CheckErr(err)
+		service.CheckErr(err)
 		investments = append(investments, *investmentDetail)
 	}
 }
@@ -173,7 +172,7 @@ func investmentGetDataToChartV1() {
 			log.Writer(log.Error, err)
 		}
 
-		service2.CheckErr(err)
+		service.CheckErr(err)
 		account = append(account, *investmentDetail)
 	}
 
@@ -201,7 +200,7 @@ func investmentGetDataToChartV1() {
 			fmt.Printf("scan failed, err:%v", err)
 		}
 
-		service2.CheckErr(err)
+		service.CheckErr(err)
 		share = append(share, *investmentDetail)
 	}
 
@@ -229,7 +228,7 @@ func investmentGetDataToChartV1() {
 			fmt.Printf("scan failed, err:%v", err)
 		}
 
-		service2.CheckErr(err)
+		service.CheckErr(err)
 		netWorth = append(netWorth, *investmentDetail)
 	}
 }
@@ -285,12 +284,12 @@ func investmentGetTableV1() []InvestmentTable {
 		); err != nil {
 			log.Writer(log.Error, err)
 		}
-		DefaultTimeLoc := time.Local
+		//DefaultTimeLoc := time.Local
 		if lastLoginTime != "" {
-			investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
+			//investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 		}
 
-		service2.CheckErr(err)
+		service.CheckErr(err)
 		investments = append(investments, *investmentDetail)
 	}
 	return investments
@@ -351,7 +350,7 @@ func investmentAddTableV1(data InvestmentTable) (bool, error) {
 	// starDate, _ := time.Parse(timeLayoutStr, star)
 	// endDate,_ := time.Parse(timeLayoutStr, end)
 
-	date := data.Date.Local().Format("2006-01-02")
+	date := data.Date
 
 	result, err := db.Exec("INSERT INTO Investment (`Name`,Account,Share,NetWorth,`Date`,TypeID, ActivityStatus)VALUES(?,?,?,?,?,?,?)", data.Name, data.Account, data.Share, data.NetWorth, date, data.TypeID, data.ActivityStatus)
 	if err != nil {
@@ -410,7 +409,7 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	// starDate, _ := time.Parse(timeLayoutStr, star)
 	// endDate,_ := time.Parse(timeLayoutStr, end)
 
-	insterDate := data.Date.Local().Format("2006-01-02")
+	insterDate := data.Date
 
 	result, err := db.Exec("Update Investment Set `Name` = ?, Account = ?, Share = ?, NetWorth = ?, `Date` = ?, TypeID = ?, ActivityStatus = ? Where ID = ?",
 		data.Name, data.Account, data.Share, data.NetWorth, insterDate, data.TypeID, data.ActivityStatus, data.ID)

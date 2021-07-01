@@ -11,15 +11,7 @@ import (
 )
 
 func InitRouter() {
-	if gin.Mode() == gin.DebugMode {
-		gin.SetMode(gin.DebugMode)
-	}
-	if gin.Mode() == gin.ReleaseMode {
-		gin.SetMode(gin.ReleaseMode)
-	}
-	if gin.Mode() == gin.TestMode {
-		gin.SetMode(gin.TestMode)
-	}
+	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.Default()
 

@@ -1,6 +1,6 @@
 db:
   username: sa
-  password: 123456
-  ip: 127.0.0.1
+  password: log210602IN~
+  ip: 192.168.2.188
   port: 3306
-  dbname: test_db
+  dbname: Production
