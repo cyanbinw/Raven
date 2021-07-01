@@ -1,0 +1,589 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/v1/Bill/GetBillsDataByMonth": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bill"
+                ],
+                "summary": "获取最近四个月的bills",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/billModels.BillDetail"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Bill/GetBillsDiagram": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bill"
+                ],
+                "summary": "获取bills表信息",
+                "parameters": [
+                    {
+                        "description": "investmentData",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/billModels.BillTable"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/billModels.BillTable"
+                        }
+                    },
+                    "400": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Bill/GetBillsTable": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bill"
+                ],
+                "summary": "获取bills表查询条件",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/application.BillOption"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Bill/GetBillsYearAllData": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Bill"
+                ],
+                "summary": "获取最近一年的bills",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/billModels.BillDetail"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Investment/AddInvestmentsTable": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "添加新数据",
+                "parameters": [
+                    {
+                        "description": "investmentData",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/investmentsModels.InvestmentTable"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    },
+                    "400": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    },
+                    "500": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Investment/GetInvestmentDiagram": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "获取查询条件信息(table page)",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/application.InvestmentOption"
+                        }
+                    },
+                    "500": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Investment/GetInvestments": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "获取Investments的金额分类",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/application.InvestmentsChartModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Investment/GetInvestmentsTable": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "获取Investments的表数据",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/investmentsModels.InvestmentTable"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/Investment/UpdateInvestmentsTable": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "描述信息",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Investment"
+                ],
+                "summary": "更新一条数据",
+                "parameters": [
+                    {
+                        "description": "investmentData",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/investmentsModels.InvestmentTable"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    },
+                    "400": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    },
+                    "500": {
+                        "description": "Successful\":true,\"data\":null,\"Error\":\"\", Message:\"\"}",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.ReturnData"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "application.BillOption": {
+            "type": "object",
+            "properties": {
+                "billName": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "billType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "application.InvestmentOption": {
+            "type": "object",
+            "properties": {
+                "activity": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentActivity"
+                    }
+                },
+                "item": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentItem"
+                    }
+                },
+                "type": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentType"
+                    }
+                }
+            }
+        },
+        "application.InvestmentsChartModel": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
+                    }
+                },
+                "netWorth": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
+                    }
+                },
+                "share": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/investmentsModels.InvestmentChartModel"
+                    }
+                }
+            }
+        },
+        "billModels.BillDetail": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "number"
+                },
+                "billName": {
+                    "type": "string"
+                },
+                "billNumber": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "remarks": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "billModels.BillTable": {
+            "type": "object",
+            "properties": {
+                "accountMax": {
+                    "type": "number"
+                },
+                "accountMin": {
+                    "type": "number"
+                },
+                "billDetail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/billModels.BillDetail"
+                    }
+                },
+                "billName": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "billType": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "dateMax": {
+                    "type": "string"
+                },
+                "dateMin": {
+                    "type": "string"
+                },
+                "pageNumber": {
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "controllers.ReturnData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object"
+                },
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "successful": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "investmentsModels.Investment": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "number"
+                },
+                "activity": {
+                    "type": "integer"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isEmpty": {
+                    "type": "boolean"
+                },
+                "itemID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "netWorth": {
+                    "type": "number"
+                },
+                "share": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "investmentsModels.InvestmentActivity": {
+            "type": "object",
+            "properties": {
+                "activityID": {
+                    "type": "integer"
+                },
+                "activityName": {
+                    "type": "string"
+                },
+                "insertDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "investmentsModels.InvestmentChartModel": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "number"
+                }
+            }
+        },
+        "investmentsModels.InvestmentItem": {
+            "type": "object",
+            "properties": {
+                "itemID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "investmentsModels.InvestmentTable": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "type": "number"
+                },
+                "activity": {
+                    "type": "integer"
+                },
+                "activityName": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isEmpty": {
+                    "type": "boolean"
+                },
+                "itemID": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "netWorth": {
+                    "type": "number"
+                },
+                "share": {
+                    "type": "number"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "typeName": {
+                    "type": "string"
+                }
+            }
+        },
+        "investmentsModels.InvestmentType": {
+            "type": "object",
+            "properties": {
+                "insertDate": {
+                    "type": "string"
+                },
+                "typeID": {
+                    "type": "integer"
+                },
+                "typeName": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

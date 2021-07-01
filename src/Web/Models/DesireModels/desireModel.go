@@ -1,5 +1,0 @@
-package DesireModels
-
-func GetDesire() {
-
-}

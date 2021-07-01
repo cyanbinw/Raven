@@ -10,6 +10,6 @@ COPY ./config.yml .
 
 #RUN go env
 
-#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build ./src/Web
+#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64  go build ./src/web
 EXPOSE 8080
 ENTRYPOINT [ "./Web_linux" ]
