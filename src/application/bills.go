@@ -1,10 +1,10 @@
 package application
 
 import (
-	database2 "Raven/src/database"
+	"Raven/src/database"
 	"Raven/src/log"
-	billModels2 "Raven/src/models/billModels"
-	service2 "Raven/src/service"
+	"Raven/src/models/billModels"
+	"Raven/src/service"
 	"encoding/json"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
@@ -24,8 +24,14 @@ type BillChartModel struct {
 }
 
 type BillDataByDate struct {
-	Data []billModels2.BillDetail
+	Data []billModels.BillDetail
 	Year int `json:"Year" form:"Year"`
+}
+
+type BillCharts []BillChartModel
+type BillChartsData struct {
+	BillCharts `json:"billCharts"`
+	Total      float64 `json:"total"`
 }
 
 type IBillData interface {
@@ -40,7 +46,7 @@ func (data *BillDataByDate) NewBillData() {
 }
 
 func (data *BillDataByDate) BillsInitDB() {
-	database2.BillsInitDB()
+	database.BillsInitDB()
 }
 
 func (data *BillDataByDate) BillsWriteToJSON() {
@@ -51,7 +57,7 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 		log.Writer(log.Error, err)
 	}
 
-	if service2.CheckFileIsExist(src) { //如果文件存在
+	if service.CheckFileIsExist(src) { //如果文件存在
 		f, err = os.OpenFile(src, os.O_APPEND, 0666) //打开文件
 	} else {
 		f, err = os.Create(src) //创建文件
@@ -59,53 +65,57 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 	}
 
 	err = ioutil.WriteFile(src, val, 0777)
-	service2.CheckErr(err)
+	service.CheckErr(err)
 	f.Close()
 }
 
 func (data *BillDataByDate) BillsGetYearData() {
-	database2.BillsGetYearData(&data.Data, data.Year)
+	database.BillsGetYearData(&data.Data, data.Year)
 }
 
 func (data *BillDataByDate) BillsGetDataByMonth() {
-	database2.BillsGetDataByMonth(&data.Data)
+	database.BillsGetDataByMonth(&data.Data)
 }
 
-func BillsGetTable(bill *billModels2.BillTable) *billModels2.BillTable {
-	database2.BillsInitDB()
-	database2.BillsGetTable(bill)
+func BillsGetTable(bill *billModels.BillTable) *billModels.BillTable {
+	database.BillsInitDB()
+	database.BillsGetTable(bill)
 	return bill
 }
 
 func BillsGetTableOption() *BillOption {
 	var option = new(BillOption)
-	database2.BillsInitDB()
-	option.BillName, option.BillType = database2.BillsGetTableOption()
+	database.BillsInitDB()
+	option.BillName, option.BillType = database.BillsGetTableOption()
 	return option
 }
 
-func BillsGetDiagram(bill *billModels2.BillTable) ([]BillChartModel, error) {
-	var data []BillChartModel
+func BillsGetDiagram(bill *billModels.BillTable) (*BillChartsData, error) {
+	var data = new(BillChartsData)
 
-	database2.BillsInitDB()
-	database2.BillsGetDiagram(bill)
+	database.BillsInitDB()
+	database.BillsGetDiagram(bill)
 
 	From(bill.BillDetail).GroupBy(func(i interface{}) interface{} {
-		return i.(billModels2.BillDetail).BillName
+		return i.(billModels.BillDetail).BillName
 	}, func(i interface{}) interface{} {
-		return i.(billModels2.BillDetail)
+		return i.(billModels.BillDetail)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(billModels2.BillDetail).Account
+			m += item.(billModels.BillDetail).Account
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
 		return BillChartModel{i.Key.(string), m}
-	}).ToSlice(&data)
+	}).ToSlice(&data.BillCharts)
+	data.Total = From(bill.BillDetail).Select(func(i interface{}) interface{} {
+		return i.(billModels.BillDetail).Account
+	}).SumFloats()
+	data.Total, _ = decimal.NewFromFloat(data.Total).Round(4).Float64()
 	return data, nil
 }

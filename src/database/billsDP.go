@@ -181,16 +181,22 @@ func setBillsGetTableOption(search *xorm.Session, bill *billModels.BillTable) {
 
 	search = search.Where("")
 	if len(bill.BillType) > 0 {
+		var str string
 		for _, i := range bill.BillType {
-			search = search.And("Type = ?", i)
+			str += "'" + i + "',"
 		}
+		str = str[:len(str)-1]
+		search = search.And("Type in (" + str + ")")
 	}
 
 	if len(bill.BillName) > 0 {
+		var str string
 		for _, i := range bill.BillName {
-			search = search.And("BillName = ?", i)
+			str += "'" + i + "',"
 		}
+		str = str[:len(str)-1]
 
+		search = search.And("BillName in (" + str + ")")
 	}
 
 	if bill.AccountMax != 0.0 || bill.AccountMin != 0.0 {
