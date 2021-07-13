@@ -4,11 +4,16 @@ import (
 	"Raven/src/log"
 	. "Raven/src/models/billModels"
 	"Raven/src/service"
-	"fmt"
 	"github.com/go-xorm/xorm"
 )
 
 var engine *xorm.Engine
+
+const (
+	create = 1
+	update = 2
+	delect = 3
+)
 
 func initDB() {
 	engine = service.InitDB()
@@ -16,6 +21,7 @@ func initDB() {
 
 func SetBillName() (bool, error) {
 	var bill = new(BillName)
+	var audit = new(BillNameAudit)
 	var bills BillDetail
 	var name []BillName
 	initDB()
@@ -29,12 +35,21 @@ func SetBillName() (bool, error) {
 		engine.CreateTables(bill)
 	}
 
-	err = engine.Table(bills).GroupBy("BillName").OrderBy("BillName").Select("BillName").Find(&name)
+	flag, err = engine.IsTableExist(audit)
 	if err != nil {
 		log.Writer(log.Error, err)
 		return false, err
 	}
-	err = addORUpdate(name)
+	if !flag {
+		engine.CreateTables(audit)
+	}
+
+	err = engine.Table(bills).GroupBy("BillName").OrderBy("BillName").Select("BillName, count(1) AS Count").Find(&name)
+	if err != nil {
+		log.Writer(log.Error, err)
+		return false, err
+	}
+	err = addORUpdate(&name)
 	if err != nil {
 		log.Writer(log.Error, "Work error")
 		return false, err
@@ -42,7 +57,7 @@ func SetBillName() (bool, error) {
 	return true, nil
 }
 
-func addORUpdate(bills []BillName) error {
+func addORUpdate(bills *[]BillName) error {
 	var bill = new(BillName)
 
 	session := engine.NewSession()
@@ -53,27 +68,53 @@ func addORUpdate(bills []BillName) error {
 		return err
 	}
 
-	for _, data := range bills {
+	for _, data := range *bills {
 		flag, err := engine.Where("BillName = ?", data.BillName).Get(bill)
 		if err != nil {
 			log.Writer(log.Error, err)
 			return err
 		}
 		if !flag {
-			row, err := engine.Insert(data)
+			_, err := engine.Insert(&data)
 			if err != nil {
 				log.Writer(log.Error, err)
 				return err
 			}
-			fmt.Println(row)
+			audit := setAudit(&data, create)
+			_, err = engine.Insert(audit)
+			if err != nil {
+				log.Writer(log.Error, err)
+				return err
+			}
 		} else {
-			row, err := engine.ID(bill.ID).Update(bill)
-			if err != nil {
-				log.Writer(log.Error, err)
-				return err
+			if bill.Count != data.Count {
+				bill.Count = data.Count
+
+				_, err := engine.ID(bill.ID).Update(bill)
+				if err != nil {
+					log.Writer(log.Error, err)
+					return err
+				}
+				audit := setAudit(bill, update)
+				_, err = engine.Insert(audit)
+				if err != nil {
+					log.Writer(log.Error, err)
+					return err
+				}
 			}
-			fmt.Println(row)
 		}
 	}
 	return session.Commit()
+}
+
+func setAudit(data *BillName, status int) *BillNameAudit {
+	var audit = new(BillNameAudit)
+	audit.ID = 0
+	audit.BillID = data.ID
+	audit.BillName = data.BillName
+	audit.Count = data.Count
+	audit.UpdateDate = data.UpdateDate
+	audit.CreatDate = data.CreatDate
+	audit.Status = status
+	return audit
 }
