@@ -119,3 +119,9 @@ func BillsGetDiagram(bill *billModels.BillTable) (*BillChartsData, error) {
 	data.Total, _ = decimal.NewFromFloat(data.Total).Round(4).Float64()
 	return data, nil
 }
+
+func BillsGetDataByPage(bill *billModels.BillDataByPage) *billModels.BillDataByPage {
+	database.BillsInitDB()
+	database.BillsGetDataByPage(bill)
+	return bill
+}

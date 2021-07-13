@@ -47,3 +47,21 @@ type BillNameAudit struct {
 	CreatDate  time.Time `xorm:"created"` //创建时间
 	Status     int
 }
+
+type BillData struct {
+	BillDetail `xorm:"extends"`
+	ID         int
+	Count      int
+	Color      string
+	Icon       string
+}
+
+type BillDataByPage struct {
+	BillData   []BillData
+	PageSize   int
+	PageNumber int
+}
+
+func (BillData) TableName() string {
+	return "BillDetail"
+}
