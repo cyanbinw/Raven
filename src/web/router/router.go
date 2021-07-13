@@ -25,6 +25,7 @@ func InitRouter() {
 	desireGroupV1(v1)
 	investmentGroupV1(v1)
 	targetGroupV1(v1)
+	workGroupV1(v1)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -59,4 +60,8 @@ func desireGroupV1(c *gin.RouterGroup) {
 
 func targetGroupV1(c *gin.RouterGroup) {
 	c.POST("/Target/GetTarget", controllers.GetTarget)
+}
+
+func workGroupV1(c *gin.RouterGroup) {
+	c.POST("/Work/BillNameSetWork", controllers.BillNameSetWork)
 }

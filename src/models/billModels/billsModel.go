@@ -25,3 +25,10 @@ type BillTable struct {
 	DateMax    time.Time
 	DateMin    time.Time
 }
+
+type BillName struct {
+	ID         int       `xorm:"pk autoincr"`
+	BillName   string    `xorm:"unique"`
+	UpdateDate time.Time `xorm:"updated"` //修改后自动更新时间
+	CreatDate  time.Time `xorm:"created"` //创建时间
+}
