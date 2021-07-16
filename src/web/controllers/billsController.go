@@ -70,6 +70,29 @@ func GetBillsTable(c *gin.Context) {
 	c.JSON(http.StatusOK, application.BillsGetTable(&bill))
 }
 
+//GetBillsDataByPage
+// @Tags Bill
+// @Summary 根据页面获取bill的数据
+// @Description 描述信息
+// @Param user body billModels.BillTable true "investmentData"
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} billModels.BillDataByPage
+// @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Bill/GetBillsDataByPage [post]
+func GetBillsDataByPage(c *gin.Context) {
+	var bill = billModels.BillDataByPage{}
+
+	err := c.ShouldBindJSON(&bill)
+	if err != nil {
+		log.Writer(log.Error, err)
+		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
+		return
+	}
+
+	c.JSON(http.StatusOK, application.BillsGetDataByPage(&bill))
+}
+
 //GetBillsTableOption
 // @Tags Bill
 // @Summary 获取bills表查询条件

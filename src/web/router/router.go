@@ -42,6 +42,7 @@ func billGroupV1(c *gin.RouterGroup) {
 	c.POST("/Bill/GetBillsTable", controllers.GetBillsTable)
 	c.POST("/Bill/GetBillsOption", controllers.GetBillsTableOption)
 	c.POST("/Bill/GetBillsDiagram", controllers.GetBillsDiagram)
+	c.POST("/Bill/GetBillsDataByPage", controllers.GetBillsDataByPage)
 }
 
 func investmentGroupV1(c *gin.RouterGroup) {
