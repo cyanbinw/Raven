@@ -79,7 +79,7 @@ func GetBillsTable(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} billModels.BillDataByPage
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
-// @Router /v1/Bill/GetBillsDataByPage [post]
+// @Router /v1/Bill/GetBillsAllData [post]
 func GetBillsDataByPage(c *gin.Context) {
 	var bill = billModels.BillDataByPage{}
 
