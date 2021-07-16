@@ -254,8 +254,8 @@ func BillsGetDiagram(bill *billModels.BillTable) {
 }
 
 func BillsGetDataByPage(bill *billModels.BillDataByPage) {
-	err := engine.Join("INNER", "BillName",
-		"BillName.BillName = BillDetail.BillName").
+	err := engine.Join("INNER", "BillNameConfig",
+		"BillNameConfig.BillName = BillDetail.BillName").
 		Desc("Date").
 		Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillData)
 	if err != nil {
