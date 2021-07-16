@@ -27,9 +27,11 @@ type BillTable struct {
 }
 
 type BillName struct {
-	ID         int    `xorm:"pk autoincr"`
-	BillName   string `xorm:"unique"`
+	ID         int `xorm:"pk autoincr"`
+	BillName   string
 	Count      int
+	Color      string
+	Icon       string
 	UpdateDate time.Time `xorm:"updated"` //修改后自动更新时间
 	CreatDate  time.Time `xorm:"created"` //创建时间
 }
@@ -37,8 +39,10 @@ type BillName struct {
 type BillNameAudit struct {
 	ID         int `xorm:"pk autoincr"`
 	BillID     int
-	BillName   string `xorm:"unique"`
+	BillName   string
 	Count      int
+	Color      string
+	Icon       string
 	UpdateDate time.Time `xorm:"updated"` //修改后自动更新时间
 	CreatDate  time.Time `xorm:"created"` //创建时间
 	Status     int

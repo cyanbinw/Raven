@@ -113,6 +113,8 @@ func setAudit(data *BillName, status int) *BillNameAudit {
 	audit.BillID = data.ID
 	audit.BillName = data.BillName
 	audit.Count = data.Count
+	audit.Color = data.Color
+	audit.Icon = data.Icon
 	audit.UpdateDate = data.UpdateDate
 	audit.CreatDate = data.CreatDate
 	audit.Status = status
