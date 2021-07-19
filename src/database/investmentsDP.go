@@ -308,30 +308,30 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 
 	if data.Investment.ItemID == 0 {
 		var num int
-		_, err = engine.Table("Investment").Cols("MAX(ItemID)").Get(&num)
+		_, err = engine.Table("Investment").Select("MAX(ItemID)").Get(&num)
 		if err != nil {
 			log.Writer(log.Error, err)
 		}
 		data.Investment.ItemID = num + 1
 	}
-
 	_, err = engine.Insert(&data.Investment)
 
 	if err != nil {
+		log.Writer(log.Error, err)
 		if err = session.Rollback(); err != nil {
 			log.Writer(log.Error, err)
 		}
-		log.Writer(log.Error, err)
+
 		return false, err
 	}
 
 	if data.Investment.IsEmpty == true {
 		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
 		if err != nil {
+			log.Writer(log.Error, err)
 			if err = session.Rollback(); err != nil {
 				log.Writer(log.Error, err)
 			}
-			log.Writer(log.Error, err)
 			return false, err
 		}
 	}
