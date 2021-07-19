@@ -26,7 +26,7 @@ type BillTable struct {
 	DateMin    time.Time
 }
 
-type BillName struct {
+type BillNameConfig struct {
 	ID         int `xorm:"pk autoincr"`
 	BillName   string
 	Count      int
@@ -36,7 +36,7 @@ type BillName struct {
 	CreatDate  time.Time `xorm:"created"` //创建时间
 }
 
-type BillNameAudit struct {
+type BillNameConfigAudit struct {
 	ID         int `xorm:"pk autoincr"`
 	BillID     int
 	BillName   string

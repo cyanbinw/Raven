@@ -20,10 +20,10 @@ func initDB() {
 }
 
 func SetBillName() (bool, error) {
-	var bill = new(BillName)
-	var audit = new(BillNameAudit)
+	var bill = new(BillNameConfig)
+	var audit = new(BillNameConfigAudit)
 	var bills BillDetail
-	var name []BillName
+	var name []BillNameConfig
 	initDB()
 
 	flag, err := engine.IsTableExist(bill)
@@ -57,8 +57,8 @@ func SetBillName() (bool, error) {
 	return true, nil
 }
 
-func addORUpdate(bills *[]BillName) error {
-	var bill = new(BillName)
+func addORUpdate(bills *[]BillNameConfig) error {
+	var bill = new(BillNameConfig)
 
 	session := engine.NewSession()
 	defer session.Close()
@@ -107,8 +107,8 @@ func addORUpdate(bills *[]BillName) error {
 	return session.Commit()
 }
 
-func setAudit(data *BillName, status int) *BillNameAudit {
-	var audit = new(BillNameAudit)
+func setAudit(data *BillNameConfig, status int) *BillNameConfigAudit {
+	var audit = new(BillNameConfigAudit)
 	audit.ID = 0
 	audit.BillID = data.ID
 	audit.BillName = data.BillName
@@ -119,4 +119,24 @@ func setAudit(data *BillName, status int) *BillNameAudit {
 	audit.CreatDate = data.CreatDate
 	audit.Status = status
 	return audit
+}
+
+func GetBillNameList() *[]BillNameConfig {
+	initDB()
+	var data []BillNameConfig
+	err := engine.Find(&data)
+	if err != nil {
+		log.Writer(log.Error, err)
+	}
+	return &data
+}
+
+func UpdateBillName(data *BillNameConfig) bool {
+	initDB()
+	_, err := engine.ID(data.ID).Cols("Color", "Icon").Update(data)
+	if err != nil {
+		log.Writer(log.Error, err)
+		return false
+	}
+	return true
 }

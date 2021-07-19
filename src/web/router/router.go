@@ -65,4 +65,6 @@ func targetGroupV1(c *gin.RouterGroup) {
 
 func workGroupV1(c *gin.RouterGroup) {
 	c.POST("/Work/BillNameSetWork", controllers.BillNameSetWork)
+	c.POST("/Work/GetBillNameList", controllers.GetBillNameList)
+	c.POST("/Work/UpdateBillName", controllers.UpdateBillName)
 }
