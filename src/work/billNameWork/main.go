@@ -1,10 +1,10 @@
 package main
 
 import (
-	"Raven/src/work/billNameWork"
+	"Raven/src/work/billNameWork/billNameService"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	billNameWork.SetBillName()
+	billNameService.SetBillName()
 }
