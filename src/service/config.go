@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	DB ConnectString `yaml:"db"`
+	BusinessDB ConnectString `yaml:"business_db"`
+	LogDB      ConnectString `yaml:"log_db"`
 }
 
 type ConnectString struct {
@@ -31,9 +32,16 @@ func getConfig() {
 	}
 }
 
-func GetConnectString() ConnectString {
+func GetBusinessConnectString() ConnectString {
 	if item == nil {
 		getConfig()
 	}
-	return item.DB
+	return item.BusinessDB
+}
+
+func GetLogConnectString() ConnectString {
+	if item == nil {
+		getConfig()
+	}
+	return item.LogDB
 }

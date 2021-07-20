@@ -4,7 +4,7 @@ import (
 	"Raven/src/application"
 	"Raven/src/log"
 	"Raven/src/models/investmentsModels"
-	service2 "Raven/src/service"
+	"Raven/src/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -56,7 +56,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	log.Writer(log.Info, service2.ToJSON(investmentData.Investment))
+	log.Writer(log.Info, service.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -91,7 +91,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	log.Writer(log.Info, service2.ToJSON(investmentData.Investment))
+	log.Writer(log.Info, service.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		log.Writer(log.Error, err)
