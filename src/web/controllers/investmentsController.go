@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/application"
 	"github.com/WFallenDown/Raven/src/web/models/investmentsModels"
@@ -56,7 +57,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	log.Writer(log.Info, service.ToJSON(investmentData.Investment))
+	Helheim.Writer(log.Info, service.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		log.Writer(log.Error, err)
@@ -91,10 +92,10 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	log.Writer(log.Info, service.ToJSON(investmentData.Investment))
+	Helheim.Writer(log.Info, service.ToJSON(investmentData.Investment))
 
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
@@ -103,7 +104,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	flag, err := application.UpdateInvestmentTable(&investmentData)
 
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Error: err.Error(), Successful: false})
 		return
 	}
