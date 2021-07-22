@@ -9,4 +9,4 @@ log_db:
   password: 123456
   ip: 127.0.0.1
   port: 27017
-  dbname: Helheim
+  dbname: test_log_db

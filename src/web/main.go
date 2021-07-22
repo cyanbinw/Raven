@@ -1,10 +1,10 @@
 package main
 
 import (
-	"Raven/src/log"
-	"Raven/src/web/router"
 	"bytes"
 	"fmt"
+	"github.com/WFallenDown/Raven/src/log"
+	"github.com/WFallenDown/Raven/src/web/router"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
 	"os/exec"

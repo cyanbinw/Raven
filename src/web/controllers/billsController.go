@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"Raven/src/application"
-	"Raven/src/log"
-	"Raven/src/models/billModels"
+	"github.com/WFallenDown/Raven/src/log"
+	"github.com/WFallenDown/Raven/src/web/application"
+	"github.com/WFallenDown/Raven/src/web/models/billModels"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

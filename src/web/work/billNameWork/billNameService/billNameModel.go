@@ -1,9 +1,9 @@
 package billNameService
 
 import (
-	"Raven/src/log"
-	. "Raven/src/models/billModels"
-	"Raven/src/service"
+	"github.com/WFallenDown/Raven/src/log"
+	. "github.com/WFallenDown/Raven/src/web/models/billModels"
+	"github.com/WFallenDown/Raven/src/web/service"
 	"github.com/go-xorm/xorm"
 )
 

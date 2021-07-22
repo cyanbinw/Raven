@@ -1,4 +1,541 @@
+definitions:
+  application.BillOption:
+    properties:
+      billName:
+        items:
+          type: string
+        type: array
+      billType:
+        items:
+          type: string
+        type: array
+    type: object
+  application.InvestmentOption:
+    properties:
+      activity:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentActivity'
+        type: array
+      item:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentItem'
+        type: array
+      type:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentType'
+        type: array
+    type: object
+  application.InvestmentsChartModel:
+    properties:
+      account:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
+        type: array
+      netWorth:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
+        type: array
+      share:
+        items:
+          $ref: '#/definitions/investmentsModels.InvestmentChartModel'
+        type: array
+    type: object
+  billModels.BillData:
+    properties:
+      account:
+        type: number
+      billName:
+        type: string
+      billNumber:
+        type: string
+      color:
+        type: string
+      count:
+        type: integer
+      date:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      remarks:
+        type: string
+      type:
+        type: string
+    type: object
+  billModels.BillDataByPage:
+    properties:
+      billData:
+        items:
+          $ref: '#/definitions/billModels.BillData'
+        type: array
+      pageNumber:
+        type: integer
+      pageSize:
+        type: integer
+    type: object
+  billModels.BillDetail:
+    properties:
+      account:
+        type: number
+      billName:
+        type: string
+      billNumber:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      remarks:
+        type: string
+      type:
+        type: string
+    type: object
+  billModels.BillNameConfig:
+    properties:
+      billName:
+        type: string
+      color:
+        type: string
+      count:
+        type: integer
+      creatDate:
+        description: 创建时间
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      updateDate:
+        description: 修改后自动更新时间
+        type: string
+    type: object
+  billModels.BillTable:
+    properties:
+      accountMax:
+        type: number
+      accountMin:
+        type: number
+      billDetail:
+        items:
+          $ref: '#/definitions/billModels.BillDetail'
+        type: array
+      billName:
+        items:
+          type: string
+        type: array
+      billType:
+        items:
+          type: string
+        type: array
+      dateMax:
+        type: string
+      dateMin:
+        type: string
+      pageNumber:
+        type: integer
+      pageSize:
+        type: integer
+      total:
+        type: integer
+    type: object
+  controllers.ReturnData:
+    properties:
+      data:
+        type: object
+      error:
+        type: string
+      message:
+        type: string
+      successful:
+        type: boolean
+    type: object
+  investmentsModels.Investment:
+    properties:
+      account:
+        type: number
+      activity:
+        type: integer
+      date:
+        type: string
+      id:
+        type: integer
+      isEmpty:
+        type: boolean
+      itemID:
+        type: integer
+      name:
+        type: string
+      netWorth:
+        type: number
+      share:
+        type: number
+      type:
+        type: integer
+    type: object
+  investmentsModels.InvestmentActivity:
+    properties:
+      activityID:
+        type: integer
+      activityName:
+        type: string
+      insertDate:
+        type: string
+    type: object
+  investmentsModels.InvestmentChartModel:
+    properties:
+      name:
+        type: string
+      value:
+        type: number
+    type: object
+  investmentsModels.InvestmentItem:
+    properties:
+      itemID:
+        type: integer
+      name:
+        type: string
+    type: object
+  investmentsModels.InvestmentTable:
+    properties:
+      account:
+        type: number
+      activity:
+        type: integer
+      activityName:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      isEmpty:
+        type: boolean
+      itemID:
+        type: integer
+      name:
+        type: string
+      netWorth:
+        type: number
+      share:
+        type: number
+      type:
+        type: integer
+      typeName:
+        type: string
+    type: object
+  investmentsModels.InvestmentType:
+    properties:
+      insertDate:
+        type: string
+      typeID:
+        type: integer
+      typeName:
+        type: string
+    type: object
+  log.Record:
+    properties:
+      err:
+        type: object
+      timePoint:
+        $ref: '#/definitions/log.TimePoint'
+        description: 执行时间点
+    type: object
+  log.TimePoint:
+    properties:
+      endTime:
+        type: integer
+      startTime:
+        type: integer
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /v1/Bill/GetBillsAllData:
+    post:
+      description: 描述信息
+      parameters:
+      - description: investmentData
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/billModels.BillTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/billModels.BillDataByPage'
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 根据页面获取bill的数据
+      tags:
+      - Bill
+  /v1/Bill/GetBillsDataByMonth:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/billModels.BillDetail'
+            type: array
+      security:
+      - Bearer: []
+      summary: 获取最近四个月的bills
+      tags:
+      - Bill
+  /v1/Bill/GetBillsDiagram:
+    post:
+      description: 描述信息
+      parameters:
+      - description: investmentData
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/billModels.BillTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/billModels.BillTable'
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 获取bills表信息
+      tags:
+      - Bill
+  /v1/Bill/GetBillsTable:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/application.BillOption'
+      security:
+      - Bearer: []
+      summary: 获取bills表查询条件
+      tags:
+      - Bill
+  /v1/Bill/GetBillsYearAllData:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/billModels.BillDetail'
+            type: array
+      security:
+      - Bearer: []
+      summary: 获取最近一年的bills
+      tags:
+      - Bill
+  /v1/Bill/GetLogTable:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/log.Record'
+            type: array
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+        "500":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 查看Log
+      tags:
+      - Log
+  /v1/Investment/AddInvestmentsTable:
+    post:
+      description: 描述信息
+      parameters:
+      - description: investmentData
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/investmentsModels.InvestmentTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+        "500":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 添加新数据
+      tags:
+      - Investment
+  /v1/Investment/GetInvestmentDiagram:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/application.InvestmentOption'
+        "500":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 获取查询条件信息(table page)
+      tags:
+      - Investment
+  /v1/Investment/GetInvestments:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/application.InvestmentsChartModel'
+      security:
+      - Bearer: []
+      summary: 获取Investments的金额分类
+      tags:
+      - Investment
+  /v1/Investment/GetInvestmentsTable:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/investmentsModels.InvestmentTable'
+            type: array
+      security:
+      - Bearer: []
+      summary: 获取Investments的表数据
+      tags:
+      - Investment
+  /v1/Investment/UpdateInvestmentsTable:
+    post:
+      description: 描述信息
+      parameters:
+      - description: investmentData
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/investmentsModels.InvestmentTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+        "500":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 更新一条数据
+      tags:
+      - Investment
+  /v1/Work/BillNameSetWork:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 每月更新数据库后更新BillName表
+      tags:
+      - Work
+  /v1/Work/GetBillNameList:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/billModels.BillNameConfig'
+            type: array
+      security:
+      - Bearer: []
+      summary: 获取所有BillName
+      tags:
+      - Work
+  /v1/Work/UpdateBillName:
+    post:
+      description: 描述信息
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+        "400":
+          description: Successful":true,"data":null,"Error":"", Message:""}
+          schema:
+            $ref: '#/definitions/controllers.ReturnData'
+      security:
+      - Bearer: []
+      summary: 更新BillName
+      tags:
+      - Work
 swagger: "2.0"

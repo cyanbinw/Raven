@@ -1,11 +1,11 @@
 package database
 
 import (
-	"Raven/src/log"
-	. "Raven/src/models/investmentsModels"
-	"Raven/src/service"
 	"database/sql"
 	"fmt"
+	"github.com/WFallenDown/Raven/src/log"
+	. "github.com/WFallenDown/Raven/src/web/models/investmentsModels"
+	"github.com/WFallenDown/Raven/src/web/service"
 	"strings"
 )
 
