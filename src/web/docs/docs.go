@@ -210,7 +210,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/log.Record"
+                                "$ref": "#/definitions/Helheim.Record"
                             }
                         }
                     },
@@ -851,7 +851,7 @@ var doc = `{
                 }
             }
         },
-        "log.Record": {
+        "Helheim.Record": {
             "type": "object",
             "properties": {
                 "err": {
@@ -859,11 +859,11 @@ var doc = `{
                 },
                 "timePoint": {
                     "description": "执行时间点",
-                    "$ref": "#/definitions/log.TimePoint"
+                    "$ref": "#/definitions/Helheim.TimePoint"
                 }
             }
         },
-        "log.TimePoint": {
+        "Helheim.TimePoint": {
             "type": "object",
             "properties": {
                 "endTime": {

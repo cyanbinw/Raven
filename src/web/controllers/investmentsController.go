@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/application"
 	"github.com/WFallenDown/Raven/src/web/models/investmentsModels"
 	"github.com/WFallenDown/Raven/src/web/service"
@@ -57,10 +56,10 @@ func AddInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	Helheim.Writer(log.Info, service.ToJSON(investmentData.Investment))
+	Helheim.Writer(Helheim.Info, service.ToJSON(investmentData.Investment))
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
@@ -69,7 +68,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	flag, err := application.AddInvestmentTable(&investmentData)
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Error: err.Error(), Successful: false})
 		return
 	}
@@ -92,10 +91,10 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	Helheim.Writer(log.Info, service.ToJSON(investmentData.Investment))
+	Helheim.Writer(Helheim.Info, service.ToJSON(investmentData.Investment))
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
@@ -104,7 +103,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	flag, err := application.UpdateInvestmentTable(&investmentData)
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Error: err.Error(), Successful: false})
 		return
 	}
@@ -126,7 +125,7 @@ func GetInvestmentDiagram(c *gin.Context) {
 	data, err := application.GetInvestmentDiagram()
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{
 			Successful: false,
 			Error:      err.Error(),
@@ -150,7 +149,7 @@ func GetInvestmentOption(c *gin.Context) {
 	data, err := application.GetInvestmentOption()
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Error: err.Error(), Successful: false})
 		return
 	}

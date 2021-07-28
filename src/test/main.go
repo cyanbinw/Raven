@@ -15,7 +15,7 @@ func main() {
 
 	//bitXOR()
 	//regular()
-	//log.InsertLog()
+	//Helheim.InsertLog()
 }
 
 func regular() {

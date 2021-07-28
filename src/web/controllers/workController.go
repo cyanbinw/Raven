@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/models/billModels"
 	"github.com/WFallenDown/Raven/src/web/service"
 	"github.com/WFallenDown/Raven/src/web/work/billNameWork/billNameService"
@@ -52,11 +51,11 @@ func UpdateBillName(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&bill)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
-	Helheim.Writer(log.Info, service.ToJSON(bill))
+	Helheim.Writer(Helheim.Info, service.ToJSON(bill))
 	r := new(ReturnData)
 	flag := billNameService.UpdateBillName(&bill)
 	r.Successful = flag

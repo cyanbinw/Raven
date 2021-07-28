@@ -232,15 +232,15 @@ definitions:
       typeName:
         type: string
     type: object
-  log.Record:
+  Helheim.Record:
     properties:
       err:
         type: object
       timePoint:
-        $ref: '#/definitions/log.TimePoint'
+        $ref: '#/definitions/Helheim.TimePoint'
         description: 执行时间点
     type: object
-  log.TimePoint:
+  Helheim.TimePoint:
     properties:
       endTime:
         type: integer
@@ -361,7 +361,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/log.Record'
+              $ref: '#/definitions/Helheim.Record'
             type: array
         "400":
           description: Successful":true,"data":null,"Error":"", Message:""}
