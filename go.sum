@@ -12,8 +12,8 @@ github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
-github.com/WFallenDown/Helheim v0.0.0-20210722053247-b92aac5b22ec h1:ePbI1I8W4Zzet8Q2Y5nFbSxXr9bHlTZU8rFB0fliKRs=
-github.com/WFallenDown/Helheim v0.0.0-20210722053247-b92aac5b22ec/go.mod h1:3tNJgnbcAZkniX+bYANyHBWZ7N6y2MFNhibQMWApbK0=
+github.com/WFallenDown/Helheim v1.0.1 h1:g/azsl2nL/tE9BYmeAqiViNrAK2AYgzJknMyg2oDeMc=
+github.com/WFallenDown/Helheim v1.0.1/go.mod h1:3tNJgnbcAZkniX+bYANyHBWZ7N6y2MFNhibQMWApbK0=
 github.com/ahmetb/go-linq/v3 v3.2.0 h1:BEuMfp+b59io8g5wYzNoFe9pWPalRklhlhbiU3hYZDE=
 github.com/ahmetb/go-linq/v3 v3.2.0/go.mod h1:haQ3JfOeWK8HpVxMtHHEMPVgBKiYyQ+f1/kLZh/cj9U=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=

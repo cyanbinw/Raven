@@ -18,14 +18,15 @@ import (
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetLogTable [post]
 func GetLogTable(c *gin.Context) {
-	var data = Helheim.RecordList{}
+	var data = new(Helheim.RecordList)
+	record := new(Helheim.MongoRecord)
 	if err := c.ShouldBindJSON(&data); err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
 
-	if err := Helheim.GetLog(&data); err != nil {
+	if err := record.GetLog(data); err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
