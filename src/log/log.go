@@ -66,6 +66,8 @@ func Writer(l *log.Logger, mess interface{}) error {
 	l.Println(fileName, line, mess)
 	fmt.Println(fileName, line, mess)
 
+	InsertLog(fileName, line, mess)
+
 	mutex.Unlock()
 	return nil
 }

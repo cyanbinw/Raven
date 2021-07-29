@@ -1,7 +1,6 @@
 package service
 
 import (
-	"Raven/src/log"
 	"encoding/json"
 	"fmt"
 	"github.com/go-xorm/xorm"
@@ -33,7 +32,7 @@ func InitDB() *xorm.Engine {
 		return engine
 	}
 
-	v := GetConnectString()
+	v := GetBusinessConnectString()
 
 	//构建连接："用户名:密码@tcp(IP:端口)/数据库?charset=utf8"
 	path := strings.Join([]string{v.UserName, ":", v.Password, "@tcp(", v.Ip, ":", v.Port, ")/", v.DbName, "?charset=utf8"}, "")
@@ -49,7 +48,7 @@ func InitDB() *xorm.Engine {
 func ToJSON(data interface{}) string {
 	jsons, err := json.Marshal(data) //转换成JSON返回的是byte[]
 	if err != nil {
-		log.Writer(log.Error, err)
+		fmt.Println(err)
 		return ""
 	}
 	return string(jsons)

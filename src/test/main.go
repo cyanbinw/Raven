@@ -14,7 +14,8 @@ func main() {
 	//fmt.Println(investmentData)
 
 	//bitXOR()
-	regular()
+	//regular()
+	//log.InsertLog()
 }
 
 func regular() {
