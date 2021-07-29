@@ -4,7 +4,7 @@ import (
 	"Raven/src/log"
 	"Raven/src/models/billModels"
 	service2 "Raven/src/service"
-	"Raven/src/work/billNameWork"
+	"Raven/src/work/billNameWork/billNameService"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,7 +19,7 @@ import (
 // @Router /v1/Work/BillNameSetWork [post]
 func BillNameSetWork(c *gin.Context) {
 	r := new(ReturnData)
-	flag, err := billNameWork.SetBillName()
+	flag, err := billNameService.SetBillName()
 	r.Successful = flag
 	r.Error = err.Error()
 	c.JSON(http.StatusOK, r)
@@ -34,7 +34,7 @@ func BillNameSetWork(c *gin.Context) {
 // @Success 200 {object} []billModels.BillNameConfig
 // @Router /v1/Work/GetBillNameList [post]
 func GetBillNameList(c *gin.Context) {
-	c.JSON(http.StatusOK, billNameWork.GetBillNameList())
+	c.JSON(http.StatusOK, billNameService.GetBillNameList())
 }
 
 //UpdateBillName
@@ -57,7 +57,7 @@ func UpdateBillName(c *gin.Context) {
 	}
 	log.Writer(log.Info, service2.ToJSON(bill))
 	r := new(ReturnData)
-	flag := billNameWork.UpdateBillName(&bill)
+	flag := billNameService.UpdateBillName(&bill)
 	r.Successful = flag
 	c.JSON(http.StatusOK, r)
 }
