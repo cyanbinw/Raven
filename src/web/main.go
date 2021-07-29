@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/src/web/router"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
@@ -12,7 +11,6 @@ import (
 
 func main() {
 	//runCommand()
-	Helheim.Init()
 	router.InitRouter()
 }
 
