@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/router"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
@@ -12,7 +11,7 @@ import (
 
 func main() {
 	//runCommand()
-	log.Init()
+	//log.Init()
 	router.InitRouter()
 }
 

@@ -27,8 +27,7 @@ var (
 	mutex   sync.Mutex  // 写入锁
 )
 
-func Init() {
-
+func init() {
 	Trace = log.New(ioutil.Discard,
 		"TRACE: ",
 		log.Ldate|log.Ltime)
