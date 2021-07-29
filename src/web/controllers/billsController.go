@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/application"
 	"github.com/WFallenDown/Raven/src/web/models/billModels"
 	"github.com/gin-gonic/gin"
@@ -56,7 +55,7 @@ func GetBillsTable(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&bill)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
@@ -86,7 +85,7 @@ func GetBillsDataByPage(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&bill)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
@@ -121,14 +120,14 @@ func GetBillsDiagram(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&bill)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
 
 	data, err := application.BillsGetDiagram(&bill)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 		c.JSON(http.StatusInternalServerError, ReturnData{Message: "查询错误", Error: err.Error(), Successful: false})
 		return
 	}

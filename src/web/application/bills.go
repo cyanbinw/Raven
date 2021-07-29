@@ -3,7 +3,6 @@ package application
 import (
 	"encoding/json"
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/database"
 	"github.com/WFallenDown/Raven/src/web/models/billModels"
 	"github.com/WFallenDown/Raven/src/web/service"
@@ -55,7 +54,7 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 	src := strconv.Itoa(data.Year) + ".json"
 	val, err := json.MarshalIndent(data.Data, "", "	") // 第二个表示每行的前缀，这里不用，第三个是缩进符号，这里用tab
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 
 	if service.CheckFileIsExist(src) { //如果文件存在

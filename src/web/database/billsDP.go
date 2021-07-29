@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/log"
 	"github.com/WFallenDown/Raven/src/web/models/billModels"
 	"github.com/WFallenDown/Raven/src/web/service"
 	"github.com/go-xorm/xorm"
@@ -71,7 +70,7 @@ func billsGetYearDataV1(data *[]billModels.BillDetail, year int) {
 	}()
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 
 	for row.Next() {
@@ -85,7 +84,7 @@ func billsGetYearDataV1(data *[]billModels.BillDetail, year int) {
 			&lastLoginTime,
 			&billDetail.Remarks,
 		); err != nil {
-			Helheim.Writer(log.Error, err)
+			Helheim.Writer(Helheim.Error, err)
 		}
 		//DefaultTimeLoc := time.Local
 
@@ -101,7 +100,7 @@ func BillsGetDataByMonth(data *[]billModels.BillDetail) {
 
 	err := engine.SQL("select * from BillDetail where Type = '支出' and Date > (select DATE_ADD(Max(date_format(Date,'%Y-%m-01') ),INTERVAL -? Month) from BillDetail) ORDER BY Date DESC", month-1).Find(data)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 }
 
@@ -127,7 +126,7 @@ func billsGetFourMonthsDataV1(data *[]billModels.BillDetail, year int) {
 	}()
 
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 
 	for row.Next() {
@@ -141,7 +140,7 @@ func billsGetFourMonthsDataV1(data *[]billModels.BillDetail, year int) {
 			&lastLoginTime,
 			&billDetail.Remarks,
 		); err != nil {
-			Helheim.Writer(log.Error, err)
+			Helheim.Writer(Helheim.Error, err)
 		}
 		//DefaultTimeLoc := time.Local
 
@@ -162,7 +161,7 @@ func BillsGetTable(bill *billModels.BillTable) {
 
 	err := row.Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillDetail)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 
 	count := engine.Table("BillDetail")
@@ -234,11 +233,11 @@ func BillsGetTableOption() ([]string, []string) {
 
 	err := engine.Table("BillDetail").GroupBy("BillName").Find(&billName)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 	err = engine.Table("BillDetail").GroupBy("Type").Find(&billType)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 	return billName, billType
 }
@@ -250,7 +249,7 @@ func BillsGetDiagram(bill *billModels.BillTable) {
 
 	err := row.Find(&bill.BillDetail)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 }
 
@@ -260,6 +259,6 @@ func BillsGetDataByPage(bill *billModels.BillDataByPage) {
 		Desc("Date").
 		Limit(bill.PageSize, (bill.PageNumber-1)*bill.PageSize).Find(&bill.BillData)
 	if err != nil {
-		Helheim.Writer(log.Error, err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 }
