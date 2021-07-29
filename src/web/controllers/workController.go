@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"Raven/src/log"
-	"Raven/src/models/billModels"
-	service2 "Raven/src/service"
-	"Raven/src/work/billNameWork/billNameService"
+	"github.com/WFallenDown/Raven/src/log"
+	"github.com/WFallenDown/Raven/src/web/models/billModels"
+	"github.com/WFallenDown/Raven/src/web/service"
+	"github.com/WFallenDown/Raven/src/web/work/billNameWork/billNameService"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -55,7 +55,7 @@ func UpdateBillName(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
-	log.Writer(log.Info, service2.ToJSON(bill))
+	log.Writer(log.Info, service.ToJSON(bill))
 	r := new(ReturnData)
 	flag := billNameService.UpdateBillName(&bill)
 	r.Successful = flag

@@ -1,4 +1,4 @@
-module Raven
+module github.com/WFallenDown/Raven
 
 go 1.16
 

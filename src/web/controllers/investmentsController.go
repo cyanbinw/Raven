@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"Raven/src/application"
-	"Raven/src/log"
-	"Raven/src/models/investmentsModels"
-	"Raven/src/service"
+	"github.com/WFallenDown/Raven/src/log"
+	"github.com/WFallenDown/Raven/src/web/application"
+	"github.com/WFallenDown/Raven/src/web/models/investmentsModels"
+	"github.com/WFallenDown/Raven/src/web/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

@@ -72,6 +72,30 @@ func Writer(l *log.Logger, mess interface{}) error {
 	return nil
 }
 
+func logError(l *log.Logger, mess interface{}) error {
+	mutex.Lock()
+	var path = PATH + time.Now().Format(FORMAT)
+	if !isExist(PATH) {
+		return createDir(PATH)
+	}
+
+	file, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer file.Close()
+
+	_, fileName, line, _ := runtime.Caller(1)
+
+	l.SetOutput(file)
+	l.Println(fileName, line, mess)
+	fmt.Println(fileName, line, mess)
+
+	mutex.Unlock()
+	return nil
+}
+
 //createDir  文件夹创建
 func createDir(path string) error {
 	err := os.MkdirAll(path, os.ModePerm)
