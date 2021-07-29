@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/src/log"
 	. "github.com/WFallenDown/Raven/src/web/models/investmentsModels"
 	"github.com/WFallenDown/Raven/src/web/service"
@@ -19,7 +20,7 @@ func investmentsInitDBV1() {
 	path := strings.Join([]string{userName, ":", password, "@tcp(", ip, ":", port, ")/", dbName, "?charset=utf8"}, "")
 	db, err = sql.Open("mysql", path)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	//设置数据库最大连接数
 	db.SetConnMaxLifetime(100)
@@ -27,7 +28,7 @@ func investmentsInitDBV1() {
 	db.SetMaxIdleConns(10)
 	//验证连接
 	if err = db.Ping(); err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return
 	}
 }
@@ -37,7 +38,7 @@ func InvestmentGetAll() []Investment {
 
 	err := engine.Find(&investments)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	return investments
 }
@@ -50,7 +51,7 @@ func investmentGetAllV1() {
 	//pEveryOne := make([]Investment, 0)
 	err := engine.Find(&investment)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	investmentDetail := new(Investment)
@@ -62,16 +63,16 @@ func investmentGetAllV1() {
 
 	/*	_, err := engine.Get(&investments)
 		if err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 		}*/
 	row, err := db.Query("select * from Investment")
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	defer func() {
 		if row != nil {
 			if err = row.Close(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
 		}
 	}()
@@ -107,23 +108,23 @@ func InvestmentGetDataToChart() (*[]InvestmentChartModel, *[]InvestmentChartMode
 	var account, share, netWorth []InvestmentChartModel
 	err := engine.SQL("select Name, sum(Account) Value from Investment where IsEmpty <> 1 group by Name").Find(&account)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	/*	err := engine.Table("Investment").GroupBy("Name").Select("select Name, sum(Account) Value").Find(&investmentsChartModel.Account)
 		if err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 		}*/
 
 	err = engine.SQL("select Name, sum(Share) Value from Investment where IsEmpty <> 1 group by Name").Find(&share)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	err = engine.SQL("select Name, avg(NetWorth) Value from Investment where where IsEmpty <> 1 and TypeID <> 3 group by Name").Find(&netWorth)
 
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	return &account, &share, &netWorth
@@ -133,7 +134,7 @@ func InvestmentGetChart() []Investment {
 	var Item []Investment
 	err := engine.Where("IsEmpty <> ?", 1).And("ActivityStatus <> ?", 4).Find(&Item)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	return Item
@@ -150,18 +151,18 @@ func investmentGetDataToChartV1() {
 
 	row1, err := db.Query("select Name, sum(Account) from Investment group by Name")
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	defer func() {
 		if row1 != nil {
 			if err = row1.Close(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
 		}
 	}()
 
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	for row1.Next() {
@@ -169,7 +170,7 @@ func investmentGetDataToChartV1() {
 			&investmentDetail.Name,
 			&investmentDetail.Value,
 		); err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 		}
 
 		service.CheckErr(err)
@@ -178,12 +179,12 @@ func investmentGetDataToChartV1() {
 
 	row2, err := db.Query("select Name, sum(Share) from Investment group by Name")
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	defer func() {
 		if row2 != nil {
 			if err = row2.Close(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
 		}
 	}()
@@ -206,12 +207,12 @@ func investmentGetDataToChartV1() {
 
 	row3, err := db.Query("select Name, avg(NetWorth) from Investment where ID != 23 group by Name")
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	defer func() {
 		if row3 != nil {
 			if err = row3.Close(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
 		}
 	}()
@@ -240,7 +241,7 @@ func InvestmentGetTable() []InvestmentTable {
 		Join("INNER", "InvestmentType",
 			"InvestmentType.TypeID = Investment.TypeID").Find(&investments)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	return investments
 }
@@ -259,13 +260,13 @@ func investmentGetTableV1() []InvestmentTable {
 	defer func() {
 		if row != nil {
 			if err = row.Close(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
 		}
 	}()
 
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	for row.Next() {
@@ -282,7 +283,7 @@ func investmentGetTableV1() []InvestmentTable {
 			&investmentDetail.TypeName,
 			&investmentDetail.ActivityName,
 		); err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 		}
 		//DefaultTimeLoc := time.Local
 		if lastLoginTime != "" {
@@ -310,16 +311,16 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 		var num int
 		_, err = engine.Table("Investment").Select("MAX(ItemID)").Get(&num)
 		if err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 		}
 		data.Investment.ItemID = num + 1
 	}
 	_, err = engine.Insert(&data.Investment)
 
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		if err = session.Rollback(); err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 		}
 
 		return false, err
@@ -328,9 +329,9 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 	if data.Investment.IsEmpty == true {
 		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
 		if err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 			if err = session.Rollback(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
 			return false, err
 		}
@@ -354,12 +355,12 @@ func investmentAddTableV1(data InvestmentTable) (bool, error) {
 
 	result, err := db.Exec("INSERT INTO Investment (`Name`,Account,Share,NetWorth,`Date`,TypeID, ActivityStatus)VALUES(?,?,?,?,?,?,?)", data.Name, data.Account, data.Share, data.NetWorth, date, data.TypeID, data.ActivityStatus)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	id, err := result.LastInsertId()
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	if id > 0 {
@@ -388,9 +389,9 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
 		if err != nil {
 			if err = session.Rollback(); err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 			}
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 			return false, err
 		}
 	}
@@ -414,12 +415,12 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	result, err := db.Exec("Update Investment Set `Name` = ?, Account = ?, Share = ?, NetWorth = ?, `Date` = ?, TypeID = ?, ActivityStatus = ? Where ID = ?",
 		data.Name, data.Account, data.Share, data.NetWorth, insterDate, data.TypeID, data.ActivityStatus, data.ID)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	id, err := result.RowsAffected()
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	if id > 0 {
@@ -435,7 +436,7 @@ func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []Investment
 
 	err := engine.Find(&itype)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 
 	err = engine.Find(&iactivity)
@@ -449,7 +450,7 @@ func InvestmentGetDateOrderbyDate() *[]Investment {
 	var investments []Investment
 	err := engine.OrderBy("Date").Find(&investments)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	return &investments
 }

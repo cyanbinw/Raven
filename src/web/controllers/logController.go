@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/src/log"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -20,7 +21,7 @@ import (
 func GetLogTable(c *gin.Context) {
 	var data = log.RecordList{}
 	if err := c.ShouldBindJSON(&data); err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}

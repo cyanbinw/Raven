@@ -1,6 +1,7 @@
 package billNameService
 
 import (
+	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/src/log"
 	. "github.com/WFallenDown/Raven/src/web/models/billModels"
 	"github.com/WFallenDown/Raven/src/web/service"
@@ -28,7 +29,7 @@ func SetBillName() (bool, error) {
 
 	flag, err := engine.IsTableExist(bill)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	if !flag {
@@ -37,7 +38,7 @@ func SetBillName() (bool, error) {
 
 	flag, err = engine.IsTableExist(audit)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	if !flag {
@@ -46,12 +47,12 @@ func SetBillName() (bool, error) {
 
 	err = engine.Table(bills).GroupBy("BillName").OrderBy("BillName").Select("BillName, count(1) AS Count").Find(&name)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false, err
 	}
 	err = addORUpdate(&name)
 	if err != nil {
-		log.Writer(log.Error, "Work error")
+		Helheim.Writer(log.Error, "Work error")
 		return false, err
 	}
 	return true, nil
@@ -71,19 +72,19 @@ func addORUpdate(bills *[]BillNameConfig) error {
 	for _, data := range *bills {
 		flag, err := engine.Where("BillName = ?", data.BillName).Get(bill)
 		if err != nil {
-			log.Writer(log.Error, err)
+			Helheim.Writer(log.Error, err)
 			return err
 		}
 		if !flag {
 			_, err := engine.Insert(&data)
 			if err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 				return err
 			}
 			audit := setAudit(&data, create)
 			_, err = engine.Insert(audit)
 			if err != nil {
-				log.Writer(log.Error, err)
+				Helheim.Writer(log.Error, err)
 				return err
 			}
 		} else {
@@ -92,13 +93,13 @@ func addORUpdate(bills *[]BillNameConfig) error {
 
 				_, err := engine.ID(bill.ID).Update(bill)
 				if err != nil {
-					log.Writer(log.Error, err)
+					Helheim.Writer(log.Error, err)
 					return err
 				}
 				audit := setAudit(bill, update)
 				_, err = engine.Insert(audit)
 				if err != nil {
-					log.Writer(log.Error, err)
+					Helheim.Writer(log.Error, err)
 					return err
 				}
 			}
@@ -126,7 +127,7 @@ func GetBillNameList() *[]BillNameConfig {
 	var data []BillNameConfig
 	err := engine.Find(&data)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 	}
 	return &data
 }
@@ -135,7 +136,7 @@ func UpdateBillName(data *BillNameConfig) bool {
 	initDB()
 	_, err := engine.ID(data.ID).Cols("Color", "Icon").Update(data)
 	if err != nil {
-		log.Writer(log.Error, err)
+		Helheim.Writer(log.Error, err)
 		return false
 	}
 	return true
