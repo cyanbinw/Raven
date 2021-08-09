@@ -21,7 +21,9 @@ func BillNameSetWork(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := billNameService.SetBillName()
 	r.Successful = flag
-	r.Error = err.Error()
+	if err != nil {
+		r.Error = err.Error()
+	}
 	c.JSON(http.StatusOK, r)
 }
 
