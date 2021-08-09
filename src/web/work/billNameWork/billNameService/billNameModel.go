@@ -58,8 +58,6 @@ func SetBillName() (bool, error) {
 }
 
 func addORUpdate(bills *[]BillNameConfig) error {
-	var bill = new(BillNameConfig)
-
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -69,6 +67,7 @@ func addORUpdate(bills *[]BillNameConfig) error {
 	}
 
 	for _, data := range *bills {
+		var bill = new(BillNameConfig)
 		flag, err := engine.Where("BillName = ?", data.BillName).Get(bill)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)
