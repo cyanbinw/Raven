@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/WFallenDown/Raven/src/web/router"
+	"github.com/WFallenDown/Raven/router"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
 	"os/exec"

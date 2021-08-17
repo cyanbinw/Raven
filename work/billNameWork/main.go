@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/WFallenDown/Raven/src/web/work/billNameWork/billNameService"
+	"github.com/WFallenDown/Raven/work/billNameWork/billNameService"
 	_ "github.com/go-sql-driver/mysql"
 )
 

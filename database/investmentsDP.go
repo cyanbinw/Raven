@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/WFallenDown/Helheim"
-	. "github.com/WFallenDown/Raven/src/web/models/investmentsModels"
-	"github.com/WFallenDown/Raven/src/web/service"
+	. "github.com/WFallenDown/Raven/models/investmentsModels"
+	"github.com/WFallenDown/Raven/service"
 	"strings"
 )
 

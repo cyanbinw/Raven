@@ -3,9 +3,9 @@ package application
 import (
 	"encoding/json"
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/web/database"
-	"github.com/WFallenDown/Raven/src/web/models/billModels"
-	"github.com/WFallenDown/Raven/src/web/service"
+	"github.com/WFallenDown/Raven/database"
+	"github.com/WFallenDown/Raven/models/billModels"
+	"github.com/WFallenDown/Raven/service"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 	"io/ioutil"

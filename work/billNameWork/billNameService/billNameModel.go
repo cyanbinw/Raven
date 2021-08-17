@@ -2,8 +2,8 @@ package billNameService
 
 import (
 	"github.com/WFallenDown/Helheim"
-	. "github.com/WFallenDown/Raven/src/web/models/billModels"
-	"github.com/WFallenDown/Raven/src/web/service"
+	. "github.com/WFallenDown/Raven/models/billModels"
+	"github.com/WFallenDown/Raven/service"
 	"github.com/go-xorm/xorm"
 )
 
