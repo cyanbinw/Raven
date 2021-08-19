@@ -2,8 +2,8 @@ package application
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/web/database"
-	"github.com/WFallenDown/Raven/src/web/models/userModels"
+	"github.com/WFallenDown/Raven/database"
+	"github.com/WFallenDown/Raven/models/userModels"
 )
 
 type User struct {
@@ -11,7 +11,7 @@ type User struct {
 	*userModels.Token
 }
 
-func UserInitDB() {
+func (User) UserInitDB() {
 	database.UserInitDB()
 }
 
@@ -54,6 +54,11 @@ func (data *User) Delete() (bool, error) {
 }
 
 func (data *User) CreateToken() (bool, error) {
+	err := database.CreateToken(data.Token)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+		return false, err
+	}
 	return false, nil
 }
 

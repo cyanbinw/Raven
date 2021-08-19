@@ -44,7 +44,7 @@ func GetBillsDataByMonth(c *gin.Context) {
 // @Tags Bill
 // @Summary 获取bills表信息
 // @Description 描述信息
-// @Param user body billModels.BillTable true "investmentData"
+// @Param user body billModels.BillTable true "BillTable"
 // @Security Bearer
 // @Produce  json
 // @Success 200 {object} billModels.BillTable
