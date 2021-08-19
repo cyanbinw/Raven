@@ -1,8 +1,8 @@
 package application
 
 import (
-	"github.com/WFallenDown/Raven/src/web/database"
-	"github.com/WFallenDown/Raven/src/web/models/investmentsModels"
+	"github.com/WFallenDown/Raven/database"
+	"github.com/WFallenDown/Raven/models/investmentsModels"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 )

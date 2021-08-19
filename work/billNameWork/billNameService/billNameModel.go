@@ -2,8 +2,8 @@ package billNameService
 
 import (
 	"github.com/WFallenDown/Helheim"
-	. "github.com/WFallenDown/Raven/src/web/models/billModels"
-	"github.com/WFallenDown/Raven/src/web/service"
+	. "github.com/WFallenDown/Raven/models/billModels"
+	"github.com/WFallenDown/Raven/service"
 	"github.com/go-xorm/xorm"
 )
 
@@ -58,8 +58,6 @@ func SetBillName() (bool, error) {
 }
 
 func addORUpdate(bills *[]BillNameConfig) error {
-	var bill = new(BillNameConfig)
-
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -69,6 +67,7 @@ func addORUpdate(bills *[]BillNameConfig) error {
 	}
 
 	for _, data := range *bills {
+		var bill = new(BillNameConfig)
 		flag, err := engine.Where("BillName = ?", data.BillName).Get(bill)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)

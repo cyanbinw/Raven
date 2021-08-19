@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/web/application"
-	"github.com/WFallenDown/Raven/src/web/models/investmentsModels"
-	"github.com/WFallenDown/Raven/src/web/service"
+	"github.com/WFallenDown/Raven/application"
+	"github.com/WFallenDown/Raven/models/investmentsModels"
+	"github.com/WFallenDown/Raven/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

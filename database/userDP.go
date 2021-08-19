@@ -2,8 +2,8 @@ package database
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/web/models/userModels"
-	"github.com/WFallenDown/Raven/src/web/service"
+	"github.com/WFallenDown/Raven/models/userModels"
+	"github.com/WFallenDown/Raven/service"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
 	"time"
 )

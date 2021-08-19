@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/WFallenDown/Raven/src/web/application"
+	"github.com/WFallenDown/Raven/application"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

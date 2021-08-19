@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/src/web/application"
-	"github.com/WFallenDown/Raven/src/web/models/billModels"
+	"github.com/WFallenDown/Raven/application"
+	"github.com/WFallenDown/Raven/models/billModels"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )

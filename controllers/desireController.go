@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/WFallenDown/Raven/src/web/models/desireModels"
+	"github.com/WFallenDown/Raven/models/desireModels"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
