@@ -27,6 +27,7 @@ func InitRouter() {
 	targetGroupV1(v1)
 	workGroupV1(v1)
 	logGroupV1(v1)
+	userGroupV1(v1)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -72,4 +73,9 @@ func workGroupV1(c *gin.RouterGroup) {
 
 func logGroupV1(c *gin.RouterGroup) {
 	c.POST("/Log/GetLogTable", controllers.GetLogTable)
+}
+
+func userGroupV1(c *gin.RouterGroup) {
+	c.POST("/User/Login", controllers.Login)
+	c.POST("/User/ValidateToken", controllers.ValidateToken)
 }
