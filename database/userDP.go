@@ -4,7 +4,7 @@ import (
 	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/models/userModels"
 	"github.com/WFallenDown/Raven/service"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/uuid"
+	"github.com/satori/go.uuid"
 	"time"
 )
 
@@ -13,7 +13,6 @@ func UserInitDB() {
 }
 
 func Login(data *userModels.UserInfo) (bool, error) {
-
 	flag, err := engine.Where("UserName = ?", data.UserName).And("Password = ?", data.Password).Get(data)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
@@ -23,16 +22,32 @@ func Login(data *userModels.UserInfo) (bool, error) {
 	return flag, nil
 }
 
-func CreateToken(data *userModels.Token) error {
+func CreateToken(data *userModels.TokenInfo) error {
 	session := engine.NewSession()
 	defer session.Close()
 
 	err := session.Begin()
-	tokenAudit := new(userModels.TokenAudit)
+	tokenAudit := new(userModels.TokenInfoAudit)
 
-	_, err = engine.Where("UserID = ?", data.UserID).Get(data)
+	flag, err := session.Where("UserID = ?", data.UserID).Get(data)
 
-	row, err := engine.ID(data.TokenNum).Delete(data)
+	if flag {
+		row, err := session.ID(data.TokenNum).Delete(data)
+		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
+			if err = session.Rollback(); err != nil {
+				Helheim.Writer(Helheim.Error, err)
+			}
+			return err
+		}
+		if row > 0 {
+			tokenAudit = setTokenAudit(data)
+			tokenAudit.AuditType = delete
+			_, err = session.Insert(tokenAudit)
+		}
+	}
+
+	data.TokenNum = uuid.NewV4().String()
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		if err = session.Rollback(); err != nil {
@@ -41,21 +56,7 @@ func CreateToken(data *userModels.Token) error {
 		return err
 	}
 
-	if row > 0 {
-		tokenAudit.AuditType = delete
-		tokenAudit.Token = *data
-		_, err = engine.Insert(tokenAudit)
-	}
-
-	data.TokenNum, err = uuid.New()
-	if err != nil {
-		Helheim.Writer(Helheim.Error, err)
-		if err = session.Rollback(); err != nil {
-			Helheim.Writer(Helheim.Error, err)
-		}
-		return err
-	}
-	data.UpdateTokenNum, err = uuid.New()
+	data.UpdateTokenNum = uuid.NewV4().String()
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		if err = session.Rollback(); err != nil {
@@ -66,7 +67,7 @@ func CreateToken(data *userModels.Token) error {
 	data.StratTime = time.Now().Local()
 	data.EndTime = data.StratTime.AddDate(0, 0, userModels.EffectiveTime)
 	data.UpdateTokenTime = data.StratTime.AddDate(0, 0, userModels.UpdateEffectiveTime)
-	_, err = engine.Insert(data)
+	_, err = session.Insert(data)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		if err = session.Rollback(); err != nil {
@@ -75,10 +76,9 @@ func CreateToken(data *userModels.Token) error {
 		return err
 	}
 
-	tokenAudit = new(userModels.TokenAudit)
-	tokenAudit.Token = *data
+	tokenAudit = setTokenAudit(data)
 	tokenAudit.AuditType = insert
-	_, err = engine.Insert(tokenAudit)
+	_, err = session.Insert(tokenAudit)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		if err = session.Rollback(); err != nil {
@@ -96,19 +96,19 @@ func CreateToken(data *userModels.Token) error {
 	return nil
 }
 
-func UpdateToken(data *userModels.Token) error {
+func UpdateToken(data *userModels.TokenInfo) error {
 	session := engine.NewSession()
 	defer session.Close()
 
 	err := session.Begin()
-	tokenAudit := new(userModels.TokenAudit)
+	tokenAudit := new(userModels.TokenInfoAudit)
 
-	_, err = engine.Where("TokenNum = ?", data.TokenNum).Get(data)
+	_, err = session.Where("TokenNum = ?", data.TokenNum).Get(data)
 
 	data.StratTime = time.Now().Local()
 	data.EndTime = data.StratTime.AddDate(0, 0, userModels.EffectiveTime)
 	data.UpdateTokenTime = data.StratTime.AddDate(0, 0, userModels.UpdateEffectiveTime)
-	row, err := engine.ID(data.TokenNum).Update(data)
+	row, err := session.ID(data.TokenNum).Update(data)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		if err = session.Rollback(); err != nil {
@@ -118,9 +118,9 @@ func UpdateToken(data *userModels.Token) error {
 	}
 
 	if row > 0 {
+		tokenAudit = setTokenAudit(data)
 		tokenAudit.AuditType = update
-		tokenAudit.Token = *data
-		_, err = engine.Insert(tokenAudit)
+		_, err = session.Insert(tokenAudit)
 	}
 
 	err = session.Commit()
@@ -132,12 +132,25 @@ func UpdateToken(data *userModels.Token) error {
 	return nil
 }
 
-func ValidateToken(data uuid.UUID) (bool, error) {
-	token := new(userModels.Token)
+func ValidateToken(data string) (bool, error) {
+	token := new(userModels.TokenInfo)
 	row, err := engine.Where("TokenNum = ?", data).Get(token)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return false, err
 	}
 	return row, nil
+}
+
+func setTokenAudit(data *userModels.TokenInfo) *userModels.TokenInfoAudit {
+	audit := userModels.TokenInfoAudit{
+		UserID:          data.UserID,
+		TokenNum:        data.TokenNum,
+		UpdateTokenNum:  data.UpdateTokenNum,
+		StratTime:       data.StratTime,
+		EndTime:         data.EndTime,
+		UpdateTokenTime: data.UpdateTokenTime,
+	}
+
+	return &audit
 }

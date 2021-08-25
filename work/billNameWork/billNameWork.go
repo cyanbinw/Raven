@@ -1,4 +1,4 @@
-package billNameService
+package billNameWork
 
 import (
 	"github.com/WFallenDown/Helheim"
@@ -68,20 +68,23 @@ func addORUpdate(bills *[]BillNameConfig) error {
 
 	for _, data := range *bills {
 		var bill = new(BillNameConfig)
-		flag, err := engine.Where("BillName = ?", data.BillName).Get(bill)
+		flag, err := session.Where("BillName = ?", data.BillName).Get(bill)
 		if err != nil {
+			session.Rollback()
 			Helheim.Writer(Helheim.Error, err)
 			return err
 		}
 		if !flag {
-			_, err := engine.Insert(&data)
+			_, err := session.Insert(&data)
 			if err != nil {
+				session.Rollback()
 				Helheim.Writer(Helheim.Error, err)
 				return err
 			}
 			audit := setAudit(&data, create)
-			_, err = engine.Insert(audit)
+			_, err = session.Insert(audit)
 			if err != nil {
+				session.Rollback()
 				Helheim.Writer(Helheim.Error, err)
 				return err
 			}
@@ -89,14 +92,16 @@ func addORUpdate(bills *[]BillNameConfig) error {
 			if bill.Count != data.Count {
 				bill.Count = data.Count
 
-				_, err := engine.ID(bill.ID).Update(bill)
+				_, err := session.ID(bill.ID).Update(bill)
 				if err != nil {
+					session.Rollback()
 					Helheim.Writer(Helheim.Error, err)
 					return err
 				}
 				audit := setAudit(bill, update)
-				_, err = engine.Insert(audit)
+				_, err = session.Insert(audit)
 				if err != nil {
+					session.Rollback()
 					Helheim.Writer(Helheim.Error, err)
 					return err
 				}

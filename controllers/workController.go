@@ -4,7 +4,8 @@ import (
 	"github.com/WFallenDown/Helheim"
 	"github.com/WFallenDown/Raven/models/billModels"
 	"github.com/WFallenDown/Raven/service"
-	"github.com/WFallenDown/Raven/work/billNameWork/billNameService"
+	"github.com/WFallenDown/Raven/work/billNameWork"
+	"github.com/WFallenDown/Raven/work/userWork"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -19,7 +20,7 @@ import (
 // @Router /v1/Work/BillNameSetWork [post]
 func BillNameSetWork(c *gin.Context) {
 	r := new(ReturnData)
-	flag, err := billNameService.SetBillName()
+	flag, err := billNameWork.SetBillName()
 	r.Successful = flag
 	if err != nil {
 		r.Error = err.Error()
@@ -36,7 +37,7 @@ func BillNameSetWork(c *gin.Context) {
 // @Success 200 {object} []billModels.BillNameConfig
 // @Router /v1/Work/GetBillNameList [post]
 func GetBillNameList(c *gin.Context) {
-	c.JSON(http.StatusOK, billNameService.GetBillNameList())
+	c.JSON(http.StatusOK, billNameWork.GetBillNameList())
 }
 
 //UpdateBillName
@@ -59,7 +60,25 @@ func UpdateBillName(c *gin.Context) {
 	}
 	Helheim.Writer(Helheim.Info, service.ToJSON(bill))
 	r := new(ReturnData)
-	flag := billNameService.UpdateBillName(&bill)
+	flag := billNameWork.UpdateBillName(&bill)
 	r.Successful = flag
+	c.JSON(http.StatusOK, r)
+}
+
+//UserSetWork
+// @Tags Work
+// @Summary 重置用户表
+// @Description 描述信息
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Work/UserSetWork [post]
+func UserSetWork(c *gin.Context) {
+	r := new(ReturnData)
+	flag, err := userWork.SetUser()
+	r.Successful = flag
+	if err != nil {
+		r.Error = err.Error()
+	}
 	c.JSON(http.StatusOK, r)
 }

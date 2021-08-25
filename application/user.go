@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	*userModels.UserInfo
-	*userModels.Token
+	*userModels.TokenInfo
 }
 
 func (User) UserInitDB() {
@@ -23,7 +23,9 @@ func (data *User) Login() (bool, error) {
 	}
 
 	if flag {
-		err := database.CreateToken(data.Token)
+		data.TokenInfo = new(userModels.TokenInfo)
+		data.UserID = data.ID
+		err := database.CreateToken(data.TokenInfo)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)
 			return false, err
@@ -54,7 +56,7 @@ func (data *User) Delete() (bool, error) {
 }
 
 func (data *User) CreateToken() (bool, error) {
-	err := database.CreateToken(data.Token)
+	err := database.CreateToken(data.TokenInfo)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return false, err
@@ -72,7 +74,7 @@ func (data *User) ValidateToken() (bool, error) {
 }
 
 func (data *User) UpdateToken() (bool, error) {
-	err := database.UpdateToken(data.Token)
+	err := database.UpdateToken(data.TokenInfo)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return false, err
@@ -84,6 +86,6 @@ func (data *User) GetToken() (bool, error) {
 	panic("implement me")
 }
 
-func (data *User) GetTokens() ([]userModels.Token, error) {
+func (data *User) GetTokens() ([]userModels.TokenInfo, error) {
 	panic("implement me")
 }

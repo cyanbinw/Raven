@@ -308,13 +308,13 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 
 	if data.Investment.ItemID == 0 {
 		var num int
-		_, err = engine.Table("Investment").Select("MAX(ItemID)").Get(&num)
+		_, err = session.Table("Investment").Select("MAX(ItemID)").Get(&num)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)
 		}
 		data.Investment.ItemID = num + 1
 	}
-	_, err = engine.Insert(&data.Investment)
+	_, err = session.Insert(&data.Investment)
 
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
@@ -326,7 +326,7 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 	}
 
 	if data.Investment.IsEmpty == true {
-		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
+		_, err = session.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)
 			if err = session.Rollback(); err != nil {
@@ -379,13 +379,13 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 
 	err := session.Begin()
 
-	_, err = engine.ID(data.ID).Cols("Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&data.Investment)
+	_, err = session.ID(data.ID).Cols("Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&data.Investment)
 	if err != nil {
 		return false, err
 	}
 
 	if data.Investment.IsEmpty == true {
-		_, err = engine.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
+		_, err = session.Exec("UPDATE Investment SET IsEmpty = 1 WHERE ItemID = ?", data.ItemID)
 		if err != nil {
 			if err = session.Rollback(); err != nil {
 				Helheim.Writer(Helheim.Error, err)

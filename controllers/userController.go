@@ -29,10 +29,12 @@ func Login(c *gin.Context) {
 	user.UserInitDB()
 	rd := new(ReturnData)
 	rd.Successful, err = user.Login()
-	rd.Error = err.Error()
+	if err != nil {
+		rd.Error = err.Error()
+	}
 	rd.Data = struct {
-		Token       [16]byte
-		UpdateToken [16]byte
+		Token       string
+		UpdateToken string
 	}{
 		Token:       user.TokenNum,
 		UpdateToken: user.UpdateTokenNum,
