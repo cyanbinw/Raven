@@ -32,13 +32,7 @@ func Login(c *gin.Context) {
 	if err != nil {
 		rd.Error = err.Error()
 	}
-	rd.Data = struct {
-		Token       string
-		UpdateToken string
-	}{
-		Token:       user.TokenNum,
-		UpdateToken: user.UpdateTokenNum,
-	}
+	rd.Data = user.TokenNum
 	c.JSON(http.StatusOK, rd)
 }
 
@@ -64,6 +58,8 @@ func ValidateToken(c *gin.Context) {
 	user.UserInitDB()
 	rd := new(ReturnData)
 	rd.Successful, err = user.ValidateToken()
-	rd.Error = err.Error()
+	if err != nil {
+		rd.Error = err.Error()
+	}
 	c.JSON(http.StatusOK, rd)
 }

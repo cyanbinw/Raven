@@ -18,7 +18,7 @@ type TokenInfoAudit struct {
 	AuditType       int
 	AuditTime       time.Time `xorm:"created"`
 	UserID          int
-	TokenNum        string `xorm:"pk"`
+	TokenNum        string
 	UpdateTokenNum  string
 	StratTime       time.Time
 	EndTime         time.Time
