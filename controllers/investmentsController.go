@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/application"
-	"github.com/WFallenDown/Raven/models/investmentsModels"
-	"github.com/WFallenDown/Raven/service"
 	"github.com/gin-gonic/gin"
+	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/application"
+	"github.com/swirling-melodies/Raven/models/investmentsModels"
+	"github.com/swirling-melodies/Raven/service"
 	"net/http"
 )
 

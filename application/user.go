@@ -1,9 +1,9 @@
 package application
 
 import (
-	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/database"
-	"github.com/WFallenDown/Raven/models/userModels"
+	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/database"
+	"github.com/swirling-melodies/Raven/models/userModels"
 )
 
 type User struct {

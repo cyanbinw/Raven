@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/WFallenDown/Helheim"
 	"github.com/gin-gonic/gin"
+	"github.com/swirling-melodies/Helheim"
 	"net/http"
 )
 

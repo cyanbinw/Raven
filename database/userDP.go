@@ -1,10 +1,10 @@
 package database
 
 import (
-	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/models/userModels"
-	"github.com/WFallenDown/Raven/service"
 	"github.com/satori/go.uuid"
+	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/models/userModels"
+	"github.com/swirling-melodies/Raven/service"
 	"time"
 )
 

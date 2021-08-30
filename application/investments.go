@@ -1,10 +1,10 @@
 package application
 
 import (
-	"github.com/WFallenDown/Raven/database"
-	"github.com/WFallenDown/Raven/models/investmentsModels"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
+	"github.com/swirling-melodies/Raven/database"
+	"github.com/swirling-melodies/Raven/models/investmentsModels"
 )
 
 type InvestmentData struct {

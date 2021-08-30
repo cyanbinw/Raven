@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/application"
 	"github.com/gin-gonic/gin"
+	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/application"
 	"net/http"
 )
 

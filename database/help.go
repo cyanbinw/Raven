@@ -2,8 +2,8 @@ package database
 
 import (
 	"database/sql"
-	"github.com/WFallenDown/Raven/service"
 	"github.com/go-xorm/xorm"
+	"github.com/swirling-melodies/Raven/service"
 )
 
 const (

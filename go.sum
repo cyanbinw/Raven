@@ -12,8 +12,6 @@ github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 h1:d+Bc7a5rLufV
 github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578/go.mod h1:uGdkoq3SwY9Y+13GIhn11/XLaGBb4BfwItxLd5jeuXE=
 github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWXgklEdEo=
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
-github.com/WFallenDown/Helheim v1.0.1 h1:g/azsl2nL/tE9BYmeAqiViNrAK2AYgzJknMyg2oDeMc=
-github.com/WFallenDown/Helheim v1.0.1/go.mod h1:3tNJgnbcAZkniX+bYANyHBWZ7N6y2MFNhibQMWApbK0=
 github.com/ahmetb/go-linq/v3 v3.2.0 h1:BEuMfp+b59io8g5wYzNoFe9pWPalRklhlhbiU3hYZDE=
 github.com/ahmetb/go-linq/v3 v3.2.0/go.mod h1:haQ3JfOeWK8HpVxMtHHEMPVgBKiYyQ+f1/kLZh/cj9U=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
@@ -230,6 +228,10 @@ github.com/swaggo/gin-swagger v1.3.1/go.mod h1:Z6NtRBK2PRig0EUmy1Xu75CnCEs6vGYu9
 github.com/swaggo/swag v1.5.1/go.mod h1:1Bl9F/ZBpVWh22nY0zmYyASPO1lI/zIwRDrpZU+tv8Y=
 github.com/swaggo/swag v1.7.1 h1:gY9ZakXlNWg/i/v5bQBic7VMZ4teq4m89lpiao74p/s=
 github.com/swaggo/swag v1.7.1/go.mod h1:gAiHxNTb9cIpNmA/VEGUP+CyZMCP/EW7mdtc8Bny+p8=
+github.com/swirling-melodies/Helheim v1.0.1 h1:g/azsl2nL/tE9BYmeAqiViNrAK2AYgzJknMyg2oDeMc=
+github.com/swirling-melodies/Helheim v1.0.1/go.mod h1:3tNJgnbcAZkniX+bYANyHBWZ7N6y2MFNhibQMWApbK0=
+github.com/swirling-melodies/Helheim v1.0.2 h1:YjhI3OWqMKiFKrA/tUFINLdkPwE+8ds94zBiBVjc77A=
+github.com/swirling-melodies/Helheim v1.0.2/go.mod h1:yF0jureraDua16qVsqwywy8FkhzU1wl11EI2LqRuTU0=
 github.com/tidwall/pretty v1.0.0 h1:HsD+QiTn7sK6flMKIvNmpqz1qrpP3Ps6jOKIKMooyg4=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=

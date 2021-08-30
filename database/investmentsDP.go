@@ -3,9 +3,9 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"github.com/WFallenDown/Helheim"
-	. "github.com/WFallenDown/Raven/models/investmentsModels"
-	"github.com/WFallenDown/Raven/service"
+	"github.com/swirling-melodies/Helheim"
+	. "github.com/swirling-melodies/Raven/models/investmentsModels"
+	"github.com/swirling-melodies/Raven/service"
 	"strings"
 )
 

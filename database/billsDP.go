@@ -3,10 +3,10 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"github.com/WFallenDown/Helheim"
-	"github.com/WFallenDown/Raven/models/billModels"
-	"github.com/WFallenDown/Raven/service"
 	"github.com/go-xorm/xorm"
+	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/models/billModels"
+	"github.com/swirling-melodies/Raven/service"
 	"strconv"
 	"strings"
 )

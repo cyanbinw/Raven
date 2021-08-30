@@ -1,9 +1,9 @@
-module github.com/WFallenDown/Raven
+module github.com/swirling-melodies/Raven
 
 go 1.17
 
 require (
-	github.com/WFallenDown/Helheim v1.0.1
+	github.com/swirling-melodies/Helheim v1.0.2
 	github.com/ahmetb/go-linq/v3 v3.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/gin-gonic/gin v1.7.4
