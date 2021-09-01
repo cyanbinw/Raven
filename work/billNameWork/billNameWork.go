@@ -1,10 +1,10 @@
 package billNameWork
 
 import (
-	"github.com/go-xorm/xorm"
 	"github.com/swirling-melodies/Helheim"
 	. "github.com/swirling-melodies/Raven/models/billModels"
 	"github.com/swirling-melodies/Raven/service"
+	"xorm.io/xorm"
 )
 
 var engine *xorm.Engine

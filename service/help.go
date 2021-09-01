@@ -3,10 +3,10 @@ package service
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-xorm/xorm"
 	"os"
 	"strings"
 	"xorm.io/core"
+	"xorm.io/xorm"
 )
 
 var engine *xorm.Engine

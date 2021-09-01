@@ -379,7 +379,7 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 
 	err := session.Begin()
 
-	_, err = session.ID(data.ID).Cols("Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&data.Investment)
+	_, err = session.ID(data.ID).Cols("Code", "Name", "Account", "Share", "NetWorth", "Date", "TypeID", "ActivityStatus").Update(&data.Investment)
 	if err != nil {
 		return false, err
 	}

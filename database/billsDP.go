@@ -3,12 +3,12 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"github.com/go-xorm/xorm"
 	"github.com/swirling-melodies/Helheim"
 	"github.com/swirling-melodies/Raven/models/billModels"
 	"github.com/swirling-melodies/Raven/service"
 	"strconv"
 	"strings"
+	"xorm.io/xorm"
 )
 
 func BillsInitDB() {

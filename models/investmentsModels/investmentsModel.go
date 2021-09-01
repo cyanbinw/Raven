@@ -5,7 +5,7 @@ import "time"
 type Investment struct {
 	ID             int64     `db:"ID" json:"id"`
 	ItemID         int       `db:"ItemID" json:"itemID"`
-	Code           int       `db:"Code" json:"code"`
+	Code           string    `db:"Code" json:"code"`
 	Name           string    `db:"Name" json:"name"`
 	TypeID         int       `db:"TypeID" json:"type"`
 	Account        float64   `db:"Account" json:"account"`
