@@ -10,3 +10,6 @@ log_db:
   ip: 127.0.0.1
   port: 27017
   dbname: test_log_db
+default_user:
+  username: admin
+  password: admin
