@@ -70,8 +70,9 @@ func SetUser() (bool, error) {
 func addDefaultUser() (bool, error) {
 	user := new(userModels.UserInfo)
 	userAudit := new(userModels.UserInfoAudit)
-	user.UserName = "admin"
-	user.Password = "admin"
+	defaultUser := service.GetDefaultUserString()
+	user.UserName = defaultUser.UserName
+	user.Password = defaultUser.Password
 	user.Status = working
 	session := engine.NewSession()
 	defer session.Close()

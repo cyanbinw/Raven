@@ -7,8 +7,9 @@ import (
 )
 
 type Config struct {
-	BusinessDB ConnectString `yaml:"business_db"`
-	LogDB      ConnectString `yaml:"log_db"`
+	BusinessDB  ConnectString `yaml:"business_db"`
+	LogDB       ConnectString `yaml:"log_db"`
+	DefaultUser DefaultUser   `yaml:"default_user"`
 }
 
 type ConnectString struct {
@@ -17,6 +18,11 @@ type ConnectString struct {
 	Ip       string `yaml:"ip"`
 	Port     string `yaml:"port"`
 	DbName   string `yaml:"dbname"`
+}
+
+type DefaultUser struct {
+	UserName string `yaml:"username"`
+	Password string `yaml:"password"`
 }
 
 var item *Config
@@ -44,4 +50,11 @@ func GetLogConnectString() ConnectString {
 		getConfig()
 	}
 	return item.LogDB
+}
+
+func GetDefaultUserString() DefaultUser {
+	if item == nil {
+		getConfig()
+	}
+	return item.DefaultUser
 }
