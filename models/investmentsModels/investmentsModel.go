@@ -31,6 +31,7 @@ type InvestmentActivity struct {
 type InvestmentItem struct {
 	ItemID int
 	Name   string
+	Code   string
 }
 
 type InvestmentType struct {

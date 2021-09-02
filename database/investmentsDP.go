@@ -440,7 +440,7 @@ func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []Investment
 
 	err = engine.Find(&iactivity)
 
-	err = engine.Table("Investment").GroupBy("ItemID,Name").Find(&item)
+	err = engine.Table("InvestmentItem").Find(&item)
 
 	return itype, iactivity, item, nil
 }

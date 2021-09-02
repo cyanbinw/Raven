@@ -6,6 +6,7 @@ import (
 	"github.com/swirling-melodies/Raven/models/billModels"
 	"github.com/swirling-melodies/Raven/service"
 	"github.com/swirling-melodies/Raven/work/billNameWork"
+	"github.com/swirling-melodies/Raven/work/investmentWork"
 	"github.com/swirling-melodies/Raven/work/userWork"
 	"net/http"
 )
@@ -76,6 +77,24 @@ func UpdateBillName(c *gin.Context) {
 func UserSetWork(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := userWork.SetUser()
+	r.Successful = flag
+	if err != nil {
+		r.Error = err.Error()
+	}
+	c.JSON(http.StatusOK, r)
+}
+
+//InvestmentItemSetWork
+// @Tags Work
+// @Summary 添加Investment的下拉菜单
+// @Description 描述信息
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Work/UserSetWork [post]
+func InvestmentItemSetWork(c *gin.Context) {
+	r := new(ReturnData)
+	flag, err := investmentWork.SetInvestmentItem()
 	r.Successful = flag
 	if err != nil {
 		r.Error = err.Error()
