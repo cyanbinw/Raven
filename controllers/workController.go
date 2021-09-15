@@ -3,8 +3,8 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/models/billModels"
-	"github.com/swirling-melodies/Raven/service"
 	"github.com/swirling-melodies/Raven/work/billNameWork"
 	"github.com/swirling-melodies/Raven/work/investmentWork"
 	"github.com/swirling-melodies/Raven/work/userWork"
@@ -59,7 +59,7 @@ func UpdateBillName(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
-	Helheim.Writer(Helheim.Info, service.ToJSON(bill))
+	Helheim.Writer(Helheim.Info, common.ToJSON(bill))
 	r := new(ReturnData)
 	flag := billNameWork.UpdateBillName(&bill)
 	r.Successful = flag

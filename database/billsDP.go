@@ -4,15 +4,15 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/models/billModels"
-	"github.com/swirling-melodies/Raven/service"
 	"strconv"
 	"strings"
 	"xorm.io/xorm"
 )
 
 func BillsInitDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }
 
 func billsInitDBV1() {
@@ -90,7 +90,7 @@ func billsGetYearDataV1(data *[]billModels.BillDetail, year int) {
 
 		//billDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		bills = append(bills, *billDetail)
 	}
 	data = &bills
@@ -146,7 +146,7 @@ func billsGetFourMonthsDataV1(data *[]billModels.BillDetail, year int) {
 
 		//billDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		bills = append(bills, *billDetail)
 	}
 	data = &bills

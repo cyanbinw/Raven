@@ -2,8 +2,8 @@ package billNameWork
 
 import (
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	. "github.com/swirling-melodies/Raven/models/billModels"
-	"github.com/swirling-melodies/Raven/service"
 	"xorm.io/xorm"
 )
 
@@ -16,7 +16,7 @@ const (
 )
 
 func initDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }
 
 func SetBillName() (bool, error) {

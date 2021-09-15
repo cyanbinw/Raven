@@ -5,9 +5,9 @@ import (
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/database"
 	"github.com/swirling-melodies/Raven/models/billModels"
-	"github.com/swirling-melodies/Raven/service"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -57,7 +57,7 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 		Helheim.Writer(Helheim.Error, err)
 	}
 
-	if service.CheckFileIsExist(src) { //如果文件存在
+	if common.CheckFileIsExist(src) { //如果文件存在
 		f, err = os.OpenFile(src, os.O_APPEND, 0666) //打开文件
 	} else {
 		f, err = os.Create(src) //创建文件
@@ -65,7 +65,7 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 	}
 
 	err = ioutil.WriteFile(src, val, 0777)
-	service.CheckErr(err)
+	common.CheckErr(err)
 	f.Close()
 }
 

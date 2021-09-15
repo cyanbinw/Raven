@@ -2,8 +2,8 @@ package userWork
 
 import (
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/models/userModels"
-	"github.com/swirling-melodies/Raven/service"
 	"xorm.io/xorm"
 )
 
@@ -17,7 +17,7 @@ const (
 )
 
 func initDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }
 
 func SetUser() (bool, error) {
@@ -70,7 +70,7 @@ func SetUser() (bool, error) {
 func addDefaultUser() (bool, error) {
 	user := new(userModels.UserInfo)
 	userAudit := new(userModels.UserInfoAudit)
-	defaultUser := service.GetDefaultUserString()
+	defaultUser := common.GetDefaultUserString()
 	user.UserName = defaultUser.UserName
 	user.Password = defaultUser.Password
 	user.Status = working

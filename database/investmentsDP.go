@@ -4,13 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	. "github.com/swirling-melodies/Raven/models/investmentsModels"
-	"github.com/swirling-melodies/Raven/service"
 	"strings"
 )
 
 func InvestmentsInitDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }
 
 func investmentsInitDBV1() {
@@ -98,7 +98,7 @@ func investmentGetAllV1() {
 
 		//investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		investments = append(investments, *investmentDetail)
 	}
 }
@@ -172,7 +172,7 @@ func investmentGetDataToChartV1() {
 			Helheim.Writer(Helheim.Error, err)
 		}
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		account = append(account, *investmentDetail)
 	}
 
@@ -200,7 +200,7 @@ func investmentGetDataToChartV1() {
 			fmt.Printf("scan failed, err:%v", err)
 		}
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		share = append(share, *investmentDetail)
 	}
 
@@ -228,7 +228,7 @@ func investmentGetDataToChartV1() {
 			fmt.Printf("scan failed, err:%v", err)
 		}
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		netWorth = append(netWorth, *investmentDetail)
 	}
 }
@@ -289,7 +289,7 @@ func investmentGetTableV1() []InvestmentTable {
 			//investmentDetail.Date, err = time.ParseInLocation(timeLayoutStr, lastLoginTime, DefaultTimeLoc)
 		}
 
-		service.CheckErr(err)
+		common.CheckErr(err)
 		investments = append(investments, *investmentDetail)
 	}
 	return investments

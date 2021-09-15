@@ -3,13 +3,13 @@ package database
 import (
 	"github.com/satori/go.uuid"
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/models/userModels"
-	"github.com/swirling-melodies/Raven/service"
 	"time"
 )
 
 func UserInitDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }
 
 func Login(data *userModels.UserInfo) (bool, error) {

@@ -2,15 +2,15 @@ package investmentWork
 
 import (
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/models/investmentsModels"
-	"github.com/swirling-melodies/Raven/service"
 	"xorm.io/xorm"
 )
 
 var engine *xorm.Engine
 
 func initDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }
 
 func SetInvestmentItem() (bool, error) {
