@@ -1,21 +1,13 @@
-package main
+package test
 
 import (
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"regexp"
+	"testing"
 )
 
-func main() {
-	//investmentData, err := investmentsModels.GetInvestmentDiagram()
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-	//fmt.Println(investmentData)
+func Test1(t *testing.T) {
 
-	//bitXOR()
-	//regular()
-	//Helheim.InsertLog()
 }
 
 func regular() {
@@ -340,3 +332,4 @@ func bitXOR() {
 
 	fmt.Println(num1)
 }
+
