@@ -7,7 +7,7 @@ import (
 )
 
 func Test1(t *testing.T) {
-
+	t.FailNow()
 }
 
 func regular() {
