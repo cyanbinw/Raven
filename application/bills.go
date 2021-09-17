@@ -113,9 +113,21 @@ func BillsGetDiagram(bill *billModels.BillTable) (*BillChartsData, error) {
 
 		return BillChartModel{i.Key.(string), m}
 	}).ToSlice(&data.BillCharts)
-	data.Total = From(bill.BillDetail).Select(func(i interface{}) interface{} {
-		return i.(billModels.BillDetail).Account
+	var expenditure, income float64
+	expenditure = From(bill.BillDetail).Select(func(i interface{}) interface{} {
+		if i.(billModels.BillDetail).Type == "支出" {
+			return i.(billModels.BillDetail).Account
+		}
+		return 0.00
 	}).SumFloats()
+
+	income = From(bill.BillDetail).Select(func(i interface{}) interface{} {
+		if i.(billModels.BillDetail).Type == "收入" {
+			return i.(billModels.BillDetail).Account
+		}
+		return 0.00
+	}).SumFloats()
+	data.Total = expenditure - income
 	data.Total, _ = decimal.NewFromFloat(data.Total).Round(4).Float64()
 	return data, nil
 }
