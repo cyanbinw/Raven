@@ -175,7 +175,7 @@ func setBillsGetTableOption(search *xorm.Session, bill *billModels.BillTable) {
 	if len(bill.BillType) == 0 && len(bill.BillName) == 0 &&
 		bill.AccountMax == 0.0 && bill.AccountMin == 0.0 &&
 		bill.DateMin.IsZero() && bill.DateMax.IsZero() {
-		search = search.Where("Type = '支出'").Desc("Date")
+		search = search.Desc("Date")
 		return
 	}
 
