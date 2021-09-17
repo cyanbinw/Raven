@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/swirling-melodies/Helheim"
 	"github.com/swirling-melodies/Raven/common"
-	. "github.com/swirling-melodies/Raven/models/investmentsModels"
+	"github.com/swirling-melodies/Raven/models/investmentsModels"
 	"strings"
 )
 
@@ -103,8 +103,8 @@ func investmentGetAllV1() {
 	}
 }
 
-func InvestmentGetDataToChart() (*[]InvestmentChartModel, *[]InvestmentChartModel, *[]InvestmentChartModel) {
-	var account, share, netWorth []InvestmentChartModel
+func InvestmentGetDataToChart() (*[]investmentsModels.InvestmentChartModel, *[]investmentsModels.InvestmentChartModel, *[]investmentsModels.InvestmentChartModel) {
+	var account, share, netWorth []investmentsModels.InvestmentChartModel
 	err := engine.SQL("select Name, sum(Account) Value from Investment where IsEmpty <> 1 group by Name").Find(&account)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
@@ -140,8 +140,8 @@ func InvestmentGetChart() []Investment {
 }
 
 func investmentGetDataToChartV1() {
-	investmentDetail := new(InvestmentChartModel)
-	var account, share, netWorth []InvestmentChartModel
+	investmentDetail := new(investmentsModels.InvestmentChartModel)
+	var account, share, netWorth []investmentsModels.InvestmentChartModel
 	// db.QueryRow()调用完毕后会将连接传递给sql.Row类型，当.Scan()方法调用之后把连接释放回到连接池。
 
 	// 查询单行数据

@@ -18,7 +18,7 @@ import (
 // @Failure 400 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Router /v1/Bill/GetBillsTable [post]
 func Login(c *gin.Context) {
-	var user = application.User{}
+	var user = application.NewUser()
 
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
@@ -26,7 +26,6 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
-	user.UserInitDB()
 	rd := new(ReturnData)
 	rd.Successful, err = user.Login()
 	if err != nil {
@@ -47,7 +46,7 @@ func Login(c *gin.Context) {
 // @Failure 400 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Router /v1/Bill/GetBillsTable [post]
 func ValidateToken(c *gin.Context) {
-	var user = application.User{}
+	var user = application.NewUser()
 
 	err := c.ShouldBindJSON(&user)
 	if err != nil {
@@ -55,7 +54,6 @@ func ValidateToken(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, ReturnData{Message: "参数错误", Error: err.Error(), Successful: false})
 		return
 	}
-	user.UserInitDB()
 	rd := new(ReturnData)
 	rd.Successful, err = user.ValidateToken()
 	if err != nil {

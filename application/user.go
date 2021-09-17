@@ -16,20 +16,22 @@ func (User) UserInitDB() {
 }
 
 func (data *User) Login() (bool, error) {
-	flag, err := database.Login(data.UserInfo)
+	modelUser := newDBUserInfo(*data.UserInfo)
+	flag, err := database.Login(&modelUser)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return flag, err
 	}
 
 	if flag {
-		data.TokenInfo = new(userModels.TokenInfo)
-		data.UserID = data.ID
-		err := database.CreateToken(data.TokenInfo)
+		modelToken := new(database.TokenInfo)
+		modelToken.UserID = modelUser.ID
+		err := database.CreateToken(modelToken)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)
 			return false, err
 		}
+		toDTOToken(*modelToken, data.TokenInfo)
 		return flag, nil
 	}
 	return false, nil
@@ -56,29 +58,40 @@ func (data *User) Delete() (bool, error) {
 }
 
 func (data *User) CreateToken() (bool, error) {
-	err := database.CreateToken(data.TokenInfo)
+	var model database.TokenInfo
+	toDBToken(*data.TokenInfo, &model)
+	err := database.CreateToken(&model)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return false, err
 	}
+	toDTOToken(model, data.TokenInfo)
 	return false, nil
 }
 
 func (data *User) ValidateToken() (bool, error) {
-	flag, err := database.ValidateToken(data.TokenNum)
+	var model database.TokenInfo
+	toDBToken(*data.TokenInfo, &model)
+
+	flag, err := database.ValidateToken(model.TokenNum)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return false, err
 	}
+
+	toDTOToken(model, data.TokenInfo)
 	return flag, nil
 }
 
 func (data *User) UpdateToken() (bool, error) {
-	err := database.UpdateToken(data.TokenInfo)
+	var model database.TokenInfo
+	toDBToken(*data.TokenInfo, &model)
+	err := database.UpdateToken(&model)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return false, err
 	}
+	toDTOToken(model, data.TokenInfo)
 	return true, nil
 }
 
@@ -88,4 +101,41 @@ func (data *User) GetToken() (bool, error) {
 
 func (data *User) GetTokens() ([]userModels.TokenInfo, error) {
 	panic("implement me")
+}
+
+func NewUser() User {
+	user := User{}
+	user.UserInitDB()
+	return user
+}
+
+func newDBUserInfo(data userModels.UserInfo) database.UserInfo {
+	return database.UserInfo{
+		ID:       data.ID,
+		UserName: data.UserName,
+		Password: data.Password,
+		Status:   data.Status,
+	}
+}
+
+func toDBToken(dto userModels.TokenInfo, model *database.TokenInfo) {
+	*model = database.TokenInfo{
+		UserID:          dto.UserID,
+		TokenNum:        dto.TokenNum,
+		UpdateTokenNum:  dto.UpdateTokenNum,
+		StratTime:       dto.StratTime,
+		EndTime:         dto.EndTime,
+		UpdateTokenTime: dto.UpdateTokenTime,
+	}
+}
+
+func toDTOToken(model database.TokenInfo, dto *userModels.TokenInfo) {
+	*dto = userModels.TokenInfo{
+		UserID:          model.UserID,
+		TokenNum:        model.TokenNum,
+		UpdateTokenNum:  model.UpdateTokenNum,
+		StratTime:       model.StratTime,
+		EndTime:         model.EndTime,
+		UpdateTokenTime: model.UpdateTokenTime,
+	}
 }

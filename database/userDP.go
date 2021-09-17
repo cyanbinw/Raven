@@ -12,7 +12,7 @@ func UserInitDB() {
 	engine = common.InitDB()
 }
 
-func Login(data *userModels.UserInfo) (bool, error) {
+func Login(data *UserInfo) (bool, error) {
 	flag, err := engine.Where("UserName = ?", data.UserName).And("Password = ?", data.Password).Get(data)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
@@ -22,7 +22,7 @@ func Login(data *userModels.UserInfo) (bool, error) {
 	return flag, nil
 }
 
-func CreateToken(data *userModels.TokenInfo) error {
+func CreateToken(data *TokenInfo) error {
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -96,7 +96,7 @@ func CreateToken(data *userModels.TokenInfo) error {
 	return nil
 }
 
-func UpdateToken(data *userModels.TokenInfo) error {
+func UpdateToken(data *TokenInfo) error {
 	session := engine.NewSession()
 	defer session.Close()
 
@@ -142,7 +142,7 @@ func ValidateToken(data string) (bool, error) {
 	return row, nil
 }
 
-func setTokenAudit(data *userModels.TokenInfo) *userModels.TokenInfoAudit {
+func setTokenAudit(data *TokenInfo) *userModels.TokenInfoAudit {
 	audit := userModels.TokenInfoAudit{
 		UserID:          data.UserID,
 		TokenNum:        data.TokenNum,

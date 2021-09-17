@@ -16,11 +16,7 @@ type Investment struct {
 	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
 }
 
-type InvestmentTable struct {
-	Investment   `xorm:"extends"`
-	ActivityName string `json:"activityName"`
-	TypeName     string `json:"typeName"`
-}
+
 
 type InvestmentActivity struct {
 	ActivityID   int
@@ -45,6 +41,3 @@ type InvestmentChartModel struct {
 	Value float64 `json:"value"`
 }
 
-func (InvestmentTable) TableName() string {
-	return "Investment"
-}
