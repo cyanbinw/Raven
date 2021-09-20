@@ -21,3 +21,12 @@ func TestBillsGetDiagram(t *testing.T) {
 	}
 	t.Log(data)
 }
+
+func TestBillDataByDate(t *testing.T) {
+	bill := new(application.BillDataByDate)
+	bill.BillsInitDB()
+	bill.BillsGetDataByMonth()
+	for _, i := range bill.Data {
+		t.Log(i.Date)
+	}
+}

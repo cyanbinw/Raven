@@ -98,7 +98,7 @@ func billsGetYearDataV1(data *[]billModels.BillDetail, year int) {
 
 func BillsGetDataByMonth(data *[]billModels.BillDetail) {
 
-	err := engine.SQL("select * from BillDetail where Type = '支出' and Date > (select DATE_ADD(Max(date_format(Date,'%Y-%m-01') ),INTERVAL -? Month) from BillDetail) ORDER BY Date DESC", month-1).Find(data)
+	err := engine.SQL("select * from BillDetail where Type = '支出' and Date > (select DATE_ADD(Max(date_format(Date,'%Y-%m-01') ),INTERVAL -? Month) from BillDetail) ORDER BY Date ASC", month-1).Find(data)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 	}

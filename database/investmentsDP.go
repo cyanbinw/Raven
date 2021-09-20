@@ -129,9 +129,11 @@ func InvestmentGetDataToChart() (*[]InvestmentChartModel, *[]InvestmentChartMode
 	return &account, &share, &netWorth
 }
 
-func InvestmentGetChart() []Investment {
-	var Item []Investment
-	err := engine.Where("IsEmpty <> ?", 1).And("ActivityStatus <> ?", 4).Find(&Item)
+func InvestmentGetChart() []InvestmentTable {
+	var Item []InvestmentTable
+	err := engine.Join("INNER", "InvestmentType",
+		"InvestmentType.TypeID = Investment.TypeID").
+		Where("IsEmpty <> ?", 1).And("ActivityStatus <> ?", 4).Find(&Item)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 	}

@@ -2,12 +2,21 @@ package test
 
 import (
 	"fmt"
+	"github.com/swirling-melodies/Raven/application"
 	"regexp"
 	"testing"
 )
 
-func Test1(t *testing.T) {
-	t.FailNow()
+func TestInvestmentProportion(t *testing.T) {
+	data := new(application.InvestmentData)
+	data.InvestmentsInitDB()
+	value := data.InvestmentChartForAccount()
+	if &value == nil {
+		t.FailNow()
+	}
+	for _, i := range value.Proportion {
+		t.Log(i.Name, " : ", i.Value)
+	}
 }
 
 func regular() {
@@ -332,4 +341,3 @@ func bitXOR() {
 
 	fmt.Println(num1)
 }
-

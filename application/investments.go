@@ -23,9 +23,10 @@ type InvestmentGroup struct {
 }
 
 type InvestmentsChartModel struct {
-	Account  []investmentsModels.InvestmentChartModel
-	Share    []investmentsModels.InvestmentChartModel
-	NetWorth []investmentsModels.InvestmentChartModel
+	Account    []investmentsModels.InvestmentChartModel
+	Share      []investmentsModels.InvestmentChartModel
+	NetWorth   []investmentsModels.InvestmentChartModel
+	Proportion []investmentsModels.InvestmentChartModel
 }
 
 type InvestmentOption struct {
@@ -80,20 +81,20 @@ func GetInvestmentOption() (*InvestmentOption, error) {
 	return option, err
 }
 
-func createChart(data []investmentsModels.Investment) InvestmentsChartModel {
+func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel {
 	var item InvestmentsChartModel
 
 	From(data).GroupBy(func(i interface{}) interface{} {
-		return i.(investmentsModels.Investment).Name
+		return i.(investmentsModels.InvestmentTable).Name
 	}, func(i interface{}) interface{} {
-		return i.(investmentsModels.Investment)
+		return i.(investmentsModels.InvestmentTable)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.Investment).Account
+			m += item.(investmentsModels.InvestmentTable).Account
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
@@ -102,16 +103,16 @@ func createChart(data []investmentsModels.Investment) InvestmentsChartModel {
 	}).ToSlice(&item.Account)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
-		return i.(investmentsModels.Investment).Name
+		return i.(investmentsModels.InvestmentTable).Name
 	}, func(i interface{}) interface{} {
-		return i.(investmentsModels.Investment)
+		return i.(investmentsModels.InvestmentTable)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.Investment).NetWorth
+			m += item.(investmentsModels.InvestmentTable).NetWorth
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
@@ -120,22 +121,40 @@ func createChart(data []investmentsModels.Investment) InvestmentsChartModel {
 	}).ToSlice(&item.NetWorth)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
-		return i.(investmentsModels.Investment).Name
+		return i.(investmentsModels.InvestmentTable).Name
 	}, func(i interface{}) interface{} {
-		return i.(investmentsModels.Investment)
+		return i.(investmentsModels.InvestmentTable)
 	}).OrderBy(func(i interface{}) interface{} {
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
 		m := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.Investment).Share
+			m += item.(investmentsModels.InvestmentTable).Share
 		}
 
 		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
 
 		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
 	}).ToSlice(&item.Share)
+
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(investmentsModels.InvestmentTable).TypeName
+	}, func(i interface{}) interface{} {
+		return i.(investmentsModels.InvestmentTable)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
+		m := 0.0
+		for _, item := range i.Group {
+			m += item.(investmentsModels.InvestmentTable).Account
+		}
+
+		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
+
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
+	}).ToSlice(&item.Proportion)
 
 	return item
 }
