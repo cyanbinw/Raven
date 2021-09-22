@@ -35,8 +35,10 @@ type InvestmentItem struct {
 }
 
 type InvestmentType struct {
-	TypeID     int
+	TypeID     int `xorm:"pk autoincr"`
 	TypeName   string
+	GroupID    int
+	GroupName  string
 	InsertDate time.Time
 }
 
