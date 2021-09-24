@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"github.com/swirling-melodies/Raven/application"
+	"github.com/swirling-melodies/Raven/work/investmentWork"
 	"regexp"
 	"testing"
 )
@@ -16,6 +17,14 @@ func TestInvestmentProportion(t *testing.T) {
 	}
 	for _, i := range value.Proportion {
 		t.Log(i.Name, " : ", i.Value)
+	}
+}
+
+func TestSetInvestmentType(t *testing.T) {
+	_, err := investmentWork.SetInvestmentType()
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
 	}
 }
 

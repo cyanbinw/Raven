@@ -1,0 +1,44 @@
+[
+  {
+    "TypeID": 1,
+    "TypeName": "股票基金",
+    "GroupID": 1,
+    "GroupName": "股票"
+  },
+  {
+    "TypeID": 2,
+    "TypeName": "股票",
+    "GroupID": 1,
+    "GroupName": "股票"
+  },
+  {
+    "TypeID": 3,
+    "TypeName": "黄金",
+    "GroupID": 2,
+    "GroupName": "贵金属"
+  },
+  {
+    "TypeID": 4,
+    "TypeName": "债券基金",
+    "GroupID": 3,
+    "GroupName": "债券"
+  },
+  {
+    "TypeID": 5,
+    "TypeName": "混合基金",
+    "GroupID": 1,
+    "GroupName": "股票"
+  },
+  {
+    "TypeID": 6,
+    "TypeName": "股票指数基金",
+    "GroupID": 1,
+    "GroupName": "股票"
+  },
+  {
+    "TypeID": 7,
+    "TypeName": "联接基金",
+    "GroupID": 1,
+    "GroupName": "股票"
+  }
+]

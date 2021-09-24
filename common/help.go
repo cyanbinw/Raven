@@ -2,7 +2,8 @@ package common
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/swirling-melodies/Helheim"
+	"io/ioutil"
 	"os"
 	"strings"
 	"xorm.io/core"
@@ -13,7 +14,7 @@ var engine *xorm.Engine
 
 func CheckErr(err error) {
 	if err != nil {
-		fmt.Println(err)
+		Helheim.Writer(Helheim.Error, err)
 		panic(err)
 	}
 }
@@ -39,7 +40,7 @@ func InitDB() *xorm.Engine {
 
 	engine, err := xorm.NewEngine("mysql", path)
 	if err != nil {
-		fmt.Println(err)
+		Helheim.Writer(Helheim.Error, err)
 	}
 	engine.SetMapper(core.SameMapper{})
 	return engine
@@ -48,8 +49,23 @@ func InitDB() *xorm.Engine {
 func ToJSON(data interface{}) string {
 	jsons, err := json.Marshal(data) //转换成JSON返回的是byte[]
 	if err != nil {
-		fmt.Println(err)
+		Helheim.Writer(Helheim.Error, err)
 		return ""
 	}
 	return string(jsons)
+}
+
+func ReadJSON(address string) (map[string]interface{}, error) {
+	bytes, err := ioutil.ReadFile(address)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+		return nil, err
+	}
+	var data map[string]interface{}
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+		return nil, err
+	}
+	return data, nil
 }
