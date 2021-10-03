@@ -39,7 +39,7 @@ type InvestmentType struct {
 	TypeName   string
 	GroupID    int
 	GroupName  string
-	InsertDate time.Time
+	InsertDate time.Time `xorm:"created"`
 }
 
 type InvestmentChartModel struct {
