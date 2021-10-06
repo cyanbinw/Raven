@@ -1,21 +1,31 @@
-package main
+package test
 
 import (
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/swirling-melodies/Raven/application"
+	"github.com/swirling-melodies/Raven/work/investmentWork"
 	"regexp"
+	"testing"
 )
 
-func main() {
-	//investmentData, err := investmentsModels.GetInvestmentDiagram()
-	//if err != nil {
-	//	fmt.Println(err)
-	//}
-	//fmt.Println(investmentData)
+func TestInvestmentProportion(t *testing.T) {
+	data := new(application.InvestmentData)
+	data.InvestmentsInitDB()
+	value := data.InvestmentChartForAccount()
+	if &value == nil {
+		t.FailNow()
+	}
+	for _, i := range value.Proportion {
+		t.Log(i.Name, " : ", i.Value)
+	}
+}
 
-	//bitXOR()
-	//regular()
-	//Helheim.InsertLog()
+func TestSetInvestmentType(t *testing.T) {
+	_, err := investmentWork.SetInvestmentType()
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
+	}
 }
 
 func regular() {
