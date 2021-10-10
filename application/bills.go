@@ -5,9 +5,9 @@ import (
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 	"github.com/swirling-melodies/Helheim"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/database"
 	"github.com/swirling-melodies/Raven/models/billModels"
-	"github.com/swirling-melodies/Raven/service"
 	"io/ioutil"
 	"os"
 	"strconv"
@@ -57,7 +57,7 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 		Helheim.Writer(Helheim.Error, err)
 	}
 
-	if service.CheckFileIsExist(src) { //如果文件存在
+	if common.CheckFileIsExist(src) { //如果文件存在
 		f, err = os.OpenFile(src, os.O_APPEND, 0666) //打开文件
 	} else {
 		f, err = os.Create(src) //创建文件
@@ -65,7 +65,7 @@ func (data *BillDataByDate) BillsWriteToJSON() {
 	}
 
 	err = ioutil.WriteFile(src, val, 0777)
-	service.CheckErr(err)
+	common.CheckErr(err)
 	f.Close()
 }
 
@@ -113,17 +113,22 @@ func BillsGetDiagram(bill *billModels.BillTable) (*BillChartsData, error) {
 
 		return BillChartModel{i.Key.(string), m}
 	}).ToSlice(&data.BillCharts)
-	expend := From(bill.BillDetail).Where(func(i interface{}) bool {
-		return i.(billModels.BillDetail).Type == "支出"
-	}).Select(func(i interface{}) interface{} {
-		return i.(billModels.BillDetail).Account
+	var expenditure, income float64
+	expenditure = From(bill.BillDetail).Select(func(i interface{}) interface{} {
+		if i.(billModels.BillDetail).Type == "支出" {
+			return i.(billModels.BillDetail).Account
+		}
+		return 0.00
 	}).SumFloats()
-	income := From(bill.BillDetail).Where(func(i interface{}) bool {
-		return i.(billModels.BillDetail).Type == "收入"
-	}).Select(func(i interface{}) interface{} {
-		return i.(billModels.BillDetail).Account
+
+	income = From(bill.BillDetail).Select(func(i interface{}) interface{} {
+		if i.(billModels.BillDetail).Type == "收入" {
+			return i.(billModels.BillDetail).Account
+		}
+		return 0.00
 	}).SumFloats()
-	data.Total, _ = decimal.NewFromFloat(expend - income).Round(4).Float64()
+	data.Total = expenditure - income
+	data.Total, _ = decimal.NewFromFloat(data.Total).Round(4).Float64()
 	return data, nil
 }
 

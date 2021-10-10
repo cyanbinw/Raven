@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"github.com/swirling-melodies/Raven/service"
+	"github.com/swirling-melodies/Raven/common"
 	"xorm.io/xorm"
 )
 
@@ -24,5 +24,5 @@ var engine *xorm.Engine
 var timeLayoutStr = "2006-01-02 15:04:05" //go中的时间格式化必须是这个时间
 
 func InitDB() {
-	engine = service.InitDB()
+	engine = common.InitDB()
 }

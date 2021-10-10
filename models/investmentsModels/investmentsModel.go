@@ -31,12 +31,15 @@ type InvestmentActivity struct {
 type InvestmentItem struct {
 	ItemID int
 	Name   string
+	Code   string
 }
 
 type InvestmentType struct {
-	TypeID     int
+	TypeID     int `xorm:"pk autoincr"`
 	TypeName   string
-	InsertDate time.Time
+	GroupID    int
+	GroupName  string
+	InsertDate time.Time `xorm:"created"`
 }
 
 type InvestmentChartModel struct {

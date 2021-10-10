@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swirling-melodies/Helheim"
 	"github.com/swirling-melodies/Raven/application"
+	"github.com/swirling-melodies/Raven/common"
 	"github.com/swirling-melodies/Raven/models/investmentsModels"
-	"github.com/swirling-melodies/Raven/service"
 	"net/http"
 )
 
@@ -56,7 +56,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	Helheim.Writer(Helheim.Info, service.ToJSON(investmentData.Investment))
+	Helheim.Writer(Helheim.Info, common.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
@@ -91,7 +91,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
-	Helheim.Writer(Helheim.Info, service.ToJSON(investmentData.Investment))
+	Helheim.Writer(Helheim.Info, common.ToJSON(investmentData.Investment))
 
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
