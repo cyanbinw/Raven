@@ -92,14 +92,20 @@ func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
-		m := 0.0
+		expenditure := 0.0
+		revenue := 0.0
+		value := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.InvestmentTable).Account
+			if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+				expenditure += item.(investmentsModels.InvestmentTable).Account
+			} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+				revenue += item.(investmentsModels.InvestmentTable).Account
+			}
 		}
 
-		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
+		value, _ = decimal.NewFromFloat(expenditure - revenue).Round(4).Float64()
 
-		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: value}
 	}).ToSlice(&item.Account)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
@@ -110,14 +116,20 @@ func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
-		m := 0.0
+		expenditure := 0.0
+		revenue := 0.0
+		value := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.InvestmentTable).NetWorth
+			if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+				expenditure += item.(investmentsModels.InvestmentTable).NetWorth
+			} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+				revenue += item.(investmentsModels.InvestmentTable).NetWorth
+			}
 		}
 
-		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
+		value, _ = decimal.NewFromFloat(expenditure - revenue).Round(4).Float64()
 
-		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: value}
 	}).ToSlice(&item.NetWorth)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
@@ -128,14 +140,20 @@ func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
-		m := 0.0
+		expenditure := 0.0
+		revenue := 0.0
+		value := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.InvestmentTable).Share
+			if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+				expenditure += item.(investmentsModels.InvestmentTable).Share
+			} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+				revenue += item.(investmentsModels.InvestmentTable).Share
+			}
 		}
 
-		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
+		value, _ = decimal.NewFromFloat(expenditure - revenue).Round(4).Float64()
 
-		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: value}
 	}).ToSlice(&item.Share)
 
 	From(data).GroupBy(func(i interface{}) interface{} {
@@ -146,14 +164,20 @@ func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel
 		return i.(Group).Key
 	}).Select(func(group interface{}) interface{} {
 		i := group.(Group)
-		m := 0.0
+		expenditure := 0.0
+		revenue := 0.0
+		value := 0.0
 		for _, item := range i.Group {
-			m += item.(investmentsModels.InvestmentTable).Account
+			if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+				expenditure += item.(investmentsModels.InvestmentTable).Account
+			} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+				revenue += item.(investmentsModels.InvestmentTable).Account
+			}
 		}
 
-		m, _ = decimal.NewFromFloat(m).Round(4).Float64()
+		value, _ = decimal.NewFromFloat(expenditure - revenue).Round(4).Float64()
 
-		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: m}
+		return investmentsModels.InvestmentChartModel{Name: i.Key.(string), Value: value}
 	}).ToSlice(&item.Proportion)
 
 	return item
