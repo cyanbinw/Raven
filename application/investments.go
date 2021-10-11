@@ -41,17 +41,17 @@ func (data *InvestmentData) InvestmentsInitDB() {
 }
 
 func (data *InvestmentData) InvestmentGetAll() {
-	data.Data = database.InvestmentGetAll()
+	data.Data = investmentsModels.SetInvestmentList(database.InvestmentGetAll())
 }
 
 func (data *InvestmentData) InvestmentChartForAccount() InvestmentsChartModel {
-	item := database.InvestmentGetChart()
+	item := investmentsModels.SetInvestmentList(database.InvestmentGetChart())
 	return createChart(item)
 
 	//return investmentGetDataToChart()
 }
 
-func (data *InvestmentData) GetInvestmentTable() []investmentsModels.InvestmentTable {
+func (data *InvestmentData) GetInvestmentTable() []database.InvestmentTable {
 	return database.InvestmentGetTable()
 }
 
@@ -59,11 +59,11 @@ func InvestmentsInitDB() {
 	database.InvestmentsInitDB()
 }
 
-func AddInvestmentTable(data *investmentsModels.InvestmentTable) (bool, error) {
+func AddInvestmentTable(data *database.InvestmentTable) (bool, error) {
 	return database.InvestmentAddTable(*data)
 }
 
-func UpdateInvestmentTable(data *investmentsModels.InvestmentTable) (bool, error) {
+func UpdateInvestmentTable(data *database.InvestmentTable) (bool, error) {
 	return database.InvestmentUpdateTable(*data)
 }
 

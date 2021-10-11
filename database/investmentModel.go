@@ -3,17 +3,17 @@ package database
 import "time"
 
 type Investment struct {
-	ID             int       `xorm:"not null pk autoincr INT"`
+	ID             int64     `xorm:"not null pk autoincr INT"`
 	ItemID         int       `xorm:"not null INT"`
 	Code           string    `xorm:"VARCHAR(50)"`
 	Name           string    `xorm:"VARCHAR(100)"`
 	TypeID         int       `xorm:"INT"`
-	Account        string    `xorm:"DECIMAL(10,4)"`
-	Share          string    `xorm:"DECIMAL(10,4)"`
-	NetWorth       string    `xorm:"DECIMAL(10,4)"`
+	Account        float64   `xorm:"DECIMAL(10,4)"`
+	Share          float64   `xorm:"DECIMAL(10,4)"`
+	NetWorth       float64   `xorm:"DECIMAL(10,4)"`
 	Date           time.Time `xorm:"DATETIME"`
 	ActivityStatus int       `xorm:"INT"`
-	IsEmpty        bool       `xorm:"not null TINYINT(1)"`
+	IsEmpty        bool      `xorm:"not null TINYINT(1)"`
 }
 
 type InvestmentTable struct {
