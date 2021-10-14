@@ -442,7 +442,7 @@ func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []Investment
 
 	err = engine.Find(&iactivity)
 
-	err = engine.Table("InvestmentItem").Find(&item)
+	err = engine.Find(&item)
 
 	return itype, iactivity, item, nil
 }

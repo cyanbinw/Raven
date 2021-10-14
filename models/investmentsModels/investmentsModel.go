@@ -11,6 +11,7 @@ type Investment struct {
 	Account        float64   `db:"Account" json:"account"`
 	Share          float64   `db:"Share" json:"share"`
 	NetWorth       float64   `db:"NetWorth" json:"netWorth"`
+	ServiceCharge  float64   `db:"ServiceCharge" json:"serviceCharge"`
 	Date           time.Time `db:"Date" json:"date"`
 	ActivityStatus int       `db:"ActivityStatus" json:"activity"`
 	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
