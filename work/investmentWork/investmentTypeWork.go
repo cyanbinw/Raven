@@ -8,10 +8,6 @@ import (
 	"xorm.io/xorm"
 )
 
-func SetInvestmentType() (bool, error) {
-	return RunTransaction(actionInvestmentType)
-}
-
 func actionInvestmentType(session *xorm.Session) error {
 	investmentType := new(investmentsModels.InvestmentType)
 
@@ -29,16 +25,16 @@ func actionInvestmentType(session *xorm.Session) error {
 		return err
 	}
 
-	err = addInitialData(session)
+	err = addTypeInitialData(session)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func addInitialData(session *xorm.Session) error {
+func addTypeInitialData(session *xorm.Session) error {
 	var list []investmentsModels.InvestmentType
-	err := ReadJSON("../initialData/investmentTypeinitialData.json", &list)
+	err := ReadTypeJSON("../initialData/investmentTypeInitialData.json", &list)
 	if err != nil {
 		session.Rollback()
 		Helheim.Writer(Helheim.Error, err)
@@ -53,7 +49,7 @@ func addInitialData(session *xorm.Session) error {
 	return nil
 }
 
-func ReadJSON(address string, data *[]investmentsModels.InvestmentType) error {
+func ReadTypeJSON(address string, data *[]investmentsModels.InvestmentType) error {
 	bytes, err := ioutil.ReadFile(address)
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)

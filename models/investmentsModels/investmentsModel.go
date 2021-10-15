@@ -11,7 +11,6 @@ type Investment struct {
 	Account        float64   `db:"Account" json:"account"`
 	Share          float64   `db:"Share" json:"share"`
 	NetWorth       float64   `db:"NetWorth" json:"netWorth"`
-	ServiceCharge  float64   `db:"ServiceCharge" json:"serviceCharge"`
 	Date           time.Time `db:"Date" json:"date"`
 	ActivityStatus int       `db:"ActivityStatus" json:"activity"`
 	IsEmpty        bool      `db:"IsEmpty" json:"isEmpty"`
@@ -41,6 +40,21 @@ type InvestmentType struct {
 	GroupID    int
 	GroupName  string
 	InsertDate time.Time `xorm:"created"`
+}
+
+type InvestmentServiceCharge struct {
+	ItemID     int `xorm:"pk"`
+	TypeID     int `xorm:"pk"`
+	Cost       float64
+	InsertDate time.Time `xorm:"created"`
+	UpdateDate time.Time `xorm:"updated"`
+}
+
+type InvestmentServiceChargeType struct {
+	TypeID     int `xorm:"pk autoincr"`
+	TypeName   string
+	InsertDate time.Time `xorm:"created"`
+	UpdateDate time.Time `xorm:"updated"`
 }
 
 type InvestmentChartModel struct {

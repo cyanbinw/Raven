@@ -72,6 +72,7 @@ func workGroupV1(c *gin.RouterGroup) {
 	c.POST("/Work/UserSetWork", controllers.UserSetWork)
 	c.POST("/Work/InvestmentItemSetWork", controllers.InvestmentItemSetWork)
 	c.POST("/Work/InvestmentTypeSetWork", controllers.InvestmentTypeSetWork)
+	c.POST("/Work/InvestmentServiceChargeSetWork", controllers.InvestmentServiceChargeSetWork)
 }
 
 func logGroupV1(c *gin.RouterGroup) {
