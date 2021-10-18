@@ -17,9 +17,10 @@ type Investment struct {
 }
 
 type InvestmentTable struct {
-	Investment   `xorm:"extends"`
-	ActivityName string `json:"activityName"`
-	TypeName     string `json:"typeName"`
+	Investment        `xorm:"extends"`
+	ServiceChargeList []InvestmentServiceCharge `json:"serviceChargeList"`
+	ActivityName      string                    `json:"activityName"`
+	TypeName          string                    `json:"typeName"`
 }
 
 type InvestmentActivity struct {

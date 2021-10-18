@@ -55,6 +55,7 @@ func investmentGroupV1(c *gin.RouterGroup) {
 	c.POST("/Investment/UpdateInvestmentsTable", controllers.UpdateInvestmentsTable)
 	c.POST("/Investment/GetInvestmentDiagram", controllers.GetInvestmentDiagram)
 	c.POST("/Investment/GetInvestmentOption", controllers.GetInvestmentOption)
+	c.POST("/Investment/GetInvestmentServiceCharge", controllers.GetInvestmentServiceCharge)
 }
 
 func desireGroupV1(c *gin.RouterGroup) {

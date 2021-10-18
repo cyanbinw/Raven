@@ -64,7 +64,6 @@ func AddInvestmentsTable(c *gin.Context) {
 		return
 	}
 
-	application.InvestmentsInitDB()
 	flag, err := application.AddInvestmentTable(&investmentData)
 
 	if err != nil {
@@ -99,7 +98,6 @@ func UpdateInvestmentsTable(c *gin.Context) {
 		return
 	}
 
-	application.InvestmentsInitDB()
 	flag, err := application.UpdateInvestmentTable(&investmentData)
 
 	if err != nil {
@@ -147,6 +145,31 @@ func GetInvestmentDiagram(c *gin.Context) {
 // @Router /v1/Investment/GetInvestmentDiagram [post]
 func GetInvestmentOption(c *gin.Context) {
 	data, err := application.GetInvestmentOption()
+
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+		c.JSON(http.StatusInternalServerError, ReturnData{Error: err.Error(), Successful: false})
+		return
+	}
+
+	c.JSON(http.StatusOK, data)
+}
+
+//GetInvestmentServiceCharge
+// @Tags Investment
+// @Summary 获取手续费(table page)
+// @Description 描述信息
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} application.InvestmentOption
+// @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Investment/GetInvestmentDiagram [post]
+func GetInvestmentServiceCharge(c *gin.Context) {
+	item := struct {
+		itemID int
+	}{}
+	err := c.ShouldBindJSON(&item)
+	data := application.GetInvestmentServiceCharge(item.itemID)
 
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)

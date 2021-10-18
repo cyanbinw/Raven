@@ -61,10 +61,12 @@ func InvestmentsInitDB() {
 }
 
 func AddInvestmentTable(data *investmentsModels.InvestmentTable) (bool, error) {
+	InvestmentsInitDB()
 	return database.InvestmentAddTable(*data)
 }
 
 func UpdateInvestmentTable(data *investmentsModels.InvestmentTable) (bool, error) {
+	InvestmentsInitDB()
 	return database.InvestmentUpdateTable(*data)
 }
 
@@ -79,6 +81,10 @@ func GetInvestmentOption() (*InvestmentOption, error) {
 	database.InvestmentsInitDB()
 	option.Type, option.Activity, option.Item, err = database.InvestmentGetOption()
 	return option, err
+}
+
+func GetInvestmentServiceCharge(itemID int) []investmentsModels.InvestmentServiceCharge {
+	return database.GetServiceChargeData(itemID)
 }
 
 func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel {
