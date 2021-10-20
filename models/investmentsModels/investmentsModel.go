@@ -44,9 +44,9 @@ type InvestmentType struct {
 }
 
 type InvestmentServiceCharge struct {
-	ItemID     int `xorm:"pk"`
-	TypeID     int `xorm:"pk"`
-	Cost       float64
+	ItemID     int       `xorm:"pk" json:"itemID"`
+	TypeID     int       `xorm:"pk" json:"typeID"`
+	Cost       float64   `json:"cost"`
 	InsertDate time.Time `xorm:"created"`
 	UpdateDate time.Time `xorm:"updated"`
 }

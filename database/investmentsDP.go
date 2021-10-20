@@ -490,6 +490,9 @@ func InvestmentGetDateOrderbyDate() *[]Investment {
 
 func GetServiceChargeData(itemID int) []InvestmentServiceCharge {
 	var list []InvestmentServiceCharge
-	engine.Where("ItemID = ", itemID).Find(&list)
+	err := engine.Where("ItemID = ?", itemID).Find(&list)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
 	return list
 }
