@@ -30,9 +30,10 @@ type InvestmentsChartModel struct {
 }
 
 type InvestmentOption struct {
-	Type     []investmentsModels.InvestmentType     `json:"type"`
-	Activity []investmentsModels.InvestmentActivity `json:"activity"`
-	Item     []investmentsModels.InvestmentItem     `json:"item"`
+	Type          []investmentsModels.InvestmentType              `json:"type"`
+	Activity      []investmentsModels.InvestmentActivity          `json:"activity"`
+	Item          []investmentsModels.InvestmentItem              `json:"item"`
+	ServiceCharge []investmentsModels.InvestmentServiceChargeType `json:"serviceCharge"`
 }
 
 type InvestmentGroupList []InvestmentGroup
@@ -79,7 +80,7 @@ func GetInvestmentOption() (*InvestmentOption, error) {
 	var option = new(InvestmentOption)
 	var err error
 	database.InvestmentsInitDB()
-	option.Type, option.Activity, option.Item, err = database.InvestmentGetOption()
+	option.Type, option.Activity, option.Item, option.ServiceCharge, err = database.InvestmentGetOption()
 	return option, err
 }
 

@@ -462,10 +462,11 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	return false, err
 }
 
-func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
+func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, []InvestmentServiceChargeType, error) {
 	var itype []InvestmentType
 	var iactivity []InvestmentActivity
 	var item []InvestmentItem
+	var serviceCharge []InvestmentServiceChargeType
 
 	err := engine.Find(&itype)
 	if err != nil {
@@ -473,10 +474,21 @@ func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []Investment
 	}
 
 	err = engine.Find(&iactivity)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
 
 	err = engine.Find(&item)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
 
-	return itype, iactivity, item, nil
+	err = engine.Find(&serviceCharge)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
+
+	return itype, iactivity, item, serviceCharge, nil
 }
 
 func InvestmentGetDateOrderbyDate() *[]Investment {
