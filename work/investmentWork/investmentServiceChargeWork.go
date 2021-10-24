@@ -87,7 +87,7 @@ func setInvestmentServiceChargeType(session *xorm.Session) error {
 
 func addServiceChargeTypeInitialData(session *xorm.Session) error {
 	var list []investmentsModels.InvestmentServiceChargeType
-	err := ReadServiceChargeJSON("../initialData/investmentServiceChargeInitialData.json", &list)
+	err := ReadServiceChargeJSON("./initialData/investmentServiceChargeInitialData.json", &list)
 	if err != nil {
 		session.Rollback()
 		Helheim.Writer(Helheim.Error, err)

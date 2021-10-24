@@ -34,7 +34,7 @@ func actionInvestmentType(session *xorm.Session) error {
 
 func addTypeInitialData(session *xorm.Session) error {
 	var list []investmentsModels.InvestmentType
-	err := ReadTypeJSON("../initialData/investmentTypeInitialData.json", &list)
+	err := ReadTypeJSON("./initialData/investmentTypeInitialData.json", &list)
 	if err != nil {
 		session.Rollback()
 		Helheim.Writer(Helheim.Error, err)

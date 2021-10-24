@@ -347,6 +347,18 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 			}
 			return false, err
 		}
+		for _, i := range data.ServiceChargeList {
+			data.Investment.ServiceCharge += i.Cost
+		}
+
+		_, err = session.ID(data.ID).Cols("ServiceCharge").Update(&data.Investment)
+		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
+			if err = session.Rollback(); err != nil {
+				Helheim.Writer(Helheim.Error, err)
+			}
+			return false, err
+		}
 	}
 
 	err = session.Commit()
@@ -408,23 +420,38 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 		}
 	}
 
-	for _, i := range data.ServiceChargeList {
-		count, err := session.Where("ItemID = ?", i.ItemID).And("TypeID = ?", i.TypeID).Update(i)
+	if data.ServiceChargeList != nil {
+		for _, i := range data.ServiceChargeList {
+			data.Investment.ServiceCharge += i.Cost
+		}
+
+		_, err = session.ID(data.ID).Cols("ServiceCharge").Update(&data.Investment)
 		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
 			if err = session.Rollback(); err != nil {
 				Helheim.Writer(Helheim.Error, err)
 			}
-			Helheim.Writer(Helheim.Error, err)
 			return false, err
 		}
-		if count == 0 {
-			_, err = session.Insert(i)
+
+		for _, i := range data.ServiceChargeList {
+			count, err := session.Where("ItemID = ?", i.ItemID).And("TypeID = ?", i.TypeID).Update(i)
 			if err != nil {
 				if err = session.Rollback(); err != nil {
 					Helheim.Writer(Helheim.Error, err)
 				}
 				Helheim.Writer(Helheim.Error, err)
 				return false, err
+			}
+			if count == 0 {
+				_, err = session.Insert(i)
+				if err != nil {
+					if err = session.Rollback(); err != nil {
+						Helheim.Writer(Helheim.Error, err)
+					}
+					Helheim.Writer(Helheim.Error, err)
+					return false, err
+				}
 			}
 		}
 	}
