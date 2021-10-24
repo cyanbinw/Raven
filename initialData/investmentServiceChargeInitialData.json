@@ -1,0 +1,14 @@
+[
+  {
+    "TypeID": 1,
+    "TypeName": "手续费"
+  },
+  {
+    "TypeID": 2,
+    "TypeName": "印花税"
+  },
+  {
+    "TypeID": 3,
+    "TypeName": "过户费"
+  }
+]

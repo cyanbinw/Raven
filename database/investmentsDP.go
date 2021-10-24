@@ -338,6 +338,29 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 		}
 	}
 
+	if data.ServiceChargeList != nil {
+		_, err = session.Insert(&data.ServiceChargeList)
+		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
+			if err = session.Rollback(); err != nil {
+				Helheim.Writer(Helheim.Error, err)
+			}
+			return false, err
+		}
+		for _, i := range data.ServiceChargeList {
+			data.Investment.ServiceCharge += i.Cost
+		}
+
+		_, err = session.ID(data.ID).Cols("ServiceCharge").Update(&data.Investment)
+		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
+			if err = session.Rollback(); err != nil {
+				Helheim.Writer(Helheim.Error, err)
+			}
+			return false, err
+		}
+	}
+
 	err = session.Commit()
 	if err != nil {
 		return false, err
@@ -397,6 +420,42 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 		}
 	}
 
+	if data.ServiceChargeList != nil {
+		for _, i := range data.ServiceChargeList {
+			data.Investment.ServiceCharge += i.Cost
+		}
+
+		_, err = session.ID(data.ID).Cols("ServiceCharge").Update(&data.Investment)
+		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
+			if err = session.Rollback(); err != nil {
+				Helheim.Writer(Helheim.Error, err)
+			}
+			return false, err
+		}
+
+		for _, i := range data.ServiceChargeList {
+			count, err := session.Where("ItemID = ?", i.ItemID).And("TypeID = ?", i.TypeID).Update(i)
+			if err != nil {
+				if err = session.Rollback(); err != nil {
+					Helheim.Writer(Helheim.Error, err)
+				}
+				Helheim.Writer(Helheim.Error, err)
+				return false, err
+			}
+			if count == 0 {
+				_, err = session.Insert(i)
+				if err != nil {
+					if err = session.Rollback(); err != nil {
+						Helheim.Writer(Helheim.Error, err)
+					}
+					Helheim.Writer(Helheim.Error, err)
+					return false, err
+				}
+			}
+		}
+	}
+
 	err = session.Commit()
 	if err != nil {
 		return false, err
@@ -430,10 +489,11 @@ func investmentUpdateTableV1(data InvestmentTable) (bool, error) {
 	return false, err
 }
 
-func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, error) {
+func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []InvestmentItem, []InvestmentServiceChargeType, error) {
 	var itype []InvestmentType
 	var iactivity []InvestmentActivity
 	var item []InvestmentItem
+	var serviceCharge []InvestmentServiceChargeType
 
 	err := engine.Find(&itype)
 	if err != nil {
@@ -441,10 +501,21 @@ func InvestmentGetOption() ([]InvestmentType, []InvestmentActivity, []Investment
 	}
 
 	err = engine.Find(&iactivity)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
 
-	err = engine.Table("InvestmentItem").Find(&item)
+	err = engine.Find(&item)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
 
-	return itype, iactivity, item, nil
+	err = engine.Find(&serviceCharge)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
+
+	return itype, iactivity, item, serviceCharge, nil
 }
 
 func InvestmentGetDateOrderbyDate() *[]Investment {
@@ -454,4 +525,13 @@ func InvestmentGetDateOrderbyDate() *[]Investment {
 		Helheim.Writer(Helheim.Error, err)
 	}
 	return &investments
+}
+
+func GetServiceChargeData(itemID int) []InvestmentServiceCharge {
+	var list []InvestmentServiceCharge
+	err := engine.Where("ItemID = ?", itemID).Find(&list)
+	if err != nil {
+		Helheim.Writer(Helheim.Error, err)
+	}
+	return list
 }

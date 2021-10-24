@@ -101,3 +101,39 @@ func InvestmentItemSetWork(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, r)
 }
+
+//InvestmentTypeSetWork
+// @Tags Work
+// @Summary 添加Investment的下拉菜单
+// @Description 描述信息
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Work/UserSetWork [post]
+func InvestmentTypeSetWork(c *gin.Context) {
+	r := new(ReturnData)
+	flag, err := investmentWork.SetInvestmentType()
+	r.Successful = flag
+	if err != nil {
+		r.Error = err.Error()
+	}
+	c.JSON(http.StatusOK, r)
+}
+
+//InvestmentServiceChargeSetWork
+// @Tags Work
+// @Summary 添加Investment的下拉菜单
+// @Description 描述信息
+// @Security Bearer
+// @Produce  json
+// @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
+// @Router /v1/Work/UserSetWork [post]
+func InvestmentServiceChargeSetWork(c *gin.Context) {
+	r := new(ReturnData)
+	flag, err := investmentWork.SetInvestmentServiceCharge()
+	r.Successful = flag
+	if err != nil {
+		r.Error = err.Error()
+	}
+	c.JSON(http.StatusOK, r)
+}
