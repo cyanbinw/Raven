@@ -338,7 +338,10 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 		}
 	}
 
-	if data.ServiceChargeList != nil {
+	if data.ServiceChargeList != nil && len(data.ServiceChargeList) > 0 {
+		for i := range data.ServiceChargeList {
+			data.ServiceChargeList[i].ItemID = data.ID
+		}
 		_, err = session.Insert(&data.ServiceChargeList)
 		if err != nil {
 			Helheim.Writer(Helheim.Error, err)
