@@ -424,6 +424,7 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 	}
 
 	if data.ServiceChargeList != nil {
+		data.Investment.ServiceCharge = 0
 		for _, i := range data.ServiceChargeList {
 			data.Investment.ServiceCharge += i.Cost
 		}
