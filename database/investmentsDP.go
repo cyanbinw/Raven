@@ -438,7 +438,7 @@ func InvestmentUpdateTable(data InvestmentTable) (bool, error) {
 		}
 
 		for _, i := range data.ServiceChargeList {
-			count, err := session.Where("ItemID = ?", i.ItemID).And("TypeID = ?", i.TypeID).Update(i)
+			count, err := session.Where("ItemID = ?", i.ItemID).And("TypeID = ?", i.TypeID).Cols("Cost").Update(i)
 			if err != nil {
 				if err = session.Rollback(); err != nil {
 					Helheim.Writer(Helheim.Error, err)
