@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-//Login
+//LoginREPost
 // @Tags User
 // @Summary 登陆
 // @Description 描述信息
@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Failure 400 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Router /v1/Bill/GetBillsTable [post]
-func Login(c *gin.Context) {
+func (UserReuter) LoginREPost(c *gin.Context) {
 	var user = application.User{}
 
 	err := c.ShouldBindJSON(&user)
@@ -36,7 +36,7 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, rd)
 }
 
-//ValidateToken
+//ValidateTokenREPost
 // @Tags User
 // @Summary 登陆
 // @Description 描述信息
@@ -46,7 +46,7 @@ func Login(c *gin.Context) {
 // @Success 200 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Failure 400 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Router /v1/Bill/GetBillsTable [post]
-func ValidateToken(c *gin.Context) {
+func (UserReuter) ValidateTokenREPost(c *gin.Context) {
 	var user = application.User{}
 
 	err := c.ShouldBindJSON(&user)
