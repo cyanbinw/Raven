@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-//GetBillsYearAllData
+//GetBillsYearAllDataREPost
 // @Tags Bill
 // @Summary 获取最近一年的bills
 // @Description 描述信息
@@ -16,7 +16,7 @@ import (
 // @Produce  json
 // @Success 200 {object} []billModels.BillDetail
 // @Router /v1/Bill/GetBillsYearAllData [post]
-func GetBillsYearAllData(c *gin.Context) {
+func (BillReuter) GetBillsYearAllDataREPost(c *gin.Context) {
 	var billData = application.BillDataByDate{}
 
 	billData.BillsInitDB()
@@ -24,7 +24,7 @@ func GetBillsYearAllData(c *gin.Context) {
 	c.JSON(http.StatusOK, billData.Data)
 }
 
-//GetBillsDataByMonth
+//GetBillsDataByMonthREPost
 // @Tags Bill
 // @Summary 获取最近四个月的bills
 // @Description 描述信息
@@ -32,7 +32,7 @@ func GetBillsYearAllData(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []billModels.BillDetail
 // @Router /v1/Bill/GetBillsDataByMonth [post]
-func GetBillsDataByMonth(c *gin.Context) {
+func (BillReuter) GetBillsDataByMonthREPost(c *gin.Context) {
 	var billData = application.BillDataByDate{}
 
 	billData.BillsInitDB()
@@ -40,7 +40,7 @@ func GetBillsDataByMonth(c *gin.Context) {
 	c.JSON(http.StatusOK, billData.Data)
 }
 
-//GetBillsTable
+//GetBillsTableREPost
 // @Tags Bill
 // @Summary 获取bills表信息
 // @Description 描述信息
@@ -50,7 +50,7 @@ func GetBillsDataByMonth(c *gin.Context) {
 // @Success 200 {object} billModels.BillTable
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetBillsTable [post]
-func GetBillsTable(c *gin.Context) {
+func (BillReuter) GetBillsTableREPost(c *gin.Context) {
 	var bill = billModels.BillTable{}
 
 	err := c.ShouldBindJSON(&bill)
@@ -70,7 +70,7 @@ func GetBillsTable(c *gin.Context) {
 	c.JSON(http.StatusOK, application.BillsGetTable(&bill))
 }
 
-//GetBillsDataByPage
+//GetBillsDataByPageREPost
 // @Tags Bill
 // @Summary 根据页面获取bill的数据
 // @Description 描述信息
@@ -80,7 +80,7 @@ func GetBillsTable(c *gin.Context) {
 // @Success 200 {object} billModels.BillDataByPage
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetBillsAllData [post]
-func GetBillsDataByPage(c *gin.Context) {
+func (BillReuter) GetBillsDataByPageREPost(c *gin.Context) {
 	var bill = billModels.BillDataByPage{}
 
 	err := c.ShouldBindJSON(&bill)
@@ -93,7 +93,7 @@ func GetBillsDataByPage(c *gin.Context) {
 	c.JSON(http.StatusOK, application.BillsGetDataByPage(&bill))
 }
 
-//GetBillsTableOption
+//GetBillsTableOptionREPost
 // @Tags Bill
 // @Summary 获取bills表查询条件
 // @Description 描述信息
@@ -101,11 +101,11 @@ func GetBillsDataByPage(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} application.BillOption
 // @Router /v1/Bill/GetBillsTable [post]
-func GetBillsTableOption(c *gin.Context) {
+func (BillReuter) GetBillsTableOptionREPost(c *gin.Context) {
 	c.JSON(http.StatusOK, application.BillsGetTableOption())
 }
 
-//GetBillsDiagram
+//GetBillsDiagramREPost
 // @Tags Bill
 // @Summary 获取bills表信息
 // @Description 描述信息
@@ -115,7 +115,7 @@ func GetBillsTableOption(c *gin.Context) {
 // @Success 200 {object} billModels.BillTable
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetBillsDiagram [post]
-func GetBillsDiagram(c *gin.Context) {
+func (BillReuter) GetBillsDiagramREPost(c *gin.Context) {
 	var bill = billModels.BillTable{}
 
 	err := c.ShouldBindJSON(&bill)

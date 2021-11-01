@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-//BillNameSetWork
+//BillNameSetWorkREPost
 // @Tags Work
 // @Summary 每月更新数据库后更新BillName表
 // @Description 描述信息
@@ -19,7 +19,7 @@ import (
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/BillNameSetWork [post]
-func BillNameSetWork(c *gin.Context) {
+func (WorkReuter) BillNameSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := billNameWork.SetBillName()
 	r.Successful = flag
@@ -29,7 +29,7 @@ func BillNameSetWork(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
-//GetBillNameList
+//GetBillNameListREPost
 // @Tags Work
 // @Summary 获取所有BillName
 // @Description 描述信息
@@ -37,11 +37,11 @@ func BillNameSetWork(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []billModels.BillNameConfig
 // @Router /v1/Work/GetBillNameList [post]
-func GetBillNameList(c *gin.Context) {
+func (WorkReuter) GetBillNameListREPost(c *gin.Context) {
 	c.JSON(http.StatusOK, billNameWork.GetBillNameList())
 }
 
-//UpdateBillName
+//UpdateBillNameREPost
 // @Tags Work
 // @Summary 更新BillName
 // @Description 描述信息
@@ -50,7 +50,7 @@ func GetBillNameList(c *gin.Context) {
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UpdateBillName [post]
-func UpdateBillName(c *gin.Context) {
+func (WorkReuter) UpdateBillNameREPost(c *gin.Context) {
 	var bill = billModels.BillNameConfig{}
 
 	err := c.ShouldBindJSON(&bill)
@@ -66,7 +66,7 @@ func UpdateBillName(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
-//UserSetWork
+//UserSetWorkREPost
 // @Tags Work
 // @Summary 重置用户表
 // @Description 描述信息
@@ -74,7 +74,7 @@ func UpdateBillName(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func UserSetWork(c *gin.Context) {
+func (WorkReuter) UserSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := userWork.SetUser()
 	r.Successful = flag
@@ -84,7 +84,7 @@ func UserSetWork(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
-//InvestmentItemSetWork
+//InvestmentItemSetWorkREPost
 // @Tags Work
 // @Summary 添加Investment的下拉菜单
 // @Description 描述信息
@@ -92,7 +92,7 @@ func UserSetWork(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func InvestmentItemSetWork(c *gin.Context) {
+func (WorkReuter) InvestmentItemSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := investmentWork.SetInvestmentItem()
 	r.Successful = flag
@@ -102,7 +102,7 @@ func InvestmentItemSetWork(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
-//InvestmentTypeSetWork
+//InvestmentTypeSetWorkREPost
 // @Tags Work
 // @Summary 添加Investment的下拉菜单
 // @Description 描述信息
@@ -110,7 +110,7 @@ func InvestmentItemSetWork(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func InvestmentTypeSetWork(c *gin.Context) {
+func (WorkReuter) InvestmentTypeSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := investmentWork.SetInvestmentType()
 	r.Successful = flag
@@ -120,7 +120,7 @@ func InvestmentTypeSetWork(c *gin.Context) {
 	c.JSON(http.StatusOK, r)
 }
 
-//InvestmentServiceChargeSetWork
+//InvestmentServiceChargeSetWorkREPost
 // @Tags Work
 // @Summary 添加Investment的下拉菜单
 // @Description 描述信息
@@ -128,7 +128,7 @@ func InvestmentTypeSetWork(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func InvestmentServiceChargeSetWork(c *gin.Context) {
+func (WorkReuter) InvestmentServiceChargeSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := investmentWork.SetInvestmentServiceCharge()
 	r.Successful = flag

@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-//GetInvestments
+//GetInvestmentsREPost
 // @Tags Investment
 // @Summary 获取Investments的金额分类
 // @Description 描述信息
@@ -17,7 +17,7 @@ import (
 // @Produce  json
 // @Success 200 {object} application.InvestmentsChartModel {}
 // @Router /v1/Investment/GetInvestments [post]
-func GetInvestments(c *gin.Context) {
+func (InvestmentReuter) GetInvestmentsREPost(c *gin.Context) {
 	var investmentData = application.InvestmentData{}
 
 	investmentData.InvestmentsInitDB()
@@ -25,7 +25,7 @@ func GetInvestments(c *gin.Context) {
 	c.JSON(http.StatusOK, investmentData.InvestmentChartForAccount())
 }
 
-//GetInvestmentsTable
+//GetInvestmentsTableREPost
 // @Tags Investment
 // @Summary 获取Investments的表数据
 // @Description 描述信息
@@ -33,7 +33,7 @@ func GetInvestments(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []investmentsModels.InvestmentTable {}
 // @Router /v1/Investment/GetInvestmentsTable [post]
-func GetInvestmentsTable(c *gin.Context) {
+func (InvestmentReuter) GetInvestmentsTableREPost(c *gin.Context) {
 	var investmentData = application.InvestmentData{}
 
 	investmentData.InvestmentsInitDB()
@@ -41,7 +41,7 @@ func GetInvestmentsTable(c *gin.Context) {
 	c.JSON(http.StatusOK, investmentData.GetInvestmentTable())
 }
 
-//AddInvestmentsTable
+//AddInvestmentsTableREPost
 // @Tags Investment
 // @Summary 添加新数据
 // @Description 描述信息
@@ -52,7 +52,7 @@ func GetInvestmentsTable(c *gin.Context) {
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/AddInvestmentsTable [post]
-func AddInvestmentsTable(c *gin.Context) {
+func (InvestmentReuter) AddInvestmentsTableREPost(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
@@ -75,7 +75,7 @@ func AddInvestmentsTable(c *gin.Context) {
 	c.JSON(http.StatusOK, ReturnData{Successful: flag})
 }
 
-//UpdateInvestmentsTable
+//UpdateInvestmentsTableREPost
 // @Tags Investment
 // @Summary 更新一条数据
 // @Description 描述信息
@@ -86,7 +86,7 @@ func AddInvestmentsTable(c *gin.Context) {
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/UpdateInvestmentsTable [post]
-func UpdateInvestmentsTable(c *gin.Context) {
+func (InvestmentReuter) UpdateInvestmentsTableREPost(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
@@ -109,7 +109,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 	c.JSON(http.StatusOK, ReturnData{Successful: flag})
 }
 
-//GetInvestmentDiagram
+//GetInvestmentDiagramREPost
 // @Tags Investment
 // @Summary 获取图表信息
 // @Description 描述信息
@@ -118,7 +118,7 @@ func UpdateInvestmentsTable(c *gin.Context) {
 // @Success 200 {object} map[string][]investmentsModels.Investment
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
-func GetInvestmentDiagram(c *gin.Context) {
+func (InvestmentReuter) GetInvestmentDiagramREPost(c *gin.Context) {
 
 	data, err := application.GetInvestmentDiagram()
 
@@ -134,7 +134,7 @@ func GetInvestmentDiagram(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
-//GetInvestmentOption
+//GetInvestmentOptionREPost
 // @Tags Investment
 // @Summary 获取查询条件信息(table page)
 // @Description 描述信息
@@ -143,7 +143,7 @@ func GetInvestmentDiagram(c *gin.Context) {
 // @Success 200 {object} application.InvestmentOption
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
-func GetInvestmentOption(c *gin.Context) {
+func (InvestmentReuter) GetInvestmentOptionREPost(c *gin.Context) {
 	data, err := application.GetInvestmentOption()
 
 	if err != nil {
@@ -155,7 +155,7 @@ func GetInvestmentOption(c *gin.Context) {
 	c.JSON(http.StatusOK, data)
 }
 
-//GetInvestmentServiceCharge
+//GetInvestmentServiceChargeREPost
 // @Tags Investment
 // @Summary 获取手续费(table page)
 // @Description 描述信息
@@ -164,7 +164,7 @@ func GetInvestmentOption(c *gin.Context) {
 // @Success 200 {object} ReturnData {"Successful":true,"data":[]investmentsModels.InvestmentServiceCharge,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
-func GetInvestmentServiceCharge(c *gin.Context) {
+func GetInvestmentServiceChargeREPost(c *gin.Context) {
 	item := struct {
 		ItemID int
 	}{}
