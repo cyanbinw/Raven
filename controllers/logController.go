@@ -17,7 +17,7 @@ import (
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetLogTable [post]
-func (LogReuter) GetLogTableREPost(c *gin.Context) {
+func (LogRouters) GetLogTableREPost(c *gin.Context) {
 	var data = new(Helheim.RecordList)
 	record := new(Helheim.MongoRecord)
 	if err := c.ShouldBindJSON(&data); err != nil {

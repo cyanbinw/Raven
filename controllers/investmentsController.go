@@ -17,7 +17,7 @@ import (
 // @Produce  json
 // @Success 200 {object} application.InvestmentsChartModel {}
 // @Router /v1/Investment/GetInvestments [post]
-func (InvestmentReuter) GetInvestmentsREPost(c *gin.Context) {
+func (InvestmentRouters) GetInvestmentsREPost(c *gin.Context) {
 	var investmentData = application.InvestmentData{}
 
 	investmentData.InvestmentsInitDB()
@@ -33,7 +33,7 @@ func (InvestmentReuter) GetInvestmentsREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []investmentsModels.InvestmentTable {}
 // @Router /v1/Investment/GetInvestmentsTable [post]
-func (InvestmentReuter) GetInvestmentsTableREPost(c *gin.Context) {
+func (InvestmentRouters) GetInvestmentsTableREPost(c *gin.Context) {
 	var investmentData = application.InvestmentData{}
 
 	investmentData.InvestmentsInitDB()
@@ -52,7 +52,7 @@ func (InvestmentReuter) GetInvestmentsTableREPost(c *gin.Context) {
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/AddInvestmentsTable [post]
-func (InvestmentReuter) AddInvestmentsTableREPost(c *gin.Context) {
+func (InvestmentRouters) AddInvestmentsTableREPost(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
@@ -86,7 +86,7 @@ func (InvestmentReuter) AddInvestmentsTableREPost(c *gin.Context) {
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/UpdateInvestmentsTable [post]
-func (InvestmentReuter) UpdateInvestmentsTableREPost(c *gin.Context) {
+func (InvestmentRouters) UpdateInvestmentsTableREPost(c *gin.Context) {
 	var investmentData = investmentsModels.InvestmentTable{}
 
 	err := c.ShouldBindJSON(&investmentData)
@@ -118,7 +118,7 @@ func (InvestmentReuter) UpdateInvestmentsTableREPost(c *gin.Context) {
 // @Success 200 {object} map[string][]investmentsModels.Investment
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
-func (InvestmentReuter) GetInvestmentDiagramREPost(c *gin.Context) {
+func (InvestmentRouters) GetInvestmentDiagramREPost(c *gin.Context) {
 
 	data, err := application.GetInvestmentDiagram()
 
@@ -143,7 +143,7 @@ func (InvestmentReuter) GetInvestmentDiagramREPost(c *gin.Context) {
 // @Success 200 {object} application.InvestmentOption
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
-func (InvestmentReuter) GetInvestmentOptionREPost(c *gin.Context) {
+func (InvestmentRouters) GetInvestmentOptionREPost(c *gin.Context) {
 	data, err := application.GetInvestmentOption()
 
 	if err != nil {

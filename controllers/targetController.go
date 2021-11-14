@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (TargetReuter) GetTargetREPost(c *gin.Context) {
+func (TargetRouters) GetTargetREPost(c *gin.Context) {
 	targetModels.TargetInitDB()
 	targetModels.GetTargetData()
 

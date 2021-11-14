@@ -28,16 +28,16 @@ type Path struct {
 	Route   string
 }
 
-type TestReuter struct {
+type TestRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *TestReuter) GetController() {
+func (t *TestRouters) GetController() {
 	t.Controller = "Test"
 }
 
-func (t *TestReuter) SetWork() {
+func (t *TestRouters) SetWork() {
 	/*if t.Controller == "" {
 		t.GetController()
 	}*/
@@ -63,20 +63,20 @@ func (t *TestReuter) SetWork() {
 	}
 }
 
-func (t TestReuter) GetWork() []Path {
+func (t TestRouters) GetWork() []Path {
 	return t.Work
 }
 
-type BillReuter struct {
+type BillRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *BillReuter) GetController() {
+func (t *BillRouters) GetController() {
 	t.Controller = "Bill"
 }
 
-func (t *BillReuter) SetWork() {
+func (t *BillRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -101,20 +101,20 @@ func (t *BillReuter) SetWork() {
 	}
 }
 
-func (t BillReuter) GetWork() []Path {
+func (t BillRouters) GetWork() []Path {
 	return t.Work
 }
 
-type DesireReuter struct {
+type DesireRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *DesireReuter) GetController() {
+func (t *DesireRouters) GetController() {
 	t.Controller = "Desire"
 }
 
-func (t *DesireReuter) SetWork() {
+func (t *DesireRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -139,20 +139,20 @@ func (t *DesireReuter) SetWork() {
 	}
 }
 
-func (t DesireReuter) GetWork() []Path {
+func (t DesireRouters) GetWork() []Path {
 	return t.Work
 }
 
-type InvestmentReuter struct {
+type InvestmentRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *InvestmentReuter) GetController() {
+func (t *InvestmentRouters) GetController() {
 	t.Controller = "Investment"
 }
 
-func (t *InvestmentReuter) SetWork() {
+func (t *InvestmentRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -177,20 +177,20 @@ func (t *InvestmentReuter) SetWork() {
 	}
 }
 
-func (t InvestmentReuter) GetWork() []Path {
+func (t InvestmentRouters) GetWork() []Path {
 	return t.Work
 }
 
-type LogReuter struct {
+type LogRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *LogReuter) GetController() {
+func (t *LogRouters) GetController() {
 	t.Controller = "Log"
 }
 
-func (t *LogReuter) SetWork() {
+func (t *LogRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -215,20 +215,20 @@ func (t *LogReuter) SetWork() {
 	}
 }
 
-func (t LogReuter) GetWork() []Path {
+func (t LogRouters) GetWork() []Path {
 	return t.Work
 }
 
-type TargetReuter struct {
+type TargetRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *TargetReuter) GetController() {
+func (t *TargetRouters) GetController() {
 	t.Controller = "Target"
 }
 
-func (t *TargetReuter) SetWork() {
+func (t *TargetRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -253,20 +253,20 @@ func (t *TargetReuter) SetWork() {
 	}
 }
 
-func (t TargetReuter) GetWork() []Path {
+func (t TargetRouters) GetWork() []Path {
 	return t.Work
 }
 
-type UserReuter struct {
+type UserRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *UserReuter) GetController() {
+func (t *UserRouters) GetController() {
 	t.Controller = "User"
 }
 
-func (t *UserReuter) SetWork() {
+func (t *UserRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -291,20 +291,20 @@ func (t *UserReuter) SetWork() {
 	}
 }
 
-func (t UserReuter) GetWork() []Path {
+func (t UserRouters) GetWork() []Path {
 	return t.Work
 }
 
-type WorkReuter struct {
+type WorkRouters struct {
 	Controller string
 	Work       []Path
 }
 
-func (t *WorkReuter) GetController() {
+func (t *WorkRouters) GetController() {
 	t.Controller = "Work"
 }
 
-func (t *WorkReuter) SetWork() {
+func (t *WorkRouters) SetWork() {
 	if t.Controller == "" {
 		t.GetController()
 	}
@@ -329,11 +329,11 @@ func (t *WorkReuter) SetWork() {
 	}
 }
 
-func (t WorkReuter) GetWork() []Path {
+func (t WorkRouters) GetWork() []Path {
 	return t.Work
 }
 
-type IReuter interface {
+type IRouters interface {
 	GetController()
 	SetWork()
 	GetWork() []Path
