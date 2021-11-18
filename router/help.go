@@ -6,31 +6,31 @@ import (
 	"reflect"
 )
 
-type Reuter struct {
-	controllers.TestReuter
-	controllers.BillReuter
-	controllers.DesireReuter
-	controllers.InvestmentReuter
-	controllers.LogReuter
-	controllers.TargetReuter
-	controllers.UserReuter
-	controllers.WorkReuter
+type Routers struct {
+	controllers.TestRouters
+	controllers.BillRouters
+	controllers.DesireRouters
+	controllers.InvestmentRouters
+	controllers.LogRouters
+	controllers.TargetRouters
+	controllers.UserRouters
+	controllers.WorkRouters
 }
 
-func NewReuter() *Reuter {
-	i := &Reuter{}
-	i.TestReuter.SetWork()
-	i.BillReuter.SetWork()
-	i.DesireReuter.SetWork()
-	i.InvestmentReuter.SetWork()
-	i.LogReuter.SetWork()
-	i.TargetReuter.SetWork()
-	i.UserReuter.SetWork()
-	i.WorkReuter.SetWork()
+func NewRouters() *Routers {
+	i := &Routers{}
+	i.TestRouters.SetWork()
+	i.BillRouters.SetWork()
+	i.DesireRouters.SetWork()
+	i.InvestmentRouters.SetWork()
+	i.LogRouters.SetWork()
+	i.TargetRouters.SetWork()
+	i.UserRouters.SetWork()
+	i.WorkRouters.SetWork()
 
 	/*	data := reflect.ValueOf(i).Elem()
 		for item :=0; item < data.NumField(); item++{
-			data.Field(item).Interface().(controllers.IReuter).SetWork()
+			data.Field(item).Interface().(controllers.IRouters).SetWork()
 		}*/
 
 	return i

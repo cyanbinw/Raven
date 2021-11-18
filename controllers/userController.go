@@ -17,7 +17,7 @@ import (
 // @Success 200 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Failure 400 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Router /v1/Bill/GetBillsTable [post]
-func (UserReuter) LoginREPost(c *gin.Context) {
+func (UserRouters) LoginREPost(c *gin.Context) {
 	var user = application.User{}
 
 	err := c.ShouldBindJSON(&user)
@@ -46,7 +46,7 @@ func (UserReuter) LoginREPost(c *gin.Context) {
 // @Success 200 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Failure 400 {object} ReturnData {"Successful":true, "data":null, "Error":"", "Message":""}
 // @Router /v1/Bill/GetBillsTable [post]
-func (UserReuter) ValidateTokenREPost(c *gin.Context) {
+func (UserRouters) ValidateTokenREPost(c *gin.Context) {
 	var user = application.User{}
 
 	err := c.ShouldBindJSON(&user)

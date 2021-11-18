@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (DesireReuter) GetDesireREPost(c *gin.Context) {
+func (DesireRouters) GetDesireREPost(c *gin.Context) {
 	desireModels.GetDesire()
 
 	c.JSON(http.StatusOK, nil)

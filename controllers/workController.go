@@ -19,7 +19,7 @@ import (
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/BillNameSetWork [post]
-func (WorkReuter) BillNameSetWorkREPost(c *gin.Context) {
+func (WorkRouters) BillNameSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := billNameWork.SetBillName()
 	r.Successful = flag
@@ -37,7 +37,7 @@ func (WorkReuter) BillNameSetWorkREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []billModels.BillNameConfig
 // @Router /v1/Work/GetBillNameList [post]
-func (WorkReuter) GetBillNameListREPost(c *gin.Context) {
+func (WorkRouters) GetBillNameListREPost(c *gin.Context) {
 	c.JSON(http.StatusOK, billNameWork.GetBillNameList())
 }
 
@@ -50,7 +50,7 @@ func (WorkReuter) GetBillNameListREPost(c *gin.Context) {
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UpdateBillName [post]
-func (WorkReuter) UpdateBillNameREPost(c *gin.Context) {
+func (WorkRouters) UpdateBillNameREPost(c *gin.Context) {
 	var bill = billModels.BillNameConfig{}
 
 	err := c.ShouldBindJSON(&bill)
@@ -74,7 +74,7 @@ func (WorkReuter) UpdateBillNameREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func (WorkReuter) UserSetWorkREPost(c *gin.Context) {
+func (WorkRouters) UserSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := userWork.SetUser()
 	r.Successful = flag
@@ -92,7 +92,7 @@ func (WorkReuter) UserSetWorkREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func (WorkReuter) InvestmentItemSetWorkREPost(c *gin.Context) {
+func (WorkRouters) InvestmentItemSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := investmentWork.SetInvestmentItem()
 	r.Successful = flag
@@ -110,7 +110,7 @@ func (WorkReuter) InvestmentItemSetWorkREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func (WorkReuter) InvestmentTypeSetWorkREPost(c *gin.Context) {
+func (WorkRouters) InvestmentTypeSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := investmentWork.SetInvestmentType()
 	r.Successful = flag
@@ -128,7 +128,7 @@ func (WorkReuter) InvestmentTypeSetWorkREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Work/UserSetWork [post]
-func (WorkReuter) InvestmentServiceChargeSetWorkREPost(c *gin.Context) {
+func (WorkRouters) InvestmentServiceChargeSetWorkREPost(c *gin.Context) {
 	r := new(ReturnData)
 	flag, err := investmentWork.SetInvestmentServiceCharge()
 	r.Successful = flag

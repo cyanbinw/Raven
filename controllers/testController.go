@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-func (TestReuter) TestHomeREGet(c *gin.Context) {
+func (TestRouters) TestHomeREGet(c *gin.Context) {
 	var billData = application.BillDataByDate{}
 	year, err := strconv.Atoi(c.Query("year"))
 	if err != nil {

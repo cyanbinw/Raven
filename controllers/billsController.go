@@ -16,7 +16,7 @@ import (
 // @Produce  json
 // @Success 200 {object} []billModels.BillDetail
 // @Router /v1/Bill/GetBillsYearAllData [post]
-func (BillReuter) GetBillsYearAllDataREPost(c *gin.Context) {
+func (BillRouters) GetBillsYearAllDataREPost(c *gin.Context) {
 	var billData = application.BillDataByDate{}
 
 	billData.BillsInitDB()
@@ -32,7 +32,7 @@ func (BillReuter) GetBillsYearAllDataREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} []billModels.BillDetail
 // @Router /v1/Bill/GetBillsDataByMonth [post]
-func (BillReuter) GetBillsDataByMonthREPost(c *gin.Context) {
+func (BillRouters) GetBillsDataByMonthREPost(c *gin.Context) {
 	var billData = application.BillDataByDate{}
 
 	billData.BillsInitDB()
@@ -50,7 +50,7 @@ func (BillReuter) GetBillsDataByMonthREPost(c *gin.Context) {
 // @Success 200 {object} billModels.BillTable
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetBillsTable [post]
-func (BillReuter) GetBillsTableREPost(c *gin.Context) {
+func (BillRouters) GetBillsTableREPost(c *gin.Context) {
 	var bill = billModels.BillTable{}
 
 	err := c.ShouldBindJSON(&bill)
@@ -80,7 +80,7 @@ func (BillReuter) GetBillsTableREPost(c *gin.Context) {
 // @Success 200 {object} billModels.BillDataByPage
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetBillsAllData [post]
-func (BillReuter) GetBillsDataByPageREPost(c *gin.Context) {
+func (BillRouters) GetBillsDataByPageREPost(c *gin.Context) {
 	var bill = billModels.BillDataByPage{}
 
 	err := c.ShouldBindJSON(&bill)
@@ -101,7 +101,7 @@ func (BillReuter) GetBillsDataByPageREPost(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} application.BillOption
 // @Router /v1/Bill/GetBillsTable [post]
-func (BillReuter) GetBillsTableOptionREPost(c *gin.Context) {
+func (BillRouters) GetBillsTableOptionREPost(c *gin.Context) {
 	c.JSON(http.StatusOK, application.BillsGetTableOption())
 }
 
@@ -115,7 +115,7 @@ func (BillReuter) GetBillsTableOptionREPost(c *gin.Context) {
 // @Success 200 {object} billModels.BillTable
 // @Failure 400 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Bill/GetBillsDiagram [post]
-func (BillReuter) GetBillsDiagramREPost(c *gin.Context) {
+func (BillRouters) GetBillsDiagramREPost(c *gin.Context) {
 	var bill = billModels.BillTable{}
 
 	err := c.ShouldBindJSON(&bill)

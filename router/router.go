@@ -8,7 +8,7 @@ import (
 	"github.com/swirling-melodies/Raven/middlewares"
 )
 
-var v = NewReuter()
+var v = NewRouters()
 
 func InitRouter() {
 
@@ -35,33 +35,33 @@ func InitRouter() {
 }
 
 func testGroup(c *gin.RouterGroup) {
-	loadRouter(v.TestReuter.GetWork(), c)
+	loadRouter(v.TestRouters.GetWork(), c)
 }
 
 func billGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.BillReuter.GetWork(), c)
+	loadRouter(v.BillRouters.GetWork(), c)
 }
 
 func investmentGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.InvestmentReuter.GetWork(), c)
+	loadRouter(v.InvestmentRouters.GetWork(), c)
 }
 
 func desireGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.DesireReuter.GetWork(), c)
+	loadRouter(v.DesireRouters.GetWork(), c)
 }
 
 func targetGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.TargetReuter.GetWork(), c)
+	loadRouter(v.TargetRouters.GetWork(), c)
 }
 
 func workGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.WorkReuter.GetWork(), c)
+	loadRouter(v.WorkRouters.GetWork(), c)
 }
 
 func logGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.LogReuter.GetWork(), c)
+	loadRouter(v.LogRouters.GetWork(), c)
 }
 
 func userGroupV1(c *gin.RouterGroup) {
-	loadRouter(v.UserReuter.GetWork(), c)
+	loadRouter(v.UserRouters.GetWork(), c)
 }
