@@ -164,7 +164,7 @@ func (InvestmentRouters) GetInvestmentOptionREPost(c *gin.Context) {
 // @Success 200 {object} ReturnData {"Successful":true,"data":[]investmentsModels.InvestmentServiceCharge,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
-func GetInvestmentServiceChargeREPost(c *gin.Context) {
+func (InvestmentRouters) GetInvestmentServiceChargeREPost(c *gin.Context) {
 	item := struct {
 		ItemID int
 	}{}

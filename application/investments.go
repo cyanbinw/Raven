@@ -85,6 +85,7 @@ func GetInvestmentOption() (*InvestmentOption, error) {
 }
 
 func GetInvestmentServiceCharge(itemID int) []investmentsModels.InvestmentServiceCharge {
+	InvestmentsInitDB()
 	return database.GetServiceChargeData(itemID)
 }
 
