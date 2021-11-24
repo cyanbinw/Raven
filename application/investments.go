@@ -89,6 +89,11 @@ func GetInvestmentServiceCharge(itemID int) []investmentsModels.InvestmentServic
 	return database.GetServiceChargeData(itemID)
 }
 
+func GetInvestmentReprotForm(itemID int) []investmentsModels.InvestmentServiceCharge {
+	InvestmentsInitDB()
+	return database.GetServiceChargeData(itemID)
+}
+
 func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel {
 	var item InvestmentsChartModel
 
