@@ -36,6 +36,10 @@ func TestSetInvestmentServiceCharge(t *testing.T) {
 	}
 }
 
+func TestGetInvestmentReportForm(t *testing.T) {
+	_ = application.GetInvestmentReprotForm()
+}
+
 func regular() {
 	str := `<ul class="icon-list">
     <li><span><i class="el-icon-platform-eleme"></i><span class="icon-name">el-icon-platform-eleme</span></span></li>

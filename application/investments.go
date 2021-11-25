@@ -1,6 +1,7 @@
 package application
 
 import (
+	"fmt"
 	. "github.com/ahmetb/go-linq/v3"
 	"github.com/shopspring/decimal"
 	"github.com/swirling-melodies/Raven/database"
@@ -89,9 +90,11 @@ func GetInvestmentServiceCharge(itemID int) []investmentsModels.InvestmentServic
 	return database.GetServiceChargeData(itemID)
 }
 
-func GetInvestmentReprotForm(itemID int) []investmentsModels.InvestmentServiceCharge {
+func GetInvestmentReprotForm() investmentsModels.InvestmentReportForm {
 	InvestmentsInitDB()
-	return database.GetServiceChargeData(itemID)
+	data := database.InvestmentGetTable()
+	setInvestmentReprotForm(data)
+	return investmentsModels.InvestmentReportForm{}
 }
 
 func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel {
@@ -208,6 +211,83 @@ func investmentGetDiagram() (map[string][]investmentsModels.Investment, error) {
 
 func shareOutBonus() {
 
+}
+
+func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) {
+	var itemList []investmentsModels.InvestmentReportForm
+	item := new(investmentsModels.InvestmentReportForm)
+	From(data).GroupBy(func(i interface{}) interface{} {
+		return i.(investmentsModels.InvestmentTable).ItemID
+	}, func(i interface{}) interface{} {
+		return i.(investmentsModels.InvestmentTable)
+	}).OrderBy(func(i interface{}) interface{} {
+		return i.(Group).Key
+	}).Select(func(group interface{}) interface{} {
+		i := group.(Group)
+		value := investmentsModels.InvestmentReportForm{}
+
+		for _, item := range i.Group {
+			if item.(investmentsModels.InvestmentTable).IsEmpty != true {
+				if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+					value.PositionInvement += item.(investmentsModels.InvestmentTable).Account
+					value.PositionServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
+				} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+					value.PositionSell += item.(investmentsModels.InvestmentTable).Account
+					value.PositionServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
+				}
+			} else {
+				if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+					value.ClearanceInvement += item.(investmentsModels.InvestmentTable).Account
+					value.ClearanceServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
+				} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+					value.ClearanceSell += item.(investmentsModels.InvestmentTable).Account
+					value.ClearanceServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
+				}
+			}
+			if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
+				value.TotalPositionInvement += item.(investmentsModels.InvestmentTable).Account
+				value.TotalServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
+			} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
+				value.TotalClearanceInvement += item.(investmentsModels.InvestmentTable).Account
+				value.TotalServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
+			}
+		}
+		value.PositionInformation = i.Group[0].(investmentsModels.InvestmentTable).Name
+		value.ClearanceInformation = i.Group[0].(investmentsModels.InvestmentTable).Name
+		value.TotalInformation = i.Group[0].(investmentsModels.InvestmentTable).Name
+		return value
+	}).ToSlice(&itemList)
+	for _, i := range itemList {
+		if i.PositionInvement > 0 {
+			item.PositionInvement += i.PositionInvement
+			item.PositionServiceCharge += i.PositionServiceCharge
+			item.PositionSell += i.PositionSell
+			item.Position += 1
+			if i.PositionInformation != "" {
+				item.PositionInformation += i.PositionInformation + ";"
+			}
+			item.TotalPositionInvement += item.PositionInvement - item.PositionSell
+		} else if i.ClearanceInvement > 0 {
+			item.ClearanceInvement += i.ClearanceInvement
+			item.ClearanceServiceCharge += i.ClearanceServiceCharge
+			item.ClearanceSell += i.ClearanceSell
+			item.Clearance += 1
+			if i.ClearanceInformation != "" {
+				item.ClearanceInformation += i.ClearanceInformation + ";"
+			}
+			item.TotalClearanceInvement += item.ClearanceInvement - item.ClearanceSell
+		}
+
+		item.TotalInvement += i.TotalInvement
+		item.TotalServiceCharge += i.TotalServiceCharge
+		item.TotalSell += i.TotalSell
+		item.Total += 1
+		if i.TotalInformation != "" {
+			item.TotalInformation += i.TotalInformation + ";"
+		}
+		item.TotalTotalInvement += item.TotalPositionInvement + item.TotalClearanceInvement
+	}
+	fmt.Println(item)
 }
 
 func (data InvestmentGroupList) Len() int {
