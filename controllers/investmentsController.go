@@ -186,21 +186,10 @@ func (InvestmentRouters) GetInvestmentServiceChargeREPost(c *gin.Context) {
 // @Description 描述信息
 // @Security Bearer
 // @Produce  json
-// @Success 200 {object} ReturnData {"Successful":true,"data":[]investmentsModels.InvestmentServiceCharge,"Error":"", Message:""}
+// @Success 200 {object} ReturnData {"Successful":true,"data":[]investmentsModels.InvestmentReprotForm,"Error":"", Message:""}
 // @Failure 500 {object} ReturnData {"Successful":true,"data":null,"Error":"", Message:""}
 // @Router /v1/Investment/GetInvestmentDiagram [post]
 func (InvestmentRouters) GetInvestmentReportFormREPost(c *gin.Context) {
-	item := struct {
-		ItemID int
-	}{}
-	err := c.ShouldBindJSON(&item)
-	data := application.GetInvestmentServiceCharge(item.ItemID)
 
-	if err != nil {
-		Helheim.Writer(Helheim.Error, err)
-		c.JSON(http.StatusInternalServerError, ReturnData{Error: err.Error(), Successful: false})
-		return
-	}
-
-	c.JSON(http.StatusOK, ReturnData{Error: "", Successful: true, Data: data})
+	c.JSON(http.StatusOK, ReturnData{Error: "", Successful: true, Data: application.GetInvestmentReprotForm()})
 }

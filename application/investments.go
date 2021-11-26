@@ -93,8 +93,7 @@ func GetInvestmentServiceCharge(itemID int) []investmentsModels.InvestmentServic
 func GetInvestmentReprotForm() investmentsModels.InvestmentReportForm {
 	InvestmentsInitDB()
 	data := database.InvestmentGetTable()
-	setInvestmentReprotForm(data)
-	return investmentsModels.InvestmentReportForm{}
+	return setInvestmentReprotForm(data)
 }
 
 func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel {
@@ -213,7 +212,7 @@ func shareOutBonus() {
 
 }
 
-func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) {
+func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) investmentsModels.InvestmentReportForm {
 	var itemList []investmentsModels.InvestmentReportForm
 	item := new(investmentsModels.InvestmentReportForm)
 	From(data).GroupBy(func(i interface{}) interface{} {
@@ -229,7 +228,7 @@ func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) {
 		for _, item := range i.Group {
 			if item.(investmentsModels.InvestmentTable).IsEmpty != true {
 				if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
-					value.PositionInvement += item.(investmentsModels.InvestmentTable).Account
+					value.PositionInvestment += item.(investmentsModels.InvestmentTable).Account
 					value.PositionServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
 				} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
 					value.PositionSell += item.(investmentsModels.InvestmentTable).Account
@@ -237,7 +236,7 @@ func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) {
 				}
 			} else {
 				if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
-					value.ClearanceInvement += item.(investmentsModels.InvestmentTable).Account
+					value.ClearanceInvestment += item.(investmentsModels.InvestmentTable).Account
 					value.ClearanceServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
 				} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
 					value.ClearanceSell += item.(investmentsModels.InvestmentTable).Account
@@ -245,10 +244,10 @@ func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) {
 				}
 			}
 			if item.(investmentsModels.InvestmentTable).ActivityStatus == 1 {
-				value.TotalPositionInvement += item.(investmentsModels.InvestmentTable).Account
+				value.TotalPositionInvestment += item.(investmentsModels.InvestmentTable).Account
 				value.TotalServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
 			} else if item.(investmentsModels.InvestmentTable).ActivityStatus == 2 {
-				value.TotalClearanceInvement += item.(investmentsModels.InvestmentTable).Account
+				value.TotalClearanceInvestment += item.(investmentsModels.InvestmentTable).Account
 				value.TotalServiceCharge += item.(investmentsModels.InvestmentTable).ServiceCharge
 			}
 		}
@@ -258,36 +257,41 @@ func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) {
 		return value
 	}).ToSlice(&itemList)
 	for _, i := range itemList {
-		if i.PositionInvement > 0 {
-			item.PositionInvement += i.PositionInvement
-			item.PositionServiceCharge += i.PositionServiceCharge
-			item.PositionSell += i.PositionSell
+		if i.PositionInvestment > 0 {
+			item.PositionInvestment, _ = decimal.NewFromFloat(item.PositionInvestment + i.PositionInvestment).Round(4).Float64()
+			item.PositionServiceCharge, _ = decimal.NewFromFloat(item.PositionServiceCharge + i.PositionServiceCharge).Round(4).Float64()
+			item.PositionSell, _ = decimal.NewFromFloat(item.PositionSell + i.PositionSell).Round(4).Float64()
 			item.Position += 1
 			if i.PositionInformation != "" {
-				item.PositionInformation += i.PositionInformation + ";"
+				item.PositionInformation += i.PositionInformation + "(" + decimal.NewFromFloat(i.PositionInvestment-i.PositionSell).Round(4).String() + ")" + ";"
 			}
-			item.TotalPositionInvement += item.PositionInvement - item.PositionSell
-		} else if i.ClearanceInvement > 0 {
-			item.ClearanceInvement += i.ClearanceInvement
-			item.ClearanceServiceCharge += i.ClearanceServiceCharge
-			item.ClearanceSell += i.ClearanceSell
+		} else if i.ClearanceInvestment > 0 {
+			item.ClearanceInvestment, _ = decimal.NewFromFloat(item.ClearanceInvestment + i.ClearanceInvestment).Round(4).Float64()
+			item.ClearanceServiceCharge, _ = decimal.NewFromFloat(item.ClearanceServiceCharge + i.ClearanceServiceCharge).Round(4).Float64()
+			item.ClearanceSell, _ = decimal.NewFromFloat(item.ClearanceSell + i.ClearanceSell).Round(4).Float64()
 			item.Clearance += 1
 			if i.ClearanceInformation != "" {
-				item.ClearanceInformation += i.ClearanceInformation + ";"
+				item.ClearanceInformation += i.ClearanceInformation + "(" + decimal.NewFromFloat(i.ClearanceInvestment-i.ClearanceSell).Round(4).String() + ")" + ";"
 			}
-			item.TotalClearanceInvement += item.ClearanceInvement - item.ClearanceSell
 		}
 
-		item.TotalInvement += i.TotalInvement
-		item.TotalServiceCharge += i.TotalServiceCharge
-		item.TotalSell += i.TotalSell
+		item.TotalInvestment, _ = decimal.NewFromFloat(item.TotalInvestment + i.TotalInvestment).Round(4).Float64()
+		item.TotalServiceCharge, _ = decimal.NewFromFloat(item.TotalServiceCharge + i.TotalServiceCharge).Round(4).Float64()
+		item.TotalSell, _ = decimal.NewFromFloat(item.TotalSell + i.TotalSell).Round(4).Float64()
 		item.Total += 1
 		if i.TotalInformation != "" {
-			item.TotalInformation += i.TotalInformation + ";"
+			item.TotalInformation += i.TotalInformation + "(" + decimal.NewFromFloat(i.TotalInvestment-i.TotalSell).Round(4).String() + ")" + ";"
 		}
-		item.TotalTotalInvement += item.TotalPositionInvement + item.TotalClearanceInvement
+		fmt.Println("---------------------------------------------------")
+		fmt.Println("Sell: ", i.PositionSell, "Buy: ", i.PositionInvestment)
+		fmt.Println("Item Sell: ", item.PositionSell, "Item Buy: ", item.PositionInvestment, "Total", item.TotalPositionInvestment)
+		fmt.Println(item)
 	}
-	fmt.Println(item)
+	item.TotalPositionInvestment, _ = decimal.NewFromFloat(item.PositionInvestment - item.PositionSell).Round(4).Float64()
+	item.TotalClearanceInvestment, _ = decimal.NewFromFloat(item.ClearanceInvestment - item.ClearanceSell).Round(4).Float64()
+	item.TotalTotalInvestment, _ = decimal.NewFromFloat(item.TotalInvestment - item.TotalSell).Round(4).Float64()
+
+	return *item
 }
 
 func (data InvestmentGroupList) Len() int {
