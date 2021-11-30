@@ -315,6 +315,21 @@ func InvestmentAddTable(data InvestmentTable) (bool, error) {
 			Helheim.Writer(Helheim.Error, err)
 		}
 		data.Investment.ItemID = num + 1
+
+		item := new(InvestmentItem)
+		item.ItemID = data.Investment.ItemID
+		item.Code = data.Investment.Code
+		item.Name = data.Investment.Name
+
+		_, err = session.Insert(item)
+		if err != nil {
+			Helheim.Writer(Helheim.Error, err)
+			if err = session.Rollback(); err != nil {
+				Helheim.Writer(Helheim.Error, err)
+			}
+
+			return false, err
+		}
 	}
 	_, err = session.Insert(&data.Investment)
 

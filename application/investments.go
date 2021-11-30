@@ -275,9 +275,9 @@ func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) investmen
 			}
 		}
 
-		item.TotalInvestment, _ = decimal.NewFromFloat(item.TotalInvestment + i.TotalInvestment).Round(4).Float64()
-		item.TotalServiceCharge, _ = decimal.NewFromFloat(item.TotalServiceCharge + i.TotalServiceCharge).Round(4).Float64()
-		item.TotalSell, _ = decimal.NewFromFloat(item.TotalSell + i.TotalSell).Round(4).Float64()
+		item.TotalInvestment, _ = decimal.NewFromFloat(item.TotalInvestment + (i.PositionInvestment + i.ClearanceInvestment)).Round(4).Float64()
+		item.TotalServiceCharge, _ = decimal.NewFromFloat(item.TotalServiceCharge + (i.PositionServiceCharge + i.ClearanceServiceCharge)).Round(4).Float64()
+		item.TotalSell, _ = decimal.NewFromFloat(item.TotalSell + (i.PositionSell + i.ClearanceSell)).Round(4).Float64()
 		item.Total += 1
 		if i.TotalInformation != "" {
 			item.TotalInformation += i.TotalInformation + "(" + decimal.NewFromFloat(i.TotalInvestment-i.TotalSell).Round(4).String() + ")" + ";"
