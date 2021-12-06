@@ -34,6 +34,9 @@ func (UserRouters) LoginREPost(c *gin.Context) {
 		c.JSON(http.StatusOK, rd)
 		return
 	}
+	if rd.Successful == false {
+		return
+	}
 	rd.Data = user.TokenNum
 	c.JSON(http.StatusOK, rd)
 }

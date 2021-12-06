@@ -14,11 +14,15 @@ func UserInitDB() {
 
 func Login(data *userModels.UserInfo) (bool, error) {
 	flag, err := engine.Where("UserName = ?", data.UserName).And("Password = ?", data.Password).Get(data)
+	/*str := "select * from UserInfo where UserName = " + data.UserName + " and Password = " + data.Password
+	set, err := engine.Query(str)*/
 	if err != nil {
 		Helheim.Writer(Helheim.Error, err)
 		return flag, err
 	}
-
+	/*for _, i := range set {
+		fmt.Println(i)
+	}*/
 	return flag, nil
 }
 
