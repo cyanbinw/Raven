@@ -28,9 +28,6 @@ func investmentsInitDBV1() {
 	//验证连接
 	if err = db.Ping(); err != nil {
 		err = Helheim.Writer(Helheim.Error, err)
-		if err != nil {
-
-		}
 		return
 	}
 }
