@@ -27,7 +27,10 @@ func investmentsInitDBV1() {
 	db.SetMaxIdleConns(10)
 	//验证连接
 	if err = db.Ping(); err != nil {
-		Helheim.Writer(Helheim.Error, err)
+		err = Helheim.Writer(Helheim.Error, err)
+		if err != nil {
+
+		}
 		return
 	}
 }
