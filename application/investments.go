@@ -90,10 +90,10 @@ func GetInvestmentServiceCharge(itemID int) []investmentsModels.InvestmentServic
 	return database.GetServiceChargeData(itemID)
 }
 
-func GetInvestmentReprotForm() investmentsModels.InvestmentReportForm {
+func GetInvestmentReportForm() investmentsModels.InvestmentReportForm {
 	InvestmentsInitDB()
 	data := database.InvestmentGetTable()
-	return setInvestmentReprotForm(data)
+	return setInvestmentReportForm(data)
 }
 
 func createChart(data []investmentsModels.InvestmentTable) InvestmentsChartModel {
@@ -212,7 +212,7 @@ func shareOutBonus() {
 
 }
 
-func setInvestmentReprotForm(data []investmentsModels.InvestmentTable) investmentsModels.InvestmentReportForm {
+func setInvestmentReportForm(data []investmentsModels.InvestmentTable) investmentsModels.InvestmentReportForm {
 	var itemList []investmentsModels.InvestmentReportForm
 	item := new(investmentsModels.InvestmentReportForm)
 	From(data).GroupBy(func(i interface{}) interface{} {

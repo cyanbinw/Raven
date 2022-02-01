@@ -37,7 +37,15 @@ func TestSetInvestmentServiceCharge(t *testing.T) {
 }
 
 func TestGetInvestmentReportForm(t *testing.T) {
-	_ = application.GetInvestmentReprotForm()
+	_ = application.GetInvestmentReportForm()
+}
+
+func TestInvestmentIsEmpty(t *testing.T) {
+	_, err := investmentWork.SetInvestmentIsEmpty()
+	if err != nil {
+		t.Log(err)
+		t.FailNow()
+	}
 }
 
 func regular() {
