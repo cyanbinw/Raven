@@ -67,3 +67,24 @@ type InvestmentChartModel struct {
 func (InvestmentTable) TableName() string {
 	return "Investment"
 }
+
+type InvestmentReportForm struct {
+	Position                 int     `json:"position"`                 //持仓
+	PositionInvestment       float64 `json:"positionInvestment"`       //持仓投资
+	TotalPositionInvestment  float64 `json:"totalPositionInvestment"`  //持仓总投资
+	PositionSell             float64 `json:"positionSell"`             //持仓卖出
+	PositionServiceCharge    float64 `json:"positionServiceCharge"`    // 持仓手续费
+	PositionInformation      string  `json:"positionInformation"`      // 持仓信息
+	Clearance                int     `json:"clearance"`                //清仓
+	ClearanceInvestment      float64 `json:"clearanceInvestment"`      //清仓投资
+	TotalClearanceInvestment float64 `json:"totalClearanceInvestment"` //清仓总投资
+	ClearanceSell            float64 `json:"clearanceSell"`            //清仓卖出
+	ClearanceServiceCharge   float64 `json:"clearanceServiceCharge"`   // 清仓手续费
+	ClearanceInformation     string  `json:"clearanceInformation"`     // 清仓信息
+	Total                    int     `json:"total"`                    //总体
+	TotalInvestment          float64 `json:"totalInvestment"`          //总体投资
+	TotalTotalInvestment     float64 `json:"totalTotalInvestment"`     //总体总投资
+	TotalSell                float64 `json:"totalSell"`                //总体卖出
+	TotalServiceCharge       float64 `json:"totalServiceCharge"`       // 总体手续费
+	TotalInformation         string  `json:"totalInformation"`         // 总体信息
+}

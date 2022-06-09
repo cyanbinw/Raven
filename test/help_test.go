@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/swirling-melodies/Raven/common"
+	"github.com/swirling-melodies/Raven/database"
 	"testing"
 )
 
@@ -12,4 +13,8 @@ func TestReadJSON(t *testing.T) {
 		t.FailNow()
 	}
 	t.Log(data)
+}
+
+func TestInitRedis(t *testing.T) {
+	database.V8Example()
 }

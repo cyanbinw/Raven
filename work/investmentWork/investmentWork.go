@@ -11,3 +11,7 @@ func SetInvestmentType() (bool, error) {
 func SetInvestmentServiceCharge() (bool, error) {
 	return RunTransaction(actionInvestmentServiceCharge)
 }
+
+func SetInvestmentIsEmpty() (bool, error) {
+	return RunTransaction(actionIsEmpty)
+}
